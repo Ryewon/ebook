@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.MemberDao;
 import member.Member;
@@ -41,14 +42,18 @@ public class MemberController {
 		return "/member/join";
 	}
 	
-	@RequestMapping(value = "/ckEmail")
-	public String chEmail() {
-		return "";
+	@RequestMapping(value = "/ckID")
+	@ResponseBody
+	public String ckID(String mid) {
+		System.out.println(mid);
+		int ck = memberDao.checkID(mid);
+		System.out.println("zÄõ¸®´Ù³à¿È");
+		return String.valueOf(ck);
 	}
 	
 	@RequestMapping(value = "/memberJoin", method = RequestMethod.POST)
 	public String memberJoin(HttpServletRequest request) {
-		String email = request.getParameter("email");
+		String mid = request.getParameter("mid");
 		String pw = request.getParameter("pw");
 		String name = request.getParameter("name");
 		int gender = Integer.parseInt(request.getParameter("gender"));
@@ -56,9 +61,20 @@ public class MemberController {
 		String hint = request.getParameter("hint");
 		String answer = request.getParameter("answer");
 
-		memberDao.memberJoin(email, pw, name, gender, phone, hint, answer);
+		memberDao.memberJoin(mid, pw, name, gender, phone, hint, answer);
 
-		return "";
+		return "redirect:/home";
+	}
+	
+	@RequestMapping(value = "/ckLogin") 
+	public String ckLogin(String mid, String pw, Model model) {
+		String rs = memberDao.checkLogin(mid, pw);
+		if (rs == "no") {
+			model.addAttribute("mck", rs);
+			return "member/login";
+		} else {
+			return "redirect:/home";
+		}
 	}
 	
 	//@RequestMapping(value = "/joinInfo")

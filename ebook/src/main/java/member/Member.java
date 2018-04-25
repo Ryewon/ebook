@@ -3,7 +3,7 @@ package member;
 import java.util.Date;
 
 public class Member {
-	private String email;
+	private String mid;
 	private String pw;
 	private String name;
 	private int gender;
@@ -12,9 +12,8 @@ public class Member {
 	private String answer;
 	private int point;
 	
-	public Member(String email, String pw, String name, int gender, int phone, String hint, String answer, int point) {
-		super();
-		this.email = email;
+	public Member(String mid, String pw, String name, int gender, int phone, String hint, String answer, int point) {
+		this.mid = mid;
 		this.pw = pw;
 		this.name = name;
 		this.gender = gender;
@@ -23,13 +22,17 @@ public class Member {
 		this.answer = answer;
 		this.point = point;
 	}
-
-	public String getEmail() {
-		return email;
+	
+	public Member(String mid) {
+		this.mid = mid;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getmid() {
+		return mid;
+	}
+
+	public void setmid(String mid) {
+		this.mid = mid;
 	}
 
 	public String getPw() {
