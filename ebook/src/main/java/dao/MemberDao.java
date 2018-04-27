@@ -1,11 +1,13 @@
 package dao;
 
-import java.awt.List;
+import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import member.Member;
 
@@ -26,21 +28,30 @@ public class MemberDao {
 		}
 	}
 
-	public void memberJoin(String mid, String pw, String name, int gender, int phone, String hint, String answer) {
-		jdbcTemplate.update("insert into member values(?, ?, ?, ?, ?, ?, ?, 0)", mid, pw, name, gender, phone, hint,
-				answer);
+	public void memberJoin(String mid, String pw, String name, String gender, String phone, String hint, String answer) {
+		jdbcTemplate.update("insert into member values(?, ?, ?, ?, ?, ?, ?, 0)", mid, pw, name, gender, phone, hint, answer);
 	}
 	
 	public String checkLogin(String mid, String pw) {
-			System.out.println("다오임");
 			String result = null;
 			try {
-				System.out.println("쿼리수행전");
 				result = jdbcTemplate.queryForObject("select mid from member where mid=? and pw=?", String.class, mid, pw);
-				System.out.println("쿼리 수행했을가");
 				return result;
 			} catch (Exception e) {
 				return "no";
 			}
+	}
+	
+	public Member memberInfo(String mid) {
+		List<Member> results = jdbcTemplate.query("select * from member where mid = ?", new RowMapper<Member>() {
+			@Override
+			public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Member member = new Member(rs.getString("mid"), rs.getString("pw"), rs.getString("name"),
+						rs.getString("gender"), rs.getString("phone"), rs.getString("hint"), rs.getString("answer"),
+						rs.getInt("point"));
+				return member;
+			}
+		}, mid);
+		return results.isEmpty() ? null : results.get(0);
 	}
 }

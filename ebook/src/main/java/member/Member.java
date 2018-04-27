@@ -1,18 +1,18 @@
 package member;
 
-import java.util.Date;
-
 public class Member {
 	private String mid;
 	private String pw;
 	private String name;
-	private int gender;
-	private int phone;
+	private String gender;
+	private String phone;
 	private String hint;
 	private String answer;
 	private int point;
 	
-	public Member(String mid, String pw, String name, int gender, int phone, String hint, String answer, int point) {
+	public Member(String mid, String pw, String name, String gender, String phone, String hint, String answer,
+			int point) {
+		super();
 		this.mid = mid;
 		this.pw = pw;
 		this.name = name;
@@ -22,16 +22,16 @@ public class Member {
 		this.answer = answer;
 		this.point = point;
 	}
-	
+
 	public Member(String mid) {
 		this.mid = mid;
 	}
 
-	public String getmid() {
+	public String getMid() {
 		return mid;
 	}
 
-	public void setmid(String mid) {
+	public void setMid(String mid) {
 		this.mid = mid;
 	}
 
@@ -51,19 +51,19 @@ public class Member {
 		this.name = name;
 	}
 
-	public int getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
@@ -90,7 +90,5 @@ public class Member {
 	public void setPoint(int point) {
 		this.point = point;
 	}
-	
-	
 	
 }

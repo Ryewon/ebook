@@ -4,11 +4,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<link
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js?ver=441"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

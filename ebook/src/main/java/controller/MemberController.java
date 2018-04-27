@@ -1,6 +1,7 @@
 package controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.MemberDao;
+import member.AuthInfo;
 import member.Member;
-import member.MemberCommand;
 
 /**
  * Handles requests for the application home page.
@@ -47,7 +48,6 @@ public class MemberController {
 	public String ckID(String mid) {
 		System.out.println(mid);
 		int ck = memberDao.checkID(mid);
-		System.out.println("zÄõ¸®´Ù³à¿È");
 		return String.valueOf(ck);
 	}
 	
@@ -56,10 +56,11 @@ public class MemberController {
 		String mid = request.getParameter("mid");
 		String pw = request.getParameter("pw");
 		String name = request.getParameter("name");
-		int gender = Integer.parseInt(request.getParameter("gender"));
-		int phone = Integer.parseInt(request.getParameter("phone"));
-		String hint = request.getParameter("hint");
+		String gender = request.getParameter("gender");
+		String phone = request.getParameter("phone");
+		String hint = request.getParameter("hint2");
 		String answer = request.getParameter("answer");
+		System.out.println("mid="+mid+" pw="+pw+" name="+name+" gender="+gender+" phone="+phone+" hint="+hint+" answer="+answer);
 
 		memberDao.memberJoin(mid, pw, name, gender, phone, hint, answer);
 
@@ -67,16 +68,29 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/ckLogin") 
-	public String ckLogin(String mid, String pw, Model model) {
+	public String ckLogin(String mid, String pw, Model model, HttpSession session) {
 		String rs = memberDao.checkLogin(mid, pw);
+		Member member = memberDao.memberInfo(mid);
+
 		if (rs == "no") {
 			model.addAttribute("mck", rs);
 			return "member/login";
 		} else {
+			AuthInfo authInfo = new AuthInfo(member.getMid(), member.getPw(), member.getName(),
+					member.getGender(), member.getPhone(), member.getHint(), member.getAnswer(), member.getPoint());
+			session.setAttribute("authInfo", authInfo);
 			return "redirect:/home";
 		}
 	}
 	
-	//@RequestMapping(value = "/joinInfo")
+	@RequestMapping(value = "/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/home";
+	}
 	
+	@RequestMapping(value = "/upbook")
+	public String upBook() {
+		return "main/upBook";
+	}
 }
