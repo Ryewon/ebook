@@ -14,4 +14,7 @@
 	<mvc:view-resolvers>
 		<mvc:jsp prefix="/" />
 	</mvc:view-resolvers>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	
 </beans>

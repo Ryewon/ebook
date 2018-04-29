@@ -9,10 +9,10 @@ function ckID() {
 	if (mid=="") {
 		document.getElementById("ckText").innerHTML = "ID를 입력해 주세요.";
 	} else {
-		var idRegexp = /^[a-z][a-zA-Z0-9]{7,19}$/;
-		if(!mid.match(idRegexp)) {
-			document.getElementById("ckText").innerHTML = "영문자 소문자로 시작해서 8~20 글자로 입력하세요";
-		} else {
+//		var idRegexp = /^[a-z][a-zA-Z0-9]{7,19}$/;
+//		if(!mid.match(idRegexp)) {
+//			document.getElementById("ckText").innerHTML = "영문자 소문자로 시작해서 8~20 글자로 입력하세요";
+//		} else {
 			$.ajax({
 				type : "POST",
 				url : "/ebook/ckID",
@@ -30,18 +30,19 @@ function ckID() {
 					}
 				}
 			});
-		}
+//		}
 	}
 }
 
 function hintEdit() {
 	var index = document.joinForm.hint.selectedIndex;
 	if(index == "4") {
-		$('#hint2').attr('disabled', false);
+		$('#hint2').attr('readonly', false);
 		$('#hint2').val("");
 	} else {
-		$('#hint2').attr('disabled', true);
+		$('#hint2').attr('readonly', true);
 		$('#hint2').val(document.joinForm.hint[index].value);
+		console.log($('#hint2').val());
 	}
 }
 
@@ -101,6 +102,10 @@ function checkValue() {
 	} else if($('#answer').val()=="") {
 		document.getElementById("ckAnswer").innerHTML = "답변을 입력하세요.";
 		document.getElementById("answer").focus();
+		return false;
+	} else if($('#ck').val()=="") {
+		document.getElementById("ckText").innerHTML = "아이디 중복확인 해주세요.";
+		document.getElementById("dubtn").focus();
 		return false;
 	}
 }

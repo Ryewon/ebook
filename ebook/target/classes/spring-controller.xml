@@ -12,4 +12,8 @@
 		<property name="memberDao" ref="memberDao" />
 		<!-- <property name="memberSvc" ref="memberSvc" /> -->
 	</bean>
+	
+	<bean class="controller.BookController">
+		<property name="bookDao" ref="bookDao" />
+	</bean>
 </beans>

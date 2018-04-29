@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/alterboot.css?ver=33" />
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/join.js?ver=212"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/join.js?ver=221"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 </head>
@@ -38,7 +38,7 @@
 								<div>
 									<label style="width: 60px">ID</label>
 									<input id="mid" name="mid" type="text" class="input-text-control"/>
-									<input name="dubtn" value="중복검사" type="button" onclick="ckID();"/>
+									<input id="dubtn" name="dubtn" value="중복검사" type="button" onclick="ckID();"/>
 									<span id="ckText"></span>
 									<input type="hidden" id="ck" name="ck"/>
 								</div>
@@ -61,7 +61,7 @@
 										<option value="기억에 남는 장소는?">기억에 남는 장소는?</option>
 										<option value="기타">기타</option>
 									</select>
-									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" disabled="disabled"/>
+									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly />
 									<span id="ckHint"></span>
 								</div>
 								<div>
@@ -74,7 +74,7 @@
 							</fieldset>
 						</form>
 					</div>
-				</div>
+				</div>	
 			</div>
 		</div>
 	</div>

@@ -60,7 +60,6 @@ public class MemberController {
 		String phone = request.getParameter("phone");
 		String hint = request.getParameter("hint2");
 		String answer = request.getParameter("answer");
-		System.out.println("mid="+mid+" pw="+pw+" name="+name+" gender="+gender+" phone="+phone+" hint="+hint+" answer="+answer);
 
 		memberDao.memberJoin(mid, pw, name, gender, phone, hint, answer);
 
@@ -89,8 +88,5 @@ public class MemberController {
 		return "redirect:/home";
 	}
 	
-	@RequestMapping(value = "/upbook")
-	public String upBook() {
-		return "main/upBook";
-	}
+
 }
