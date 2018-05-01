@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFImageWriter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,10 +37,9 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/uploadBook", method = RequestMethod.POST)
-	public String upladBook(HttpServletRequest request, @RequestParam("cfile") MultipartFile cfile, @RequestParam("pfile") MultipartFile pfile) {
+	public String upladBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file) {
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
-		System.out.println("써치전");
 		int bid = bookDao.suchBid();
 		System.out.println("써치후"+bid);
 		String writer = authInfo.getName();
@@ -48,30 +49,40 @@ public class BookController {
 		String title = request.getParameter("title");
 		String intro = request.getParameter("intro");
 		String con_table = request.getParameter("con_table");
-		String cpath = request.getParameter("cupdir") + cfile;;
-		String ppath = request.getParameter("pupdir") + pfile;
-		String ipath = request.getParameter("iupdir")+ bid +"/"+title+"/";
-		int pCnt=0;
+		String cfile = file.get(0).getOriginalFilename();
+		String pfile = file.get(1).getOriginalFilename();
+		String cpath = request.getParameter("cupdir") + bid + "_" +cfile;
+		String ppath = request.getParameter("pupdir") + bid + "_" +pfile;
+		String ipath = request.getParameter("iupdir")+ bid +"_";
 		
+		int pCnt=0;
 		PDDocument doc = null;
 		
 		try {
-			doc = PDDocument.load(new File(pfile.getOriginalFilename()));
+			File cover_file = new File(cpath);
+			file.get(0).transferTo(cover_file);
+			File pdf_file = new File(ppath);
+			file.get(1).transferTo(pdf_file);
+			doc = PDDocument.load(pdf_file);
+			
+//			pdf -> png 로 변환하는 다른 코드
+/*			pCnt = doc.getNumberOfPages();
+			PDFImageWriter imgWriter = new PDFImageWriter();
+			imgWriter.writeImage(doc, "png", "", 1, pCnt, ipath, BufferedImage.TYPE_INT_RGB, 300);
+*/			
 			List<PDPage> list = doc.getDocumentCatalog().getAllPages();
 			pCnt = list.size();
-			for (PDPage page : list) {
-				for(int i = 1; i <= pCnt; i++) {
-					BufferedImage image = page.convertToImage();
-					ImageIO.write(image, "png", new File(ipath + title + i +".png"));
-				}
+			for (int i = 1; i <= pCnt; i++) {				
+					BufferedImage image = list.get(i-1).convertToImage();
+					ImageIO.write(image, "png", new File(ipath + i + ".png"));
 			}
 			doc.close();
 		} catch (IOException e) {
-			System.out.println("mutlpartFile to File 변환 예외발생");
+			System.out.println("File 변환 예외발생");
 		}
-		BookCommand bcmd = new BookCommand(price, pCnt, mid, title, writer, cate, con_table, intro, cpath, ppath, ipath, cfile, pfile);
-		bookDao.upBook(bcmd,bid);
+		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, ppath, ipath, mid);
 		
 		return "";
 	}
+
 }

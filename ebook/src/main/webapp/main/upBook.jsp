@@ -1,12 +1,100 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <head>
 	<title>책 올리기</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.js"></script> 
+	<script>
+		function readURL(input) {
+			console.log("함수실행");
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function (e) {
+					$('#imgView').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+	
+		function checkUpload() {
+			var radio = $("input:radio[name='free']").is(':checked');
+			var title = $('#title').val();
+			var pfile = $('#pfile').val();
+			console.log(pfile);
+			if (radio == false) {
+				console.log("라디오");
+				$('#con').html('유료/무료를 선택하세요.');
+				$('#myModal').show();
+				return false;
+			} else if (title == "") {			
+				$('#con').html('제목을 입력하세요.');
+				$('#myModal').show();
+				return false;
+			} else if (pfile == "") {
+				$('#con').html('pdf 파일을 올려주세요.');
+				$('#myModal').show();
+				return false;
+			} 
+		} 
+		
+		function close_pop(flag) {
+            $('#myModal').hide();
+       	};
+
+	</script>
+	<style>
+        /* The Modal (background) */
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */                          
+        }
+ 
+	</style>
+
 </head>
+
+<div id="myModal" class="modal">
+ 
+      <!-- Modal content -->
+      <div class="modal-content">
+                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
+                <p style="text-align: center; line-height: 1.5;"><br />
+                <span id="con"></span>
+                </p>
+                <p><br /></p>
+            <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+                <span class="pop_bt" style="font-size: 13pt;" >
+                     닫기
+                </span>
+            </div>
+      </div>
+ 
+    </div>
+		
 <div>
 	<h1>책 올리기</h1>
-	<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" enctype="multipart/form-data">
+	<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
+	enctype="multipart/form-data" onsubmit="return checkUpload();">
 	<div style="border: 1px;">
 		<div>
 			<label>카테고리</label> &nbsp;
@@ -36,26 +124,27 @@
 		<br />
 		<div>
 			<div style="display: inline-table; width: 300px;">
-				<img src="/ebook/no_image.png" id="" name="" style="width: 200px; height: 200px; border: 1px;">
+				<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
 			</div>
 			<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
 			<div style="display: inline-table; width: 400px;">
 				<label>표지 첨부</label> &nbsp;
 				<label style="display: inline-table;">
-				<input id="cfile" name="cfile" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="" /></label>
-				<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
+				<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
+				<input type="hidden" id="cupdir" name="cupdir" value="C:/RWEbook/cuploads/" />
 				<br>
 				<label>제목</label> &nbsp;
 				<input type="text" id="title" name="title"/>
 				<br>
 				<label>PDF 첨부</label> &nbsp;
 				<label style="display: inline-table;">
-				<input id="pfile" name="pfile" type="file" accept=".pdf" onchange="" /></label>
-				<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/cuploads/")%>" />
-				<input type="hidden" id="iupdir" name="iupdir" value="<%=request.getRealPath("/iuploads/")%>" />
+				<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
+				<input type="hidden" id="pupdir" name="pupdir" value="C:/RWEbook/puploads/" />
+				<input type="hidden" id="iupdir" name="iupdir" value="C:/RWEbook/iuploads/" />
 			</div>
 		</div>
 		<br>
+
 		<div>
 			<label>책 소개 내용</label><br>
 			<textarea rows="" cols="" id="intro" name="intro" style="width:700px; resize: none; overflow-y: scroll"></textarea>
@@ -68,4 +157,5 @@
 		<input type="submit" value="올리기">
 	</div>
 	</form>
+		
 </div>

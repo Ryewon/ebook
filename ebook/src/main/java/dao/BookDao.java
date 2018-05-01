@@ -13,12 +13,13 @@ public class BookDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public void upBook(final BookCommand bcmd, int bid) {
-		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)", 
-				bid + 1, bcmd.getTitle(), bcmd.getBook_writer(), bcmd.getBook_cate(),
-						bcmd.getPrice(), bcmd.getContents_table(), bcmd.getBook_intro(),
-						bcmd.getCover_name(), bcmd.getCover_path(), bcmd.getPfile_name(),
-						bcmd.getPimg_path(), bcmd.getMid());
+	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
+			String intro, String cfile, String cpath, String pfile, String ppath, String ipath, String mid) {
+		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
+				bid + 1, title, writer, cate,
+						price, con_table, intro,
+						cfile, cpath, pfile,
+						ppath, ipath, mid);
 	}
 
 	public int suchBid() {
