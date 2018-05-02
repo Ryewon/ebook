@@ -45,13 +45,29 @@ public class BookController {
 		String writer = authInfo.getName();
 		String cate = request.getParameter("cate");
 		String free = request.getParameter("free");
-		int price = Integer.parseInt(request.getParameter("price"));
+		String pre_price = (String)request.getParameter("price");
+		System.out.println("변환전가격:  "+pre_price+"   원");
+		int price = 0;
+		if(pre_price.isEmpty()) {
+			System.out.println("가격0");
+			price = 0;
+		} else {
+			System.out.println("가격 변환");
+			price = Integer.parseInt(pre_price);
+		}
 		String title = request.getParameter("title");
 		String intro = request.getParameter("intro");
 		String con_table = request.getParameter("con_table");
+		System.out.println("cfile에 넣기");
 		String cfile = file.get(0).getOriginalFilename();
 		String pfile = file.get(1).getOriginalFilename();
-		String cpath = request.getParameter("cupdir") + bid + "_" +cfile;
+		String cpath = null;
+		if (cfile == "") {
+			System.out.println("cfile 널 처리1");
+			cpath = "";
+		} else {
+			cpath = request.getParameter("cupdir") + bid + "_" +cfile;
+		}
 		String ppath = request.getParameter("pupdir") + bid + "_" +pfile;
 		String ipath = request.getParameter("iupdir")+ bid +"_";
 		
@@ -59,8 +75,12 @@ public class BookController {
 		PDDocument doc = null;
 		
 		try {
-			File cover_file = new File(cpath);
-			file.get(0).transferTo(cover_file);
+			if (cpath != "") {				
+				System.out.println("cfile 널 처리2");
+				File cover_file = new File(cpath);
+				file.get(0).transferTo(cover_file);
+				System.out.println("cfile 널 처리3");
+			}
 			File pdf_file = new File(ppath);
 			file.get(1).transferTo(pdf_file);
 			doc = PDDocument.load(pdf_file);
@@ -80,9 +100,9 @@ public class BookController {
 		} catch (IOException e) {
 			System.out.println("File 변환 예외발생");
 		}
-		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, ppath, ipath, mid);
+		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, ipath, mid);
 		
-		return "";
+		return "/home";
 	}
 
 }

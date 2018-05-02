@@ -14,11 +14,11 @@ public class BookDao {
 	}
 	
 	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
-			String intro, String cfile, String cpath, String pfile, String ppath, String ipath, String mid) {
-		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
+		String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String ipath, String mid) {
+		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)", 
 				bid + 1, title, writer, cate,
 						price, con_table, intro,
-						cfile, cpath, pfile,
+						cfile, cpath, pfile, pCnt,
 						ppath, ipath, mid);
 	}
 

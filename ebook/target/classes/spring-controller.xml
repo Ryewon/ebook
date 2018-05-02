@@ -16,4 +16,8 @@
 	<bean class="controller.BookController">
 		<property name="bookDao" ref="bookDao" />
 	</bean>
+	
+	<bean class="controller.MypageController">
+		
+	</bean>
 </beans>

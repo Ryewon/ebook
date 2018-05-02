@@ -2,11 +2,19 @@
     pageEncoding="UTF-8"%>
 <head>
 	<title>책 올리기</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 	<script src="https://code.jquery.com/jquery-latest.js"></script> 
 	<script>
+		function priceCk(input) {
+			if(input == 'free') {
+				$('#price').attr('readonly', true);
+			} else {
+				$('#price').attr('readonly', false);
+			}
+		}
+	
 		function readURL(input) {
 			console.log("함수실행");
 			if (input.files && input.files[0]) {
@@ -16,17 +24,24 @@
 					$('#imgView').attr('src', e.target.result);
 				}
 				reader.readAsDataURL(input.files[0]);
+			} else {
+				$('#imgView').attr('src', '/ebook/no_image.png');
 			}
 		}
 	
 		function checkUpload() {
 			var radio = $("input:radio[name='free']").is(':checked');
+			var price = $("input:radio[name='free']").val();
 			var title = $('#title').val();
 			var pfile = $('#pfile').val();
-			console.log(pfile);
+			var freeCk = $('input:radio[name=free]:checked').val();
 			if (radio == false) {
 				console.log("라디오");
 				$('#con').html('유료/무료를 선택하세요.');
+				$('#myModal').show();
+				return false;
+			} else if (freeCk=='유료' && $('#price').val()=='') {			
+				$('#con').html('유료 가격을 입력하세요.');
 				$('#myModal').show();
 				return false;
 			} else if (title == "") {			
@@ -37,12 +52,12 @@
 				$('#con').html('pdf 파일을 올려주세요.');
 				$('#myModal').show();
 				return false;
-			} 
-		} 
+			}
+		}
 		
 		function close_pop(flag) {
             $('#myModal').hide();
-       	};
+       	}
 
 	</script>
 	<style>
@@ -113,12 +128,12 @@
 		<div>
 			<div style="display: inline-table; width: 300px">
 				<label>유료/무료</label> &nbsp;
-				<input type="radio" name="free" value="m"/>유료 &nbsp; &nbsp;
-				<input type="radio" name="free" value="f"/>무료
+				<input type="radio" name="free" value="유료" onclick="priceCk('non_free');"/>유료 &nbsp; &nbsp;
+				<input type="radio" name="free" value="무료" onclick="priceCk('free');" />무료
 			</div>
 			<div style="display: inline-table; width: 300px">
 				<label>가격</label> &nbsp;
-				<input type="text" id="price" name="price" />원
+				<input type="text" id="price" name="price"  readonly />원
 			</div>
 		</div>
 		<br />
