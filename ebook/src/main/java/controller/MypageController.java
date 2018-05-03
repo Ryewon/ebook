@@ -1,13 +1,18 @@
 package controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.util.List;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.Book;
 import dao.MypageDao;
@@ -31,8 +36,10 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "/infoModify")
-	public String infoModify(HttpServletRequest request, HttpSession session) {
+	public String infoModify(HttpServletRequest request, HttpSession session, Model model) {
+		System.out.println("info 컨트롤러");
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+		String mid = authInfo.getMid();
 		String orginPw = authInfo.getPw();
 		String inputPw = request.getParameter("pw");
 		String name = request.getParameter("name");
@@ -40,20 +47,53 @@ public class MypageController {
 		String phone = request.getParameter("phone");
 		String hint = request.getParameter("hint2");
 		String answer = request.getParameter("answer");
-		if(orginPw == inputPw) {
+		System.out.println("or:" + orginPw);
+		System.out.println("in:" + inputPw);
+		if(orginPw.equals(inputPw)) {
 			System.out.println("쿼리날린다~");
-			mypageDao.updateInfo(name, gender, phone, hint, answer);
-			session.setAttribute("name", name);
-			session.setAttribute("gender", gender);
-			session.setAttribute("phone", phone);
-			session.setAttribute("hint", hint);
-			session.setAttribute("answer", answer);
-			return "redirect:/mypage/infoPw";
+			mypageDao.updateInfo(name, gender, phone, hint, answer, mid);
+			authInfo.setName(name);
+			authInfo.setGender(gender);
+			authInfo.setPhone(phone);
+			authInfo.setHint(hint);
+			authInfo.setAnswer(answer);
+			session.setAttribute("authInfo", authInfo);
+			System.out.println(authInfo.getName());
+			return "redirect:/mypage";
 		} else {
-			return "/mypage/infoPw";
+			model.addAttribute("check", "miss");
+			return "/mypage/mypage";
 		}
 	}
 	
+	@RequestMapping(value = "passModify")
+	public String passModify(HttpServletRequest request, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+		System.out.println("비번바꾸는 컨트롤러");
+		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+		String mid = authInfo.getMid();
+		String cpw = request.getParameter("cur_pw");
+		String npw = request.getParameter("new_pw1");
+		String pw = mypageDao.getPasswrod(mid);
+		System.out.println("현재비번: " + pw);
+		if(pw.equals(cpw)) {
+			System.out.println("바꿀 쿼리 실행할거임");
+			mypageDao.updatePw(mid, npw);
+			authInfo.setPw(npw);
+			session.setAttribute("authInfo", authInfo);
+			redirectAttributes.addAttribute("changePw", "y");
+			return "redirect:/mypage/pass";
+		} else {			
+			model.addAttribute("changePw", "n");
+			return "/mypage/mypage";
+		}
+	}
+	
+	//패스워드 변경 성공시 확인 값 던져줌
+	@RequestMapping(value = "/mypage/pass") 
+	public String pass(@RequestParam(value="changePw") String changePw, Model model) {
+		model.addAttribute("changePw", changePw);
+		return "/mypage/mypage";
+	}
 /*	@RequestMapping(value = "/infoPw") 
 	public String infoPw() {
 	

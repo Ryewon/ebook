@@ -4,6 +4,7 @@
 	<title>책 올리기</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=33" />
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-latest.js"></script> 
 	<script>
@@ -59,54 +60,26 @@
             $('#myModal').hide();
        	}
 	</script>
-	<style>
-        /* The Modal (background) */
-		.modal {
-			display: none; /* Hidden by default */
-			position: fixed; /* Stay in place */
-			z-index: 1; /* Sit on top */
-			left: 0;
-			top: 0;
-			width: 100%; /* Full width */
-			height: 100%; /* Full height */
-			overflow: auto; /* Enable scroll if needed */
-			background-color: rgb(0,0,0); /* Fallback color */
-			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-    
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 30%; /* Could be more or less, depending on screen size */                          
-        }
- 
-	</style>
-
 </head>
 
 <div id="myModal" class="modal">
- 
-      <!-- Modal content -->
-      <div class="modal-content">
-                <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
-                <p style="text-align: center; line-height: 1.5;"><br />
-                <span id="con"></span>
-                </p>
-                <p><br /></p>
-            <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
-                <span class="pop_bt" style="font-size: 13pt;" >
-                     닫기
-                </span>
-            </div>
-      </div>
- 
-    </div>
+	<!-- Modal content -->
+	<div class="modal-content">
+	          <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
+	          <p style="text-align: center; line-height: 1.5;"><br />
+	          <span id="con"></span>
+	          </p>
+	          <p><br /></p>
+	      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+	          <span class="pop_bt" style="font-size: 13pt;" >
+	               닫기
+	          </span>
+	      </div>
+	</div>
+ </div>
 		
 <div>
-	<h1>책 올리기${orgPath }</h1>	
+	<h1>책 올리기</h1>	
 	<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
 	enctype="multipart/form-data" onsubmit="return checkUpload();">
 	<div style="border: 1px;">

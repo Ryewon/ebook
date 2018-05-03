@@ -35,8 +35,17 @@ public class MypageDao {
 		return book.isEmpty()?null:book;
 	}
 	
-	public void updateInfo(String name, String gender, String phone, String hint, String answer) {
-		jdbcTemplate.update("update member set name=?, gender=?, phone=?, hint=?, answer=?"
-				, name, gender, phone, hint, answer);
+	public void updateInfo(String name, String gender, String phone, String hint, String answer, String mid) {
+		jdbcTemplate.update("update member set name=?, gender=?, phone=?, hint=?, answer=? where mid = ?"
+				, name, gender, phone, hint, answer, mid);
+	}
+	
+	public String getPasswrod(String mid) {
+		String pw = jdbcTemplate.queryForObject("select pw from member where mid=?", String.class, mid);
+		return pw;
+	}
+	
+	public void updatePw(String mid, String pw) {
+		jdbcTemplate.update("update member set pw=? where mid = ?", pw, mid);
 	}
 }

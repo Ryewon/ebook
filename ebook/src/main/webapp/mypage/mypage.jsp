@@ -17,7 +17,7 @@ $(document).ready(function(){
 	$('#infoPw').show();
 	$('#upBookList').hide();
 	$('#buyList').hide();
-})
+});
 
 
   function change(input){
