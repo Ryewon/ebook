@@ -34,4 +34,8 @@
 	<bean id="bookDao" class="dao.BookDao">
 		<constructor-arg ref="dataSource" />
 	</bean>
+	
+	<bean id="mypageDao" class="dao.MypageDao">
+		<constructor-arg ref="dataSource" />
+	</bean>
 </beans>

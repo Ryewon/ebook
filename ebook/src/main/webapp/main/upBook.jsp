@@ -58,7 +58,6 @@
 		function close_pop(flag) {
             $('#myModal').hide();
        	}
-
 	</script>
 	<style>
         /* The Modal (background) */
@@ -107,7 +106,7 @@
     </div>
 		
 <div>
-	<h1>책 올리기</h1>
+	<h1>책 올리기${orgPath }</h1>	
 	<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
 	enctype="multipart/form-data" onsubmit="return checkUpload();">
 	<div style="border: 1px;">
@@ -146,7 +145,7 @@
 				<label>표지 첨부</label> &nbsp;
 				<label style="display: inline-table;">
 				<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
-				<input type="hidden" id="cupdir" name="cupdir" value="C:/RWEbook/cuploads/" />
+				<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
 				<br>
 				<label>제목</label> &nbsp;
 				<input type="text" id="title" name="title"/>
@@ -154,8 +153,8 @@
 				<label>PDF 첨부</label> &nbsp;
 				<label style="display: inline-table;">
 				<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
-				<input type="hidden" id="pupdir" name="pupdir" value="C:/RWEbook/puploads/" />
-				<input type="hidden" id="iupdir" name="iupdir" value="C:/RWEbook/iuploads/" />
+				<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/puploads/")%>" />
+				<input type="hidden" id="iupdir" name="iupdir" value="<%=request.getRealPath("/iuploads/")%>" />
 			</div>
 		</div>
 		<br>

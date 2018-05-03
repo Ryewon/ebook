@@ -3,19 +3,18 @@ package book;
 import java.util.Date;
 
 public class Book {
-	private int bid, price, book_vol, pfil_page;
+	private int bid, price, book_vol, pfile_page;
 	private String title, book_writer, book_cate, contents_table, book_intro, cover_name, cover_path,
 		pfile_name, pfile_path, pimg_path, mid;
 	private Date book_date;
 	
-	public Book(int bid, int price, int book_vol, int pfil_page, String mid, String title, String book_writer,
-			String book_cate, String contents_table, String book_intro, String cover_name, String cover_path,
-			String pfile_name, String pfile_path, String pimg_path, Date book_date) {
+	public Book(int bid, String title, Date book_date, String book_writer, String book_cate, int price, String contents_table, String book_intro,
+			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String pimg_path, String mid) {
 		super();
 		this.bid = bid;
 		this.price = price;
 		this.book_vol = book_vol;
-		this.pfil_page = pfil_page;
+		this.pfile_page = pfile_page;
 		this.mid = mid;
 		this.title = title;
 		this.book_writer = book_writer;
@@ -32,12 +31,12 @@ public class Book {
 	
 	
 
-	public Book(int price, int pfil_page, String mid, String title, String book_writer, String book_cate,
+	public Book(int price, int pfile_page, String mid, String title, String book_writer, String book_cate,
 			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name,
 			String pfile_path, String pimg_path) {
 		super();
 		this.price = price;
-		this.pfil_page = pfil_page;
+		this.pfile_page = pfile_page;
 		this.mid = mid;
 		this.title = title;
 		this.book_writer = book_writer;
@@ -50,8 +49,6 @@ public class Book {
 		this.pfile_path = pfile_path;
 		this.pimg_path = pimg_path;
 	}
-
-
 
 	public int getBid() {
 		return bid;
@@ -77,12 +74,12 @@ public class Book {
 		this.book_vol = book_vol;
 	}
 
-	public int getPfil_page() {
-		return pfil_page;
+	public int getPfile_page() {
+		return pfile_page;
 	}
 
-	public void setPfil_page(int pfil_page) {
-		this.pfil_page = pfil_page;
+	public void setPfil_page(int pfile_page) {
+		this.pfile_page = pfile_page;
 	}
 
 	public String getMid() {

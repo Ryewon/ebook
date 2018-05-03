@@ -70,11 +70,11 @@ $(document).ready(function(){
   <jsp:include page="infoPw.jsp"></jsp:include>
 </div>
 
-<div id="upBookList" class="col-sm-10">
+<div id="upBookList">
   <jsp:include page="upBookList.jsp"></jsp:include>
 </div>
 
-<div id="buyList" class="col-sm-10">
+<div id="buyList">
   <jsp:include page="buyList.jsp"></jsp:include>
 </div>
 
