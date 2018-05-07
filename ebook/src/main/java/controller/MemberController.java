@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import book.Book;
+import dao.BookDao;
 import dao.MemberDao;
 import member.AuthInfo;
 import member.Member;
@@ -20,14 +24,21 @@ import member.Member;
 @Controller
 public class MemberController {
 	MemberDao memberDao;
+	BookDao bookDao;
 	
 	public void setMemberDao(MemberDao memberDao) {
 		this.memberDao = memberDao;
 	}
 	
+	public void setBookDao(BookDao bookDao) {
+		this.bookDao = bookDao;
+	}
+	
 	@RequestMapping(value = "/home")
-	public String home() {
-		
+	public String home(Model model) {
+		String cate = "";
+		List<Book> book = bookDao.cateBook(cate);
+		model.addAttribute("book", book);
 		return "home";
 	}
 	
@@ -85,6 +96,12 @@ public class MemberController {
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
+		return "redirect:/home";
+	}
+	
+	@RequestMapping(value = "/charge") 
+	public String charge(String mid, HttpSession session) {
+		memberDao.chargePoint(mid);
 		return "redirect:/home";
 	}
 	

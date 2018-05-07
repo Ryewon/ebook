@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=3223" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=323" />
 </head>
 <script>
 
@@ -47,36 +47,35 @@ $(document).ready(function(){
   }
 </script>
 <body>
-	
-<div class="container">
-<div>
-<div id="sidebar-wrapper" class="sidebar-toggle">
+<%@ include file="../include/header.jsp" %>
+<div class="container" style="position:fixed; top: 95px;">
+	<div>
+		<div id="sidebar-wrapper" class="sidebar-toggle">
 			<ul class="sidebar-nav">
 		    	<li>
-		      		<a onclick="change('infoPw');">개인정보 및 패스워드 재설정</a>
+		      		<a href="#" onclick="change('infoPw');">개인정보 및 패스워드 재설정</a>
 		    	</li>
 		    	<li>
-		      		<a  onclick="change('upBookList');">내가 올린 책</a>
+		      		<a href="#" onclick="change('upBookList');">내가 올린 책</a>
 		    	</li>
 		    	<li>
-		      		<a  onclick="change('buyList');">구매목록</a>
+		      		<a href="#" onclick="change('buyList');">구매목록</a>
 		    	</li>
 		  	</ul>
-		</div>	
-		
-</div>
-
-<div id="infoPw" >
-  <jsp:include page="infoPw.jsp"></jsp:include>
-</div>
-
-<div id="upBookList">
-  <jsp:include page="upBookList.jsp"></jsp:include>
-</div>
-
-<div id="buyList">
-  <jsp:include page="buyList.jsp"></jsp:include>
-</div>
+		</div>		
+	</div>
+	
+	<div id="infoPw" >
+	  <jsp:include page="/mypage/infoPw.jsp"></jsp:include>
+	</div>
+	
+	<div id="upBookList">
+	  <jsp:include page="/mypage/upBookList.jsp"></jsp:include>
+	</div>
+	
+	<div id="buyList">
+	  <jsp:include page="/mypage/buyList.jsp"></jsp:include>
+	</div>
 
 </div>		
 </body>

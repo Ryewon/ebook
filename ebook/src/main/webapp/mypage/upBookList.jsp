@@ -19,6 +19,7 @@
 						</c:choose>
 					</td>
 					<td style="width: 200px;">
+						<input type="hidden" id="bookId" name="bookId" value="${blist.bid }" />
 						<label>카테고리: </label> ${blist.book_cate } <br>
 						<label>제목: </label> ${blist.title } <br>
 						<label>작가: </label> ${blist.book_writer } <br>

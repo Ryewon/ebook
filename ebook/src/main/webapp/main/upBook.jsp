@@ -61,11 +61,15 @@
        	}
 	</script>
 </head>
-
+<%@ include file="../include/header.jsp" %>
 <div id="myModal" class="modal">
 	<!-- Modal content -->
 	<div class="modal-content">
-	          <p style="text-align: center;"><span style="font-size: 14pt;"><b><span style="font-size: 24pt;">공지</span></b></span></p>
+	          <p style="text-align: center;">
+	          	<span style="font-size: 14pt;">
+	          		<b><span style="font-size: 24pt;">알림</span></b>
+	          	</span>
+	          </p>
 	          <p style="text-align: center; line-height: 1.5;"><br />
 	          <span id="con"></span>
 	          </p>
@@ -78,71 +82,70 @@
 	</div>
  </div>
 		
-<div>
-	<h1>책 올리기</h1>	
-	<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
-	enctype="multipart/form-data" onsubmit="return checkUpload();">
-	<div style="border: 1px;">
-		<div>
-			<label>카테고리</label> &nbsp;
-			<select id="cate" name="cate">
-				<option value="소설">소설</option>
-				<option value="만화">만화</option>
-				<option value="시/에세이">시/에세이</option>
-				<option value="역사/문화">역사/문화</option>
-				<option value="예술">예술</option>
-				<option value="기술">기술</option>
-				<option value="논문">논문</option>
-				<option value="외국도서">외국도서</option>
-			</select>
-		</div>
-		<br />
-		<div>
-			<div style="display: inline-table; width: 300px">
-				<label>유료/무료</label> &nbsp;
-				<input type="radio" name="free" value="유료" onclick="priceCk('non_free');"/>유료 &nbsp; &nbsp;
-				<input type="radio" name="free" value="무료" onclick="priceCk('free');" />무료
+<div style="top: 90px; position: fixed; margin-left: 27.5%;">
+		<h1>책 올리기</h1>	
+		<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
+		enctype="multipart/form-data" onsubmit="return checkUpload();">
+		<div style="border: 1px;">
+			<div>
+				<label>카테고리</label> &nbsp;
+				<select id="cate" name="cate">
+					<option value="소설">소설</option>
+					<option value="만화">만화</option>
+					<option value="시/에세이">시/에세이</option>
+					<option value="역사/문화">역사/문화</option>
+					<option value="예술">예술</option>
+					<option value="기술">기술</option>
+					<option value="논문">논문</option>
+					<option value="외국도서">외국도서</option>
+				</select>
 			</div>
-			<div style="display: inline-table; width: 300px">
-				<label>가격</label> &nbsp;
-				<input type="text" id="price" name="price"  readonly />원
+			<br />
+			<div>
+				<div style="display: inline-table; width: 300px">
+					<label>유료/무료</label> &nbsp;
+					<input type="radio" name="free" value="유료" onclick="priceCk('non_free');"/>유료 &nbsp; &nbsp;
+					<input type="radio" name="free" value="무료" onclick="priceCk('free');" />무료
+				</div>
+				<div style="display: inline-table; width: 300px">
+					<label>가격</label> &nbsp;
+					<input type="text" id="price" name="price"  readonly />원
+				</div>
 			</div>
-		</div>
-		<br />
-		<div>
-			<div style="display: inline-table; width: 300px;">
-				<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
+			<br />
+			<div>
+				<div style="display: inline-table; width: 300px;">
+					<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
+				</div>
+				<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
+				<div style="display: inline-table; width: 400px;">
+					<label>표지 첨부</label> &nbsp;
+					<label style="display: inline-table;">
+					<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
+					<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
+					<br>
+					<label>제목</label> &nbsp;
+					<input type="text" id="title" name="title"/>
+					<br>
+					<label>PDF 첨부</label> &nbsp;
+					<label style="display: inline-table;">
+					<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
+					<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/puploads/")%>" />
+					<input type="hidden" id="iupdir" name="iupdir" value="<%=request.getRealPath("/iuploads/")%>" />
+				</div>
 			</div>
-			<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
-			<div style="display: inline-table; width: 400px;">
-				<label>표지 첨부</label> &nbsp;
-				<label style="display: inline-table;">
-				<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
-				<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
-				<br>
-				<label>제목</label> &nbsp;
-				<input type="text" id="title" name="title"/>
-				<br>
-				<label>PDF 첨부</label> &nbsp;
-				<label style="display: inline-table;">
-				<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
-				<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/puploads/")%>" />
-				<input type="hidden" id="iupdir" name="iupdir" value="<%=request.getRealPath("/iuploads/")%>" />
+			<br>
+	
+			<div>
+				<label>책 소개 내용</label><br>
+				<textarea rows="" cols="" id="intro" name="intro" style="width:700px; resize: none; overflow-y: scroll"></textarea>
 			</div>
+			<br>
+			<div>
+				<label>목차</label><br>
+				<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll"></textarea>
+			</div>
+			<input type="submit" value="올리기">
 		</div>
-		<br>
-
-		<div>
-			<label>책 소개 내용</label><br>
-			<textarea rows="" cols="" id="intro" name="intro" style="width:700px; resize: none; overflow-y: scroll"></textarea>
-		</div>
-		<br>
-		<div>
-			<label>목차</label><br>
-			<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll"></textarea>
-		</div>
-		<input type="submit" value="올리기">
-	</div>
-	</form>
-		
+		</form>
 </div>

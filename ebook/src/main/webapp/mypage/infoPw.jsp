@@ -21,6 +21,7 @@
 		if(checkPw=="y") {
 			$('#con').html('패스워드 변경이 완료되었습니다.');
 			$('#myModal').show();
+			$('#checkPw').val('');
 		} else if(checkPw=="n") {
 			$('#con').html('현재 패스워드를 확인해 주세요.');
 			$('#myModal').show();

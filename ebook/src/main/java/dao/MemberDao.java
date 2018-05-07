@@ -54,4 +54,8 @@ public class MemberDao {
 		}, mid);
 		return results.isEmpty() ? null : results.get(0);
 	}
+	
+	public void chargePoint(String mid) {
+		jdbcTemplate.update("insert into member values(?, ?, ?, ?, ?, ?, ?, 0)", mid);
+	}
 }

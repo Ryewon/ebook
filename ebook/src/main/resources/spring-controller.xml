@@ -10,6 +10,7 @@
 		
 	<bean class="controller.MemberController">
 		<property name="memberDao" ref="memberDao" />
+		<property name="bookDao" ref="bookDao" />
 		<!-- <property name="memberSvc" ref="memberSvc" /> -->
 	</bean>
 	

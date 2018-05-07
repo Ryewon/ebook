@@ -13,6 +13,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.util.PDFImageWriter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,6 +103,15 @@ public class BookController {
 		}
 		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, ipath, mid);
 		
+		return "/home";
+	}
+	
+	@RequestMapping(value = "/srchCate")
+	public String srchCate(HttpServletRequest request, Model model) {
+		String cate = request.getParameter("cate");
+		List<Book> book = bookDao.cateBook(cate);
+		model.addAttribute("cate", cate);
+		model.addAttribute("book", book);
 		return "/home";
 	}
 

@@ -32,7 +32,7 @@ public class MypageController {
 		String mid = authInfo.getMid();
 		List<Book> book = mypageDao.myUpBook(mid);
 		model.addAttribute("book", book);
-		return "/mypage/mypage";
+		return "/mypage";
 	}
 	
 	@RequestMapping(value = "/infoModify")
@@ -62,7 +62,7 @@ public class MypageController {
 			return "redirect:/mypage";
 		} else {
 			model.addAttribute("check", "miss");
-			return "/mypage/mypage";
+			return "/mypage";
 		}
 	}
 	
@@ -80,6 +80,8 @@ public class MypageController {
 			mypageDao.updatePw(mid, npw);
 			authInfo.setPw(npw);
 			session.setAttribute("authInfo", authInfo);
+//			model.addAttribute("changePw", "y");
+//			return "redirect:/mypage/{changePw}";
 			redirectAttributes.addAttribute("changePw", "y");
 			return "redirect:/mypage/pass";
 		} else {			

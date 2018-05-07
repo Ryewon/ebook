@@ -2,34 +2,35 @@
 
 .menu
 {
-background-color: #ffffff;
-border-bottom: 4px solid #4f5467;
-width:100%;
-height: auto;
-padding: 0 10px;
-position: fixed;
-margin: 0px;
-z-index: 1;
-opacity: 0.9;
+	background-color: #ffffff;
+	border-bottom: 4px solid #4f5467;
+	width:100%;
+	height: auto;
+	padding: 0 10px;
+	position: fixed;
+	margin: 0px;
+	z-index: 1;
+	opacity: 0.9;
 }
 
 .menu  .navbar-nav > .active > a
 {
-background-color : #4f5467;
-color: white;
-font-weight: bold;
+	background-color : #4f5467;
+	color: white;
+	font-weight: bold;
 }
 
 .menu  .navbar-nav >  li >  a
 {
-font-size: 13px;
-color: #000000;
-padding: 10px 35px;
+	font-size: 13px;
+	color: #000000;
+	padding: 10px 35px;
 
 }
 .menu  .navbar-nav >  li >  a:hover
 {
-background-color: #4f5467;
+	background-color: #4f5467;
+	color: #ffffff;
 }
 
 .navbar-header {

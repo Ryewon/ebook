@@ -23,9 +23,6 @@
 									<input class="form-control" placeholder="ID"
 										id="mid" name="mid" type="text"/>
 									<span id="ckMid"></span>
-									<c:if test="${mck == 'no'}">
-										<span id="m">아이디 또는 패스워드를 확인하세요.</span>
-									</c:if>
 								</div>
 								<div class="form-group">
 									<input class="form-control" placeholder="Password"
@@ -37,7 +34,10 @@
 										value="Remember Me"> Remember Me
 									</label>
 								</div> -->
-								<span id="ckText"></span>
+								<!-- <span id="ckText"></span> -->
+								<c:if test="${mck == 'no'}">
+										<span id="m">아이디 또는 패스워드를 확인하세요.</span>
+									</c:if>
 								<input class="btn btn-lg btn-success btn-block" type="submit"
 									value="LOGIN">
 							</fieldset>
