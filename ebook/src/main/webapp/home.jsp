@@ -5,9 +5,10 @@
 	<title>Home</title>
 </head>
 <body>
+<div style="overflow: auto; height: 950px;">
 <%@ include file="./include/header.jsp" %>
 
 <%@ include file="./main/main.jsp" %>
-
+</div>
 </body>
 </html>

@@ -33,7 +33,7 @@ cate = ${cate }
 						<label>가격: ${blist.price }</label>
 					</td>
 					<td>
-						<button>상세보기</button> <br><br>
+						<button onclick="location.href='./viewer.jsp'">상세보기</button> <br><br>
 						<button>구매</button>
 					</td>
 				</tr>
