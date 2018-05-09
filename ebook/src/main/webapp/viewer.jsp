@@ -9,7 +9,7 @@
 <script src="//mozilla.github.io/pdf.js/build/pdf.worker.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
-	var url = '/ebook/puploads/0_클라우드기술동향.pdf';
+	var url = '/ebook/puploads/9_클라우드기술동향.pdf';
 	
 	//Loaded via <script> tag, create shortcut to access PDF.js exports.
 	var pdfjsLib = window['pdfjs-dist/build/pdf'];

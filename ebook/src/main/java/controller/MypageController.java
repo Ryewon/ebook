@@ -86,7 +86,7 @@ public class MypageController {
 			return "redirect:/mypage/pass";
 		} else {			
 			model.addAttribute("changePw", "n");
-			return "/mypage/mypage";
+			return "mypage";
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class MypageController {
 	@RequestMapping(value = "/mypage/pass") 
 	public String pass(@RequestParam(value="changePw") String changePw, Model model) {
 		model.addAttribute("changePw", changePw);
-		return "/mypage/mypage";
+		return "mypage";
 	}
 /*	@RequestMapping(value = "/infoPw") 
 	public String infoPw() {

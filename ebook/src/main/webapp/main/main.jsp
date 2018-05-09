@@ -3,10 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=5155" />
 
+<script>
+
+</script>
+
 <div style="top: 95px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
 <div class="container" style="position: fixed; top: 150px;">
-cate = ${cate }
+cate = ${cate },
+mid = ${authInfo.mid }
+	<input type="hidden" id="curMid" name="curMid" />
 	<table>
 		<tbody>
 			<c:forEach var="blist"  items="${book }">
@@ -34,7 +40,7 @@ cate = ${cate }
 					</td>
 					<td>
 						<button onclick="location.href='./viewer.jsp'">상세보기</button> <br><br>
-						<button>구매</button>
+						<button onclick="buyBook();">구매</button>
 					</td>
 				</tr>
 			</c:forEach>

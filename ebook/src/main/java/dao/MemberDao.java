@@ -32,6 +32,7 @@ public class MemberDao {
 		jdbcTemplate.update("insert into member values(?, ?, ?, ?, ?, ?, ?, 0)", mid, pw, name, gender, phone, hint, answer);
 	}
 	
+	//아이디와 패스워드가 일치하는 정보가 있는지 확인
 	public String checkLogin(String mid, String pw) {
 			String result = null;
 			try {

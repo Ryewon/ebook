@@ -79,13 +79,13 @@ public class MemberController {
 	
 	@RequestMapping(value = "/ckLogin") 
 	public String ckLogin(String mid, String pw, Model model, HttpSession session) {
-		String rs = memberDao.checkLogin(mid, pw);
-		Member member = memberDao.memberInfo(mid);
+		String rs = memberDao.checkLogin(mid, pw); //mid, pw 일치 하는 데이터 있으면 mid 반환, 없으면 no 반환
 
 		if (rs == "no") {
 			model.addAttribute("mck", rs);
 			return "member/login";
 		} else {
+			Member member = memberDao.memberInfo(mid);
 			AuthInfo authInfo = new AuthInfo(member.getMid(), member.getPw(), member.getName(),
 					member.getGender(), member.getPhone(), member.getHint(), member.getAnswer(), member.getPoint());
 			session.setAttribute("authInfo", authInfo);
