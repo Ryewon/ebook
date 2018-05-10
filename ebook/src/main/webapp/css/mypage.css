@@ -10,7 +10,7 @@
 #sidebar-wrapper {
   /* top: 52px; */
   left: -200px;
-  width: 200px;
+  width: 250px;
   background-color: #eaeeff;
   color: white;
   position: fixed;
@@ -55,7 +55,7 @@
 
 #test{
 	width: 500px;
-	margin-left: 200px;
+	margin-left: 300px;
     /*     padding-right: 15px;
     padding-left: 15px;
     margin-right: 15px;

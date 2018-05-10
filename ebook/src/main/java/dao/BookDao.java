@@ -38,7 +38,7 @@ public class BookDao {
 	public List<Book> cateBook(String cate) {
 		System.out.println(cate);
 		if(cate=="") {
-			List<Book> book = jdbcTemplate.query("select * from book order by bid"
+			List<Book> book = jdbcTemplate.query("select * from book order by bid desc"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -52,7 +52,7 @@ public class BookDao {
 					});
 			return book.isEmpty()?null:book;
 		} else {
-			List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid"
+			List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -84,5 +84,6 @@ public class BookDao {
 
 		int pur_id = jdbcTemplate.queryForObject("select nvl(max(pur_id), 0)+1 from purchase", Integer.class);
 		jdbcTemplate.update("insert into purchase values(?, sysdate, ?, ?)", pur_id, mid, bid);
+		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?;", bid, bid);
 	}
 }

@@ -1,54 +1,54 @@
 package book;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.Date;
 
 public class BookCommand {
-	private int price, pfil_page;
-	private String mid, title, book_writer, book_cate, contents_table, book_intro, cover_path,
-	 pfile_path, pimg_path;
-	private MultipartFile cover_name, pfile_name;
+	private int pur_id;
+	private Date buy_date;
+	private String bid, title;
+	private Date book_date;
+	private String book_writer, book_cate;
+	private int price;
+	private String cover_name, pfile_name, mid;
 	
-	public BookCommand(int price, int pfil_page, String mid, String title, String book_writer, String book_cate,
-			String contents_table, String book_intro, String cover_path, String pfile_path, String pimg_path,
-			MultipartFile cover_name, MultipartFile pfile_name) {
+	public BookCommand(int pur_id, Date buy_date, String bid, String title, Date book_date, String book_writer,
+			String book_cate, int price, String cover_name, String pfile_name, String mid) {
 		super();
-		this.price = price;
-		this.pfil_page = pfil_page;
-		this.mid = mid;
+		this.pur_id = pur_id;
+		this.buy_date = buy_date;
+		this.bid = bid;
 		this.title = title;
+		this.book_date = book_date;
 		this.book_writer = book_writer;
 		this.book_cate = book_cate;
-		this.contents_table = contents_table;
-		this.book_intro = book_intro;
-		this.cover_path = cover_path;
-		this.pfile_path = pfile_path;
-		this.pimg_path = pimg_path;
+		this.price = price;
 		this.cover_name = cover_name;
 		this.pfile_name = pfile_name;
-	}
-
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public int getPfil_page() {
-		return pfil_page;
-	}
-
-	public void setPfil_page(int pfil_page) {
-		this.pfil_page = pfil_page;
-	}
-
-	public String getMid() {
-		return mid;
-	}
-
-	public void setMid(String mid) {
 		this.mid = mid;
+	}
+
+	public int getPur_id() {
+		return pur_id;
+	}
+
+	public void setPur_id(int pur_id) {
+		this.pur_id = pur_id;
+	}
+
+	public Date getBuy_date() {
+		return buy_date;
+	}
+
+	public void setBuy_date(Date buy_date) {
+		this.buy_date = buy_date;
+	}
+
+	public String getBid() {
+		return bid;
+	}
+
+	public void setBid(String bid) {
+		this.bid = bid;
 	}
 
 	public String getTitle() {
@@ -57,6 +57,14 @@ public class BookCommand {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Date getBook_date() {
+		return book_date;
+	}
+
+	public void setBook_date(Date book_date) {
+		this.book_date = book_date;
 	}
 
 	public String getBook_writer() {
@@ -75,61 +83,35 @@ public class BookCommand {
 		this.book_cate = book_cate;
 	}
 
-	public String getContents_table() {
-		return contents_table;
+	public int getPrice() {
+		return price;
 	}
 
-	public void setContents_table(String contents_table) {
-		this.contents_table = contents_table;
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
-	public String getBook_intro() {
-		return book_intro;
-	}
-
-	public void setBook_intro(String book_intro) {
-		this.book_intro = book_intro;
-	}
-
-	public String getCover_path() {
-		return cover_path;
-	}
-
-	public void setCover_path(String cover_path) {
-		this.cover_path = cover_path;
-	}
-
-	public String getPfile_path() {
-		return pfile_path;
-	}
-
-	public void setPfile_path(String pfile_path) {
-		this.pfile_path = pfile_path;
-	}
-
-	public String getPimg_path() {
-		return pimg_path;
-	}
-
-	public void setPimg_path(String pimg_path) {
-		this.pimg_path = pimg_path;
-	}
-
-	public MultipartFile getCover_name() {
+	public String getCover_name() {
 		return cover_name;
 	}
 
-	public void setCover_name(MultipartFile cover_name) {
+	public void setCover_name(String cover_name) {
 		this.cover_name = cover_name;
 	}
 
-	public MultipartFile getPfile_name() {
+	public String getPfile_name() {
 		return pfile_name;
 	}
 
-	public void setPfile_name(MultipartFile pfile_name) {
+	public void setPfile_name(String pfile_name) {
 		this.pfile_name = pfile_name;
 	}
-	
-	
+
+	public String getMid() {
+		return mid;
+	}
+
+	public void setMid(String mid) {
+		this.mid = mid;
+	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.Book;
+import book.BookCommand;
 import dao.MypageDao;
 import member.AuthInfo;
 
@@ -31,7 +32,9 @@ public class MypageController {
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
 		List<Book> book = mypageDao.myUpBook(mid);
+		List<BookCommand> purbook = mypageDao.myPurBook(mid);
 		model.addAttribute("book", book);
+		model.addAttribute("purbook", purbook);
 		return "/mypage";
 	}
 	

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import book.Book;
+import book.BookCommand;
 
 public class MypageDao {
 	private JdbcTemplate jdbcTemplate;
@@ -19,7 +20,7 @@ public class MypageDao {
 	}
 	
 	public List<Book> myUpBook(String mid) {
-		List<Book> book = jdbcTemplate.query("select * from book where mid = ?"
+		List<Book> book = jdbcTemplate.query("select * from book where mid = ? order by bid desc"
 				, new RowMapper<Book>() {
 					@Override
 					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -47,5 +48,22 @@ public class MypageDao {
 	
 	public void updatePw(String mid, String pw) {
 		jdbcTemplate.update("update member set pw=? where mid = ?", pw, mid);
+	}
+	
+//	구매목록 search
+	public List<BookCommand> myPurBook(String mid) {
+		List<BookCommand> purbook = jdbcTemplate.query("select pur_id, buy_date, p.bid, title, book_date, book_writer, book_cate, price, cover_name, pfile_name, p.mid " + 
+				"from purchase p, book b where p.bid = b.bid and p.mid=? order by pur_id desc"
+				, new RowMapper<BookCommand>() {
+					@Override
+					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
+						BookCommand buybook = new BookCommand(rs.getInt("pur_id"), rs.getDate("buy_date"), rs.getString("bid")
+								,  rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer"), rs.getString("book_cate")
+								, rs.getInt("price"), rs.getString("cover_name"), rs.getString("pfile_name"), rs.getString("mid"));
+						return buybook;
+					}
+				}, mid);
+		
+		return purbook.isEmpty()?null:purbook;
 	}
 }
