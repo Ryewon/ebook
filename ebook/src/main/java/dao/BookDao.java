@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -36,7 +38,7 @@ public class BookDao {
 	public List<Book> cateBook(String cate) {
 		System.out.println(cate);
 		if(cate=="") {
-			List<Book> book = jdbcTemplate.query("select * from book"
+			List<Book> book = jdbcTemplate.query("select * from book order by bid"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -50,7 +52,7 @@ public class BookDao {
 					});
 			return book.isEmpty()?null:book;
 		} else {
-			List<Book> book = jdbcTemplate.query("select * from book where book_cate = ?"
+			List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -66,4 +68,21 @@ public class BookDao {
 		}
 	}
 	
+	public String buyCheck(String mid, int bid) {
+		String pur_id = null;
+		try {
+			pur_id=jdbcTemplate.queryForObject("select pur_id from purchase where mid=? and bid=?", String.class, mid, bid);		
+			System.out.println(pur_id);
+			return "already";
+		} catch (Exception e) {
+			return "ok";
+		}		
+	}
+	
+	public void buyBook(String mid, int bid) {
+		System.out.println("구매insert");
+
+		int pur_id = jdbcTemplate.queryForObject("select nvl(max(pur_id), 0)+1 from purchase", Integer.class);
+		jdbcTemplate.update("insert into purchase values(?, sysdate, ?, ?)", pur_id, mid, bid);
+	}
 }

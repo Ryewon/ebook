@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import book.Book;
@@ -115,4 +116,15 @@ public class BookController {
 		return "/home";
 	}
 
+	@RequestMapping(value = "/buyBook")
+	public @ResponseBody String buyBook(String mid, int bid) {
+		String buyck = bookDao.buyCheck(mid, bid);
+		System.out.println("buyck:"+buyck);
+		if ("ok".equals(buyck)) {			
+			bookDao.buyBook(mid, bid);
+			return buyck;
+		} else {
+			return buyck;
+		}
+	}
 }

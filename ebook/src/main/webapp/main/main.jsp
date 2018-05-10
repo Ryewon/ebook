@@ -1,18 +1,84 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=5155" />
-
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=115" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=115" />
+<script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>
 
+	function buyBook(bid) {
+		var mid = $('#curMid').val();		
+		if(mid!='') {
+			$("#buyTitle").html("구매하기");
+			$("#buyCon").html("구매하시겠습니까?");
+			$("#buyBtn").show();
+			$("#closeBtn").html("취소");
+			$('#buy_modal').show();
+			$('#buyBtn').click(function() {				
+				$.ajax({
+					type : "POST",
+					url : "/ebook/buyBook",
+					data : "mid=" + mid + "&bid=" + bid,
+					success : function(buyck) {
+						console.log(buyck);
+						if(buyck =='already') {
+							$("#buyTitle").html("알림");
+							$("#buyCon").html("이미 구매하신 책입니다.");
+							$("#closeBtn").html("확인");
+							$("#buyBtn").hide();
+						} else {
+							$("#buyTitle").html("알림");
+							$("#buyCon").html("구매되었습니다.");
+							$("#closeBtn").html("확인");
+							$("#buyBtn").hide();
+						}			
+					}
+				});
+			});
+		} else {
+			$("#buyTitle").html("알림");
+			$("#buyCon").html("로그인 후 구매해주세요.");
+			$("#closeBtn").html("확인");
+			$("#buyBtn").hide();
+			$('#buy_modal').show();
+		}
+	}
+
+	function buy_close(flag) {
+        $('#buy_modal').hide();
+   	}
 </script>
+
+<!-- 모달 -->
+<div id="buy_modal" class="modal">
+	<!-- Modal content -->
+	<div class="modal-content">
+	    <p style="text-align: center;">
+	    	<span style="font-size: 14pt;">
+	    		<b><span style="font-size: 24pt;" id="buyTitle"></span></b>
+	    	</span>
+	    </p>
+	    <p style="text-align: center; line-height: 1.5;"><br />
+			<span id="buyCon"></span>
+	    </p>
+	    <p><br /></p>
+	    <div style="text-align: center;">
+		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="buyBtn">
+				<span class="pop_bt" style="font-size: 13pt;" >구매</span>
+		    </span>
+			<span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="buy_close();">
+				<span class="pop_bt" id="closeBtn" style="font-size: 13pt;" >닫기</span>
+		    </span>
+	    </div>
+	</div>
+ </div>
 
 <div style="top: 95px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
-<div class="container" style="position: fixed; top: 150px;">
+<div id="booklistdiv" class="container" style="position: fixed; top: 150px; height: 800px; overflow: auto;">
 cate = ${cate },
 mid = ${authInfo.mid }
-	<input type="hidden" id="curMid" name="curMid" />
+	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	<table>
 		<tbody>
 			<c:forEach var="blist"  items="${book }">
@@ -28,7 +94,7 @@ mid = ${authInfo.mid }
 						</c:choose>
 					</td>
 					<td style="width: 200px;">
-						<input type="hidden" id="bookId" name="bookId" value="${blist.bid }" />
+						<input type="hidden" value="${blist.bid }" />
 						<label>카테고리: </label> ${blist.book_cate } <br>
 						<label>제목: </label> ${blist.title } <br>
 						<label>작가: </label> ${blist.book_writer } <br>
@@ -40,7 +106,7 @@ mid = ${authInfo.mid }
 					</td>
 					<td>
 						<button onclick="location.href='./viewer.jsp'">상세보기</button> <br><br>
-						<button onclick="buyBook();">구매</button>
+						<button onclick="buyBook('${blist.bid}');">구매</button>
 					</td>
 				</tr>
 			</c:forEach>
