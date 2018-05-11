@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <head>
-	<title>책 올리기</title>
+	<title>RWeBook</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=33" />
@@ -11,8 +11,10 @@
 		function priceCk(input) {
 			if(input == 'free') {
 				$('#price').attr('readonly', true);
+				$('#price').val("");
 			} else {
 				$('#price').attr('readonly', false);
+				$('#price').focus();
 			}
 		}
 	

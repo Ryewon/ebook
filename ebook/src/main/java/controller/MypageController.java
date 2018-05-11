@@ -31,9 +31,9 @@ public class MypageController {
 	public String upBook(HttpServletRequest request, Model model) {
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
-		List<Book> book = mypageDao.myUpBook(mid);
+		List<Book> upbook = mypageDao.myUpBook(mid);
 		List<BookCommand> purbook = mypageDao.myPurBook(mid);
-		model.addAttribute("book", book);
+		model.addAttribute("upbook", upbook);
 		model.addAttribute("purbook", purbook);
 		return "/mypage";
 	}

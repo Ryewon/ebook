@@ -21,7 +21,7 @@ public class BookDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
+/*	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
 		String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String ipath, String mid) {
 		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)", 
 				bid, title, writer, cate,
@@ -29,7 +29,17 @@ public class BookDao {
 						cfile, cpath, pfile, pCnt,
 						ppath, ipath, mid);
 	}
+*/
 
+	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
+			String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String mid) {
+			jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
+					bid, title, writer, cate,
+							price, con_table, intro,
+							cfile, cpath, pfile, pCnt,
+							ppath, mid);
+		}
+	
 	public int suchBid() {
 		int bid = jdbcTemplate.queryForObject("select nvl(max(bid), 0)+1 from book", Integer.class);
 		return bid;
@@ -45,7 +55,7 @@ public class BookDao {
 							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
 									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path"), rs.getString("pimg_path")
+									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 									, rs.getString("mid"));
 							return mbook;
 						}
@@ -59,7 +69,7 @@ public class BookDao {
 							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
 									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path"), rs.getString("pimg_path")
+									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 									, rs.getString("mid"));
 							return mbook;
 						}
@@ -84,6 +94,6 @@ public class BookDao {
 
 		int pur_id = jdbcTemplate.queryForObject("select nvl(max(pur_id), 0)+1 from purchase", Integer.class);
 		jdbcTemplate.update("insert into purchase values(?, sysdate, ?, ?)", pur_id, mid, bid);
-		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?;", bid, bid);
+		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?", bid, bid);
 	}
 }

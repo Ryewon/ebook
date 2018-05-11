@@ -5,11 +5,11 @@ import java.util.Date;
 public class Book {
 	private int bid, price, book_vol, pfile_page;
 	private String title, book_writer, book_cate, contents_table, book_intro, cover_name, cover_path,
-		pfile_name, pfile_path, pimg_path, mid;
+		pfile_name, pfile_path, mid;
 	private Date book_date;
 	
 	public Book(int bid, String title, Date book_date, String book_writer, String book_cate, int price, String contents_table, String book_intro,
-			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String pimg_path, String mid) {
+			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
 		super();
 		this.bid = bid;
 		this.price = price;
@@ -25,7 +25,6 @@ public class Book {
 		this.cover_path = cover_path;
 		this.pfile_name = pfile_name;
 		this.pfile_path = pfile_path;
-		this.pimg_path = pimg_path;
 		this.book_date = book_date;
 	}
 	
@@ -33,7 +32,7 @@ public class Book {
 
 	public Book(int price, int pfile_page, String mid, String title, String book_writer, String book_cate,
 			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name,
-			String pfile_path, String pimg_path) {
+			String pfile_path) {
 		super();
 		this.price = price;
 		this.pfile_page = pfile_page;
@@ -47,7 +46,6 @@ public class Book {
 		this.cover_path = cover_path;
 		this.pfile_name = pfile_name;
 		this.pfile_path = pfile_path;
-		this.pimg_path = pimg_path;
 	}
 
 	public int getBid() {
@@ -160,14 +158,6 @@ public class Book {
 
 	public void setPfile_path(String pfile_path) {
 		this.pfile_path = pfile_path;
-	}
-
-	public String getPimg_path() {
-		return pimg_path;
-	}
-
-	public void setPimg_path(String pimg_path) {
-		this.pimg_path = pimg_path;
 	}
 
 	public Date getBook_date() {

@@ -13,6 +13,7 @@
 			$("#buyCon").html("구매하시겠습니까?");
 			$("#buyBtn").show();
 			$("#closeBtn").html("취소");
+			$("#reloadBtn").hide();
 			$('#buy_modal').show();
 			$('#buyBtn').click(function() {				
 				$.ajax({
@@ -21,16 +22,21 @@
 					data : "mid=" + mid + "&bid=" + bid,
 					success : function(buyck) {
 						console.log(buyck);
+						$('#buy_modal').hide();
 						if(buyck =='already') {
 							$("#buyTitle").html("알림");
 							$("#buyCon").html("이미 구매하신 책입니다.");
 							$("#closeBtn").html("확인");
+							$("#reloadBtn").hide();
 							$("#buyBtn").hide();
+							$('#buy_modal').show();
 						} else {
 							$("#buyTitle").html("알림");
 							$("#buyCon").html("구매되었습니다.");
-							$("#closeBtn").html("확인");
+							$("#closeBtn").hide();
 							$("#buyBtn").hide();
+							$("#reloadBtn").show();
+							$('#buy_modal').show();
 						}			
 					}
 				});
@@ -47,6 +53,10 @@
 	function buy_close(flag) {
         $('#buy_modal').hide();
    	}
+	
+	function reloadMain() {
+		location.reload();
+	}
 </script>
 
 <!-- 모달 -->
@@ -66,8 +76,11 @@
 		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="buyBtn">
 				<span class="pop_bt" style="font-size: 13pt;" >구매</span>
 		    </span>
-			<span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="buy_close();">
-				<span class="pop_bt" id="closeBtn" style="font-size: 13pt;" >닫기</span>
+			<span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="closeBtn" onClick="buy_close();">
+				<span class="pop_bt" style="font-size: 13pt;" >닫기</span>
+		    </span>
+		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="reloadBtn" onClick="reloadMain();">
+				<span class="pop_bt" style="font-size: 13pt;" >확인</span>
 		    </span>
 	    </div>
 	</div>
@@ -79,39 +92,51 @@
 cate = ${cate },
 mid = ${authInfo.mid }
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
-	<table>
-		<tbody>
-			<c:forEach var="blist"  items="${book }">
-				<tr style="border-bottom: 1px solid #8C8C8C;">
-					<td>
-						<c:choose>
-							<c:when test="${!empty blist.cover_path }">
-								<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_${blist.cover_name}"/></th>
-							</c:when>
-							<c:otherwise>
-								<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
-							</c:otherwise>
-						</c:choose>
-					</td>
-					<td style="width: 200px;">
-						<input type="hidden" value="${blist.bid }" />
-						<label>카테고리: </label> ${blist.book_cate } <br>
-						<label>제목: </label> ${blist.title } <br>
-						<label>작가: </label> ${blist.book_writer } <br>
-						<label>작성일: </label> ${blist.book_date } <br>
-						<label>판매량: </label> ${blist.book_vol } <br>
-					</td>
-					<td style="width: 100px;">
-						<label>가격: ${blist.price }</label>
-					</td>
-					<td>
-						<button onclick="location.href='./viewer.jsp'">상세보기</button> <br><br>
-						<button onclick="buyBook('${blist.bid}');">구매</button>
-					</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+	
+	<c:choose>
+		<c:when test="${empty book}">
+			<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
+		</c:when>
+		<c:otherwise>
+			<table>
+				<tbody>
+					<c:forEach var="blist"  items="${book }">
+						<tr style="border-bottom: 1px solid #8C8C8C;">
+							<td>
+								<c:choose>
+									<c:when test="${!empty blist.cover_path }">
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_${blist.cover_name}"/></th>
+									</c:when>
+									<c:otherwise>
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td style="width: 200px;">
+								<input type="hidden" value="${blist.bid }" />
+								<label>카테고리: </label> ${blist.book_cate } <br>
+								<label>제목: </label> ${blist.title } <br>
+								<label>작가: </label> ${blist.book_writer } <br>
+								<label>작성일: </label> ${blist.book_date } <br>
+								<label>판매량: </label> ${blist.book_vol } <br>
+							</td>
+							<td style="width: 100px;">
+								<label>가격: ${blist.price }</label>
+							</td>
+							<td>
+								<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
+								<c:if test="${authInfo.mid != blist.mid }">
+									<button onclick="buyBook('${blist.bid}');">구매</button>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:otherwise>
+	</c:choose>
+	
+	
 
 </div>
 </div>

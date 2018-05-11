@@ -71,7 +71,7 @@ public class BookController {
 			cpath = request.getParameter("cupdir") + bid + "_" +cfile;
 		}
 		String ppath = request.getParameter("pupdir") + bid + "_" +pfile;
-		String ipath = request.getParameter("iupdir")+ bid +"_";
+//		String ipath = request.getParameter("iupdir")+ bid +"_";
 		
 		int pCnt=0;
 		PDDocument doc = null;
@@ -86,23 +86,26 @@ public class BookController {
 			File pdf_file = new File(ppath);
 			file.get(1).transferTo(pdf_file);
 			doc = PDDocument.load(pdf_file);
-			
+			pCnt = doc.getPageCount();
 //			pdf -> png 로 변환하는 다른 코드
 /*			pCnt = doc.getNumberOfPages();
 			PDFImageWriter imgWriter = new PDFImageWriter();
 			imgWriter.writeImage(doc, "png", "", 1, pCnt, ipath, BufferedImage.TYPE_INT_RGB, 300);
-*/			
-			List<PDPage> list = doc.getDocumentCatalog().getAllPages();
+*/		
+			
+//			pdf -> png 로 변환
+/*			List<PDPage> list = doc.getDocumentCatalog().getAllPages();
 			pCnt = list.size();
 			for (int i = 1; i <= pCnt; i++) {				
 					BufferedImage image = list.get(i-1).convertToImage();
 					ImageIO.write(image, "png", new File(ipath + i + ".png"));
-			}
+			}*/
 			doc.close();
 		} catch (IOException e) {
 			System.out.println("File 변환 예외발생");
 		}
-		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, ipath, mid);
+//		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, ipath, mid);
+		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid);
 		
 		return "/home";
 	}
@@ -126,5 +129,11 @@ public class BookController {
 		} else {
 			return buyck;
 		}
+	}
+	
+	@RequestMapping(value = "/bookDetail")
+	public String bookDetail(HttpServletRequest request) {
+		String bid = request.getParameter("bid");
+		return "main/bookDetail";
 	}
 }

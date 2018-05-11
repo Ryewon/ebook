@@ -8,11 +8,11 @@ public class BookCommand {
 	private String bid, title;
 	private Date book_date;
 	private String book_writer, book_cate;
-	private int price;
+	private int book_vol, price;
 	private String cover_name, pfile_name, mid;
 	
 	public BookCommand(int pur_id, Date buy_date, String bid, String title, Date book_date, String book_writer,
-			String book_cate, int price, String cover_name, String pfile_name, String mid) {
+			String book_cate, int book_vol, int price, String cover_name, String pfile_name, String mid) {
 		super();
 		this.pur_id = pur_id;
 		this.buy_date = buy_date;
@@ -21,6 +21,7 @@ public class BookCommand {
 		this.book_date = book_date;
 		this.book_writer = book_writer;
 		this.book_cate = book_cate;
+		this.book_vol = book_vol;
 		this.price = price;
 		this.cover_name = cover_name;
 		this.pfile_name = pfile_name;
@@ -83,6 +84,14 @@ public class BookCommand {
 		this.book_cate = book_cate;
 	}
 
+	public int getBook_vol() {
+		return book_vol;
+	}
+
+	public void setBook_vol(int book_vol) {
+		this.book_vol = book_vol;
+	}
+
 	public int getPrice() {
 		return price;
 	}
@@ -113,5 +122,5 @@ public class BookCommand {
 
 	public void setMid(String mid) {
 		this.mid = mid;
-	}
+	}	
 }

@@ -9,8 +9,8 @@
 <script src="//mozilla.github.io/pdf.js/build/pdf.worker.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
-	var url = '/ebook/puploads/9_클라우드기술동향.pdf';
-	
+	var pfile = document.getElementById('file_name').value;
+	var url = '/ebook/puploads/'+pfile;
 	//Loaded via <script> tag, create shortcut to access PDF.js exports.
 	var pdfjsLib = window['pdfjs-dist/build/pdf'];
 	
@@ -122,8 +122,9 @@
 
 </head>
 <body>
+	
+	<input type="hidden" id="file_name" name="file_name" value="<%= request.getParameter("pfile") %>">
 	<h1>PDF.js Previous/Next example</h1>
-
 	<div>
 	  <button id="prev">Previous</button>
 	  <button id="next">Next</button>
