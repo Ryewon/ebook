@@ -100,8 +100,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/charge") 
-	public String charge(String mid, HttpSession session) {
-		memberDao.chargePoint(mid);
+	public String charge(String mid, String ch_point, HttpSession session, HttpServletRequest request) {
+		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+		int point = Integer.parseInt(ch_point);
+		int cur_point = authInfo.getPoint();
+		int aft_point = cur_point + point;
+		memberDao.chargePoint(mid, cur_point, point, aft_point);
+		authInfo.setPoint(aft_point);
+		session.setAttribute("authInfo", authInfo);
 		return "redirect:/home";
 	}
 	

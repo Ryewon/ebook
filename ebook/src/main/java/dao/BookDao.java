@@ -89,11 +89,29 @@ public class BookDao {
 		}		
 	}
 	
-	public void buyBook(String mid, int bid) {
+	public void buyBook(String mid, int bid, int cpoint, int ppoint, int apoint) {
 		System.out.println("구매insert");
-
+		System.out.println(bid);
 		int pur_id = jdbcTemplate.queryForObject("select nvl(max(pur_id), 0)+1 from purchase", Integer.class);
 		jdbcTemplate.update("insert into purchase values(?, sysdate, ?, ?)", pur_id, mid, bid);
 		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?", bid, bid);
+		jdbcTemplate.update("update member set point=? where mid=?", apoint, mid);
+		jdbcTemplate.update("insert into point values(?, ?, '구매', sysdate, ?)", ppoint, cpoint, mid);
 	}
+	
+	public Book bookInfo(int bid) {
+			Book book = jdbcTemplate.queryForObject("select * from book where bid=?"
+					, new RowMapper<Book>() {
+						@Override
+						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
+									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+									, rs.getString("mid"));
+							return mbook;
+						}
+					}, bid);
+			return book;
+		}
 }

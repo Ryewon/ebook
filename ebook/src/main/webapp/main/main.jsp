@@ -6,45 +6,73 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>
 
-	function buyBook(bid) {
-		var mid = $('#curMid').val();		
+	function buyCheck(bid, price) {
+		var mid = $('#curMid').val();	
+		var cpoint = null;
+		var ppoint = price;
+		var apoint = null;
+		$("#ppoint").val(price);
+		cpoint = $('#cpoint').val();
+		apoint = Number(cpoint) - Number(ppoint);
+		$("#apoint").val(apoint);
 		if(mid!='') {
-			$("#buyTitle").html("구매하기");
-			$("#buyCon").html("구매하시겠습니까?");
-			$("#buyBtn").show();
-			$("#closeBtn").html("취소");
-			$("#reloadBtn").hide();
-			$('#buy_modal').show();
-			$('#buyBtn').click(function() {				
-				$.ajax({
-					type : "POST",
-					url : "/ebook/buyBook",
-					data : "mid=" + mid + "&bid=" + bid,
-					success : function(buyck) {
-						console.log(buyck);
-						$('#buy_modal').hide();
-						if(buyck =='already') {
-							$("#buyTitle").html("알림");
-							$("#buyCon").html("이미 구매하신 책입니다.");
-							$("#closeBtn").html("확인");
-							$("#reloadBtn").hide();
-							$("#buyBtn").hide();
-							$('#buy_modal').show();
-						} else {
-							$("#buyTitle").html("알림");
-							$("#buyCon").html("구매되었습니다.");
-							$("#closeBtn").hide();
-							$("#buyBtn").hide();
-							$("#reloadBtn").show();
-							$('#buy_modal').show();
-						}			
-					}
-				});
+			$.ajax({
+				type : "POST",
+				url : "/ebook/buyCheck",
+				data : "mid=" + mid + "&bid=" + bid,
+				success : function(buyck) {
+					console.log(buyck);
+					$('#buy_modal').hide();
+					if(buyck =='already') {
+						$("#buyTitle").html("알림");
+						$("#buyCon").html("이미 구매하신 책입니다.");
+						$("#cbtn").html("확인");
+						$("#reloadBtn").hide();
+						$("#buyBtn").hide();
+						$('#point_con').hide();
+						$('#buyalert').hide();
+						$('#buy_modal').show();
+					} else {
+						$("#buyTitle").html("구매하기");
+						$("#buyCon").html("구매하시겠습니까?");
+						$("#buyCon").show();
+						$("#pointCon").show();
+						$("#buyBtn").show();
+						$('#buyalert').hide();
+						$("#cbtn").html("취소");
+						$("#reloadBtn").hide();
+						$('#buy_modal').show();
+						$('#buyBtn').click(function(e) {		
+							if(Number(cpoint)<Number(ppoint)) {
+								$('#buyalert').show();
+								$("#buyBtn").hide();
+								$("#buyCon").hide();
+								$("#cbtn").html("확인");
+							} else {
+								$.ajax({
+									type : "POST",
+									url : "/ebook/buyBook",
+									data : "mid=" + mid + "&bid=" + bid + "&cpoint=" + cpoint + "&ppoint=" + ppoint + "&apoint=" + apoint,
+									success : function() {
+										$("#buyTitle").html("알림");
+										$("#buyCon").html("구매되었습니다.");
+										$("#closeBtn").hide();
+										$("#buyBtn").hide();
+										$("#reloadBtn").show();
+										$('#buy_modal').show();
+									}			
+								});
+							}	
+						});
+					}			
+				}
 			});
-		} else {
+		}  else {
 			$("#buyTitle").html("알림");
 			$("#buyCon").html("로그인 후 구매해주세요.");
 			$("#closeBtn").html("확인");
+			$("#pointCon").hide();
+			$('#buyalert').hide();
 			$("#buyBtn").hide();
 			$('#buy_modal').show();
 		}
@@ -68,8 +96,17 @@
 	    		<b><span style="font-size: 24pt;" id="buyTitle"></span></b>
 	    	</span>
 	    </p>
-	    <p style="text-align: center; line-height: 1.5;"><br />
-			<span id="buyCon"></span>
+	    <p style="text-align: center; line-height: 1.5;">
+			<span id="buyCon"></span><br>
+			<div id="pointCon" style="text-align: center;">
+				<label for="current_point" style="width: 100px;">보유 포인트 </label> &nbsp;
+				<label for="pay_point" style="width: 100px;"> 결제 포인트 </label> &nbsp;
+				<label for="after_point" style="width: 100px;"> 예상 포인트</label>&nbsp;&nbsp;&nbsp;<br>
+				<input type="text" id="cpoint" name="cpoint" value="${authInfo.point }" readonly style="width: 80px;"/>원 -
+				<input type="text" id="ppoint" name="ppoint" readonly style="width: 80px;"/>원 =
+				<input type="text" id="apoint" name="apoint" readonly style="width: 80px;"/>원
+			</div>
+			<span id="buyalert" style="color: red;">포인트 충전 후 이용해주세요.</span>
 	    </p>
 	    <p><br /></p>
 	    <div style="text-align: center;">
@@ -77,7 +114,7 @@
 				<span class="pop_bt" style="font-size: 13pt;" >구매</span>
 		    </span>
 			<span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="closeBtn" onClick="buy_close();">
-				<span class="pop_bt" style="font-size: 13pt;" >닫기</span>
+				<span class="pop_bt" id="cbtn" style="font-size: 13pt;" >닫기</span>
 		    </span>
 		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" id="reloadBtn" onClick="reloadMain();">
 				<span class="pop_bt" style="font-size: 13pt;" >확인</span>
@@ -126,7 +163,7 @@ mid = ${authInfo.mid }
 							<td>
 								<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
 								<c:if test="${authInfo.mid != blist.mid }">
-									<button onclick="buyBook('${blist.bid}');">구매</button>
+									<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
 								</c:if>
 							</td>
 						</tr>

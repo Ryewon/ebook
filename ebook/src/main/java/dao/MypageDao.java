@@ -39,6 +39,8 @@ public class MypageDao {
 	public void updateInfo(String name, String gender, String phone, String hint, String answer, String mid) {
 		jdbcTemplate.update("update member set name=?, gender=?, phone=?, hint=?, answer=? where mid = ?"
 				, name, gender, phone, hint, answer, mid);
+		jdbcTemplate.update("update book set book_writer=? where mid = ?"
+				, name, mid);
 	}
 	
 	public String getPasswrod(String mid) {

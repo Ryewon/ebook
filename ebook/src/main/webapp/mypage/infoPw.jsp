@@ -103,7 +103,7 @@
 <!--  -->
 <div id="test">
 	<div>
-		<h2>개인정보</h2>ㅁㅇㄹ
+		<h2>개인정보</h2>
 		<input type="hidden" id="check" name="check" value="${check }">
 		<form accept-charset="UTF-8" role="form" name="infoForm" action="infoModify" method="post" onsubmit="return inputCheck();">
 			<div>

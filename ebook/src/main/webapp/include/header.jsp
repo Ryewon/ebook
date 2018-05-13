@@ -7,8 +7,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css?ver=2223" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=3223" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css?ver=223" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=323" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>
 	$(document).ready(function(e){
@@ -27,65 +27,66 @@
 	
 	function modal_close() {
 		$('#charge_modal').hide();
+		$("input:radio").attr("checked", false);
+		$("#cin_money").attr("disabled",true);
 	}
 	
 	function charge_select() {
-		$('#hmoney').val($('#mpoint').val());
+		$('#charge_alert').hide();
 		var chk = $('input:radio[name="chmoney"]:checked').val();
-		var hmoney = $('#hmoney').val();
-
 		if(chk == "cin") {
-			  $("#cin_money").attr("disabled",false);
-			  $('#ccmoney').val($('#cin_money').val());
-			  var ccmoney = $('#ccmoney').val();
-			  var camoney = Number(hmoney) + Number(ccmoney);
-			  if(Number(camoney) >= 0) {
-				  $('#camoney').val(camoney);  
-			  } else {
-				  $('#camoney').val(0);
-			  }
+			$("#cin_money").attr("disabled",false);
 		} else {
-			$('#ccmoney').val(chk);
-			var ccmoney = $('#ccmoney').val();
-			var hmoney = $('#hmoney').val();
-			var camoney = Number(hmoney) + Number(ccmoney);
 			$("#cin_money").val("");
 			$("#cin_money").attr("disabled",true);
-			if(Number(camoney) >= 0) {
-				  $('#camoney').val(camoney);  
-			  } else {
-				  $('#camoney').val(0);
-			  } 
 		}
 	}
 	
 	function cin_charge(point) {
 	    $(point).keyup(function(){
 	         $(this).val($(this).val().replace(/[^0-9]/g,""));
-	         $('#ccmoney').val($('#cin_money').val());
 	    }); 
 	}
 	
 	function charge() {
-		var mid = $('#mid').val();
-		$.ajax({
-			type : "POST",
-			url : "/ebook/charge",
-			data : "mid=" + mid,
-			success : function(ck) {
-				console.log("js 왔음 ");
-				console.log("ck:" + ck);
-				if(ck == 1) {				
-					document.getElementById("ckText").innerHTML = "사용 가능한 아이디 입니다.";
-					$('#ck').val(ck);
-				} else {				
-					document.getElementById("ckText").innerHTML = "이미 존재하는 아이디 입니다.";
-					$('#ck').val(ck);
+		var mid = "<c:out value='${authInfo.mid }'/>";
+		var ch_point = 0;
+		var chk = $('input:radio[name="chmoney"]:checked').val();
+		if(chk==null) {
+			$('#charge_alert').html("충전하실 포인트를 선택해주세요.");
+			$('#charge_alert').show();
+		} else {
+			if(chk == "cin") {
+				ch_point = $('#cin_money').val();
+				if(ch_point=="" || ch_point == '0') {
+					$('#charge_alert').html("충전하실 포인트를 입력해주세요.");
+					$('#charge_alert').show();
+				} else {
+					$('#charge_alert').hide();
+					$.ajax({
+						type: "POST",
+						url: "/ebook/charge",
+						data: "mid=" + mid + "&ch_point=" + ch_point
+					});
+					$('#charge_modal').hide();
 				}
+			} else {
+				ch_point = chk;
+				$.ajax({
+					type: "POST",
+					url: "/ebook/charge",
+					data: "mid=" + mid + "&ch_point=" + ch_point
+				});
+				$('#charge_modal').hide();
+				$("input:radio").attr("checked", false);
+				$("#cin_money").attr("disabled",true);
 			}
-		});
+			
+		}
 	}
 </script>
+
+
 <!-- 모달 -->
 <div id="charge_modal" class="modal">
 	<!-- Modal content -->
@@ -95,7 +96,7 @@
 	    		<b><span style="font-size: 24pt;">포인트 충전</span></b>
 	    	</span>
 	    </p>
-	    <p style="text-align: center; line-height: 1.5;"><br />
+	    <p style="text-align: center; line-height: 1.5;">
 	    	<div class="form-inline" style="padding-left: 15%;" onchange="charge_select();">
 	    		<label>보유 포인트 : </label>&nbsp; ${authInfo.point }&nbsp;point <br/>
 		      	<input id="coneth" type="radio" name="chmoney" value="1000" /> 
@@ -108,13 +109,12 @@
 				<label for="ctenth">10000원</label> &nbsp; &nbsp; &nbsp;
 				<input id="cin" type="radio" name="chmoney" value="cin" /> 
 				<label for="cin">직접입력
-				<input class="form-control" onkeydown="cin_charge(this)" id="cin_money" type="text" name="cin_money" style="width: 100px" disabled/>원</label>
-				<input type="hidden" id="ccmoney" name="ccmoney">
+				<input class="form-control" onkeydown="cin_charge(this)" id="cin_money" type="text" name="cin_money" style="width: 100px" disabled/>원</label><br>
+				<span id="charge_alert" style="color: red;"></span>	
 	    	</div>
 	    </p>
-	    <p><br /></p>
 	    <div style="text-align: center;">
-		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="chare()">
+		    <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="charge()">
 				<span class="pop_bt" style="font-size: 13pt;" >충전</span>
 		    </span>
 			<span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="modal_close();">
@@ -123,6 +123,7 @@
 	    </div>
 	</div>
  </div>
+
 
 <!-- 헤더 -->
 <div class="menu">

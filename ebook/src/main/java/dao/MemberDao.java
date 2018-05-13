@@ -56,7 +56,8 @@ public class MemberDao {
 		return results.isEmpty() ? null : results.get(0);
 	}
 	
-	public void chargePoint(String mid) {
-		jdbcTemplate.update("insert into member values(?, ?, ?, ?, ?, ?, ?, 0)", mid);
+	public void chargePoint(String mid, int cur_point, int point, int aft_point) {
+		jdbcTemplate.update("update member set point=?", aft_point);
+		jdbcTemplate.update("insert into point values(?, ?, '충전', sysdate, ?)", point, cur_point, mid);
 	}
 }

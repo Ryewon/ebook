@@ -58,8 +58,8 @@ public class BookController {
 			price = Integer.parseInt(pre_price);
 		}
 		String title = request.getParameter("title");
-		String intro = request.getParameter("intro");
-		String con_table = request.getParameter("con_table");
+		String intro = request.getParameter("intro").replace("\r\n", "<br>");
+		String con_table = request.getParameter("con_table").replace("\r\n", "<br>");
 		System.out.println("cfile에 넣기");
 		String cfile = file.get(0).getOriginalFilename();
 		String pfile = file.get(1).getOriginalFilename();
@@ -118,22 +118,24 @@ public class BookController {
 		model.addAttribute("book", book);
 		return "/home";
 	}
+	
+	@RequestMapping(value = "/buyCheck")
+	public @ResponseBody String buyCheck(String mid, int bid) {
+		String buyck = bookDao.buyCheck(mid, bid);
+		return buyck;
+	}
 
 	@RequestMapping(value = "/buyBook")
-	public @ResponseBody String buyBook(String mid, int bid) {
-		String buyck = bookDao.buyCheck(mid, bid);
-		System.out.println("buyck:"+buyck);
-		if ("ok".equals(buyck)) {			
-			bookDao.buyBook(mid, bid);
-			return buyck;
-		} else {
-			return buyck;
-		}
+	public @ResponseBody String buyBook(String mid, int bid, int cpoint, int ppoint, int apoint) {	
+		bookDao.buyBook(mid, bid, cpoint, ppoint, apoint);
+		return "";
 	}
 	
 	@RequestMapping(value = "/bookDetail")
-	public String bookDetail(HttpServletRequest request) {
-		String bid = request.getParameter("bid");
+	public String bookDetail(HttpServletRequest request, Model model) {
+		int bid = Integer.parseInt(request.getParameter("bid"));
+		Book book = bookDao.bookInfo(bid);
+		model.addAttribute("bookInfo", book);
 		return "main/bookDetail";
 	}
 }
