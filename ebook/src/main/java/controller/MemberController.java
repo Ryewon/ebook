@@ -36,9 +36,12 @@ public class MemberController {
 	
 	@RequestMapping(value = "/home")
 	public String home(Model model) {
-		String cate = "";
-		List<Book> book = bookDao.cateBook(cate);
-		model.addAttribute("book", book);
+		String cate = "전체";
+		List<Book> bestBook = bookDao.cateBook1();
+		List<Book> newBook = bookDao.cateBook2();
+		model.addAttribute("cate", cate);
+		model.addAttribute("bestBook", bestBook);
+		model.addAttribute("newBook", newBook);
 		return "home";
 	}
 	

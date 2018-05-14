@@ -149,8 +149,8 @@
 					<td style="width: 200px;">
 						<input type="hidden" id="bookId" name="bookId" value="${bookInfo.bid }" /> 
 						<label>카테고리: </label>${bookInfo.book_cate } <br> 
-						<label>제목: </label> ${bookInfo.title } <br> 
-						<label>작가: </label> ${bookInfo.book_writer } <br> 
+						<label>제목: </label> ${bookInfo.book_title1 } <br> 
+						<label>작가: </label> ${bookInfo.book_writer1 } <br> 
 						<label>작성일: </label> ${bookInfo.book_date } <br> 
 						<label>판매량: </label> ${bookInfo.book_vol } 권<br>
 						<label>가격: </label> ${bookInfo.price } 원
@@ -174,7 +174,7 @@
 				<c:otherwise>
 					책 소개 내용이 없습니다.
 				</c:otherwise>
-			</c:choose>
+			</c:choose>	
 		</div>
 	</div>
 	<div>

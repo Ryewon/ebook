@@ -3,7 +3,7 @@
 
 <nav id="topMenu">
 	<ul>
-		<li><a class="menuLink" href="/ebook/srchCate?cate=">전체</a></li>
+		<li><a class="menuLink" href="/ebook/srchCate?cate=전체">전체</a></li>
 		<li><a class="menuLink" href="/ebook/srchCate?cate=소설">소설</a></li>
 		<li><a class="menuLink" href="/ebook/srchCate?cate=만화">만화</a></li>
 		<li><a class="menuLink" href="/ebook/srchCate?cate=시/에세이">시/에세이</a></li>

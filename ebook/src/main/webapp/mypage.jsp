@@ -2,15 +2,16 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>MyPage</title>	
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=33" />
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MyPage</title>	
 </head>
+
 <script>
 
 $(document).ready(function(){
@@ -35,7 +36,7 @@ $(document).ready(function(){
 		  $('#upBookList').css('display','block'); */
 			$('#infoPw').hide();
 			$('#upBookList').show();
-			$('#buyList').hide();
+			$('#buyList').hide();	
 	  } else {
 		/*   $('#infoPw').css('display','none');
 		  $('#upBookList').css('display','none');
@@ -47,7 +48,9 @@ $(document).ready(function(){
   }
 </script>
 <body>
+
 <%@ include file="../include/header.jsp" %>
+
 <div class="container" style="position:fixed; top: 95px;">
 	<div>
 		<div id="sidebar-wrapper" class="sidebar-toggle">

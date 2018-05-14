@@ -3,6 +3,7 @@ package controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -44,7 +45,8 @@ public class BookController {
 		String mid = authInfo.getMid();
 		int bid = bookDao.suchBid();
 		System.out.println("써치후"+bid);
-		String writer = authInfo.getName();
+		String writer1 = authInfo.getName();
+		String writer2 = writer1.replaceAll(" ", "");
 		String cate = request.getParameter("cate");
 		String free = request.getParameter("free");
 		String pre_price = (String)request.getParameter("price");
@@ -57,7 +59,8 @@ public class BookController {
 			System.out.println("가격 변환");
 			price = Integer.parseInt(pre_price);
 		}
-		String title = request.getParameter("title");
+		String title1 = request.getParameter("title");
+		String title2 = title1.replaceAll(" ", "");
 		String intro = request.getParameter("intro").replace("\r\n", "<br>");
 		String con_table = request.getParameter("con_table").replace("\r\n", "<br>");
 		System.out.println("cfile에 넣기");
@@ -105,7 +108,7 @@ public class BookController {
 			System.out.println("File 변환 예외발생");
 		}
 //		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, ipath, mid);
-		bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid);
+		bookDao.upBook(bid, title1, title2, writer1, writer2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid);
 		
 		return "/home";
 	}
@@ -113,9 +116,19 @@ public class BookController {
 	@RequestMapping(value = "/srchCate")
 	public String srchCate(HttpServletRequest request, Model model) {
 		String cate = request.getParameter("cate");
-		List<Book> book = bookDao.cateBook(cate);
+		List<Book> book = null;
+		List<Book> bestBook = null;
+		List<Book> newBook = null;
+		if(cate.equals("전체")) {
+			bestBook = bookDao.cateBook1();
+			newBook = bookDao.cateBook2();			
+			model.addAttribute("bestBook", bestBook);
+			model.addAttribute("newBook", newBook);
+		} else {			
+			book = bookDao.cateBook3(cate);
+			model.addAttribute("book", book);
+		}
 		model.addAttribute("cate", cate);
-		model.addAttribute("book", book);
 		return "/home";
 	}
 	
@@ -137,5 +150,21 @@ public class BookController {
 		Book book = bookDao.bookInfo(bid);
 		model.addAttribute("bookInfo", book);
 		return "main/bookDetail";
+	}
+	
+	@RequestMapping(value = "/searchBook")
+	public String searchBook(HttpServletRequest request, Model model) {
+		String selSrch = request.getParameter("selSrch");
+		String conSrch = request.getParameter("conSrch").replaceAll(" ", "");
+		System.out.println("써치하러 와써요");
+		System.out.print(conSrch);
+		List<Book> srchBook = bookDao.searchBook(selSrch, conSrch);
+		int totalCnt = srchBook.size();
+		String cate = "검색";
+		System.out.println(cate);
+		model.addAttribute("cate", cate);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("srchBook", srchBook);
+		return "/home";
 	}
 }

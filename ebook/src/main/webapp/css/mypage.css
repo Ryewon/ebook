@@ -1,12 +1,12 @@
 @charset "UTF-8";
 
-
 .container {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: 15px;
     margin-left: 15px;
 }
+
 #sidebar-wrapper {
   /* top: 52px; */
   left: -200px;

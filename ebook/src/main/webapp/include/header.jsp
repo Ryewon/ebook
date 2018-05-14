@@ -84,6 +84,18 @@
 			
 		}
 	}
+	
+	function search() {
+		var selSrch = $("select[name=selSrch]").val();
+		console.log(selSrch);
+		var conSrch = $('#conSrch').val().replace(/ /g, '');
+		console.log(conSrch);
+		if(conSrch!="") {
+			
+		} else {
+			return false;
+		}
+	}
 </script>
 
 
@@ -143,28 +155,16 @@
 			</c:if>
 		</ul>		
 	</div>
-	<div class="container" style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
-	    <div class="row">    
-	        <div class="col-xs-8 col-xs-offset-2">
-			    <div class="input-group">
-			    	<a href="./home"><img src="/ebook/logo.png" style="width: 100px; height: 40px;"></a>
-	                <div class="input-group-btn search-panel">
-	                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-	                    	<span id="search_concept">제목+작가</span> <span class="caret"></span>
-	                    </button>
-	                    <ul class="dropdown-menu" role="menu">
-	                      <li><a href="#title_writer">제목+작가</a></li>
-	                      <li><a href="#title">제목</a></li>
-	                      <li><a href="#writer">작가</a></li>
-	                    </ul>
-	                </div>
-	                <input type="hidden" name="search_param" value="all" id="search_param">         
-	                <input type="text" class="form-control" name="x" placeholder="검색할 내용을 적어주세요">
-	                <span class="input-group-btn">
-	                    <button class="btn btn-default" type="button">검색</button>
-	                </span>
-	            </div>
-	        </div>
-		</div>
-	</div>
+	<form action="searchBook" method="post" onsubmit="return search();">
+		<div style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
+	    	<a href="./home"><img src="/ebook/logo.png" style="width: 100px; height: 40px;"></a>
+			<select style="height: 30px;" id="selSrch" name="selSrch">
+				<option value="제목+작가">제목+작가</option>
+				<option value="제목">제목</option>
+				<option value="작가">작가</option>
+	         </select>
+	         <input type="text" style="width: 300px; height: 30px;" id="conSrch" name="conSrch"  placeholder="검색할 내용을 적어주세요">          
+	         <input type="submit" style="height: 30px;" value="검색">
+         </div>
+	</form>
 </div>

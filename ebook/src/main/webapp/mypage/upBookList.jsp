@@ -26,8 +26,8 @@
 							<td style="width: 200px;">
 								<input type="hidden" id="bookId" name="bookId" value="${ulist.bid }" />
 								<label>카테고리: </label> ${ulist.book_cate } <br>
-								<label>제목: </label> ${ulist.title } <br>
-								<label>작가: </label> ${ulist.book_writer } <br>
+								<label>제목: </label> ${ulist.book_title1 } <br>
+								<label>작가: </label> ${ulist.book_writer1 } <br>
 								<label>작성일: </label> ${ulist.book_date } <br>
 								<label>판매량: </label> ${ulist.book_vol } <br>
 							</td>

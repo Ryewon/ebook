@@ -31,10 +31,10 @@ public class BookDao {
 	}
 */
 
-	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
+	public void upBook(int bid, String title1, String title2, String writer1, String writer2, String cate, int price, String con_table, 
 			String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String mid) {
-			jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
-					bid, title, writer, cate,
+			jdbcTemplate.update("insert into book values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
+					bid, title1, title1, writer1, writer2, cate,
 							price, con_table, intro,
 							cfile, cpath, pfile, pCnt,
 							ppath, mid);
@@ -45,37 +45,53 @@ public class BookDao {
 		return bid;
 	}
 	
-	public List<Book> cateBook(String cate) {
+	public List<Book> cateBook1() {
+		List<Book> bestBook = jdbcTemplate.query("select * from book where rownum <=3 order by book_vol desc"
+				, new RowMapper<Book>() {
+			@Override
+			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+				Book bbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+						, rs.getString("mid"));
+				return bbook;
+			}
+		});
+		return bestBook.isEmpty()?null:bestBook;
+	}
+	
+	public List<Book> cateBook2() {
+		List<Book> newBook = jdbcTemplate.query("select * from book where rownum <=3 order by book_date desc"
+				, new RowMapper<Book>() {
+			@Override
+			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+				Book nbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+						, rs.getString("mid"));
+				return nbook;
+			}
+		});
+		return newBook.isEmpty()?null:newBook;
+	}
+	
+	public List<Book> cateBook3(String cate) {
 		System.out.println(cate);
-		if(cate=="") {
-			List<Book> book = jdbcTemplate.query("select * from book order by bid desc"
-					, new RowMapper<Book>() {
-						@Override
-						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
-									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-									, rs.getString("mid"));
-							return mbook;
-						}
-					});
-			return book.isEmpty()?null:book;
-		} else {
-			List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
-					, new RowMapper<Book>() {
-						@Override
-						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
-									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-									, rs.getString("mid"));
-							return mbook;
-						}
-					}, cate);
-			return book.isEmpty()?null:book;
-		}
+		List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
+				, new RowMapper<Book>() {
+					@Override
+					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+								, rs.getString("mid"));
+						return mbook;
+					}
+				}, cate);
+		return book.isEmpty()?null:book;
 	}
 	
 	public String buyCheck(String mid, int bid) {
@@ -100,18 +116,76 @@ public class BookDao {
 	}
 	
 	public Book bookInfo(int bid) {
-			Book book = jdbcTemplate.queryForObject("select * from book where bid=?"
+		Book book = jdbcTemplate.queryForObject("select * from book where bid=?"
+				, new RowMapper<Book>() {
+					@Override
+					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getString("book_title2"), rs.getDate("book_date")
+								, rs.getString("book_writer1"), rs.getString("book_writer2")
+								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+								, rs.getString("mid"));
+						return mbook;
+					}
+				}, bid);
+		return book;
+	}
+	
+	public List<Book> searchBook(String selSrch, String searchCon) {
+		System.out.println("Dao 와써요");
+		List<Book> rsbook = null;
+		String strLike = "%" + searchCon + "%";
+		System.out.println("                       "+strLike);
+		if(selSrch.equals("제목+작가")) {		
+			rsbook = jdbcTemplate.query(
+					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
+					+ "from " 
+					+ "(select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
+					+ "from BOOK) " 
+					+ "where A like ? or B like ?"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-							Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
+							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
 									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 									, rs.getString("mid"));
 							return mbook;
 						}
-					}, bid);
-			return book;
+					}, strLike, strLike);
+		} else if(selSrch.equals("제목")) {
+			rsbook = jdbcTemplate.query(
+					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from BOOK where book_title2 like ?"
+					, new RowMapper<Book>() {
+						@Override
+						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+									, rs.getString("mid"));
+							return mbook;
+						}
+					}, strLike);
+		} else {
+			rsbook = jdbcTemplate.query(
+					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from BOOK where book_writer2 like ?"
+					, new RowMapper<Book>() {
+						@Override
+						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+									, rs.getString("mid"));
+							return mbook;
+						}
+					}, strLike);
 		}
+		System.out.println(rsbook);
+		return rsbook.isEmpty()?null:rsbook;
+		
+	}
 }

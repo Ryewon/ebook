@@ -131,18 +131,60 @@ mid = ${authInfo.mid }
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	
 	<c:choose>
-		<c:when test="${empty book}">
-			<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
+		<c:when test="${cate eq '검색'}">
+			<c:choose>
+				<c:when test="${empty srchBook}">
+					<p>일치하는 검색 결과가 없습니다.</p>
+				</c:when>
+				<c:otherwise>
+					<table>
+						<tbody>
+							<c:forEach var="srblist"  items="${srchBook }">
+								<tr style="border-bottom: 1px solid #8C8C8C;">
+									<td>
+										<c:choose>
+											<c:when test="${!empty srblist.cover_path }">
+												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${srblist.bid }_${srblist.cover_name}"/></th>
+											</c:when>
+											<c:otherwise>
+												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td style="width: 200px;">
+										<input type="hidden" value="${srblist.bid }" />
+										<label>카테고리: </label> ${srblist.book_cate } <br>
+										<label>제목: </label> ${srblist.book_title1 } <br>
+										<label>작가: </label> ${srblist.book_writer1 } <br>
+										<label>작성일: </label> ${srblist.book_date } <br>
+										<label>판매량: </label> ${srblist.book_vol } <br>
+									</td>
+									<td style="width: 100px;">
+										<label>가격: ${srblist.price }</label>
+									</td>
+									<td>
+										<button onclick="location.href='/ebook/bookDetail?bid=${srblist.bid }'">상세보기</button> <br/><br/>
+										<c:if test="${authInfo.mid != srblist.mid }">
+											<button onclick="buyCheck('${srblist.bid}','${srblist.price}');">구매</button>
+										</c:if>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:otherwise>
+			</c:choose>
 		</c:when>
-		<c:otherwise>
+		<c:when test="${cate eq '전체'}">
+			<h3>Best 도서</h3>
 			<table>
 				<tbody>
-					<c:forEach var="blist"  items="${book }">
+					<c:forEach var="bestlist"  items="${bestBook }">
 						<tr style="border-bottom: 1px solid #8C8C8C;">
 							<td>
 								<c:choose>
-									<c:when test="${!empty blist.cover_path }">
-										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_${blist.cover_name}"/></th>
+									<c:when test="${!empty bestlist.cover_path }">
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${bestlist.bid }_${bestlist.cover_name}"/></th>
 									</c:when>
 									<c:otherwise>
 										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
@@ -150,30 +192,107 @@ mid = ${authInfo.mid }
 								</c:choose>
 							</td>
 							<td style="width: 200px;">
-								<input type="hidden" value="${blist.bid }" />
-								<label>카테고리: </label> ${blist.book_cate } <br>
-								<label>제목: </label> ${blist.title } <br>
-								<label>작가: </label> ${blist.book_writer } <br>
-								<label>작성일: </label> ${blist.book_date } <br>
-								<label>판매량: </label> ${blist.book_vol } <br>
+								<input type="hidden" value="${bestlist.bid }" />
+								<label>카테고리: </label> ${bestlist.book_cate } <br>
+								<label>제목: </label> ${bestlist.book_title1 } <br>
+								<label>작가: </label> ${bestlist.book_writer1 } <br>
+								<label>작성일: </label> ${bestlist.book_date } <br>
+								<label>판매량: </label> ${bestlist.book_vol } <br>
 							</td>
 							<td style="width: 100px;">
-								<label>가격: ${blist.price }</label>
+								<label>가격: ${bestlist.price }</label>
 							</td>
 							<td>
-								<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
-								<c:if test="${authInfo.mid != blist.mid }">
-									<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
+								<button onclick="location.href='/ebook/bookDetail?bid=${bestlist.bid }'">상세보기</button> <br/><br/>
+								<c:if test="${authInfo.mid != bestlist.mid }">
+									<button onclick="buyCheck('${bestlist.bid}','${bestlist.price}');">구매</button>
 								</c:if>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
-		</c:otherwise>
+			<h3>신간 도서</h3>
+			<table>
+				<tbody>
+					<c:forEach var="newlist"  items="${newBook }">
+						<tr style="border-bottom: 1px solid #8C8C8C;">
+							<td>
+								<c:choose>
+									<c:when test="${!empty newlist.cover_path }">
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${newlist.bid }_${newlist.cover_name}"/></th>
+									</c:when>
+									<c:otherwise>
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td style="width: 200px;">
+								<input type="hidden" value="${newlist.bid }" />
+								<label>카테고리: </label> ${newlist.book_cate } <br>
+								<label>제목: </label> ${newlist.book_title1 } <br>
+								<label>작가: </label> ${newlist.book_writer1 } <br>
+								<label>작성일: </label> ${newlist.book_date } <br>
+								<label>판매량: </label> ${newlist.book_vol } <br>
+							</td>
+							<td style="width: 100px;">
+								<label>가격: ${newlist.price }</label>
+							</td>
+							<td>
+								<button onclick="location.href='/ebook/bookDetail?bid=${newlist.bid }'">상세보기</button> <br/><br/>
+								<c:if test="${authInfo.mid != newlist.mid }">
+									<button onclick="buyCheck('${newlist.bid}','${newlist.price}');">구매</button>
+								</c:if>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</c:when>
+		<c:otherwise>
+			<c:choose>
+				<c:when test="${empty book}">
+					<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
+				</c:when>
+				<c:otherwise>
+					<table>
+						<tbody>
+							<c:forEach var="blist"  items="${book }">
+								<tr style="border-bottom: 1px solid #8C8C8C;">
+									<td>
+										<c:choose>
+											<c:when test="${!empty blist.cover_path }">
+												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_${blist.cover_name}"/></th>
+											</c:when>
+											<c:otherwise>
+												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+											</c:otherwise>
+										</c:choose>
+									</td>
+									<td style="width: 200px;">
+										<input type="hidden" value="${blist.bid }" />
+										<label>카테고리: </label> ${blist.book_cate } <br>
+										<label>제목: </label> ${blist.book_title1 } <br>
+										<label>작가: </label> ${blist.book_writer1 } <br>
+										<label>작성일: </label> ${blist.book_date } <br>
+										<label>판매량: </label> ${blist.book_vol } <br>
+									</td>
+									<td style="width: 100px;">
+										<label>가격: ${blist.price }</label>
+									</td>
+									<td>
+										<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
+										<c:if test="${authInfo.mid != blist.mid }">
+											<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
+										</c:if>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:otherwise>
+			</c:choose>
+		</c:otherwise>		
 	</c:choose>
-	
-	
-
 </div>
 </div>

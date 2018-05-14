@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class Book {
 	private int bid, price, book_vol, pfile_page;
-	private String title, book_writer, book_cate, contents_table, book_intro, cover_name, cover_path,
+	private String book_title1, book_title2, book_writer1, book_writer2, book_cate, contents_table, book_intro, cover_name, cover_path,
 		pfile_name, pfile_path, mid;
 	private Date book_date;
 	
-	public Book(int bid, String title, Date book_date, String book_writer, String book_cate, int price, String contents_table, String book_intro,
+	public Book(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
 			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
 		super();
 		this.bid = bid;
@@ -16,8 +16,30 @@ public class Book {
 		this.book_vol = book_vol;
 		this.pfile_page = pfile_page;
 		this.mid = mid;
-		this.title = title;
-		this.book_writer = book_writer;
+		this.book_title1 = book_title1;
+		this.book_writer1 = book_writer1;
+		this.book_cate = book_cate;
+		this.contents_table = contents_table;
+		this.book_intro = book_intro;
+		this.cover_name = cover_name;
+		this.cover_path = cover_path;
+		this.pfile_name = pfile_name;
+		this.pfile_path = pfile_path;
+		this.book_date = book_date;
+	}
+	
+	public Book(int bid, String book_title1, String book_title2, Date book_date, String book_writer1, String book_writer2, String book_cate, int price, String contents_table, String book_intro,
+			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
+		super();
+		this.bid = bid;
+		this.price = price;
+		this.book_vol = book_vol;
+		this.pfile_page = pfile_page;
+		this.mid = mid;
+		this.book_title1 = book_title1;
+		this.book_title2 = book_title2;
+		this.book_writer1 = book_writer1;
+		this.book_writer2 = book_writer2;
 		this.book_cate = book_cate;
 		this.contents_table = contents_table;
 		this.book_intro = book_intro;
@@ -30,15 +52,17 @@ public class Book {
 	
 	
 
-	public Book(int price, int pfile_page, String mid, String title, String book_writer, String book_cate,
+	public Book(int price, int pfile_page, String mid, String book_title1, String book_title2, Date book_date, String book_writer1, String book_writer2, String book_cate,
 			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name,
 			String pfile_path) {
 		super();
 		this.price = price;
 		this.pfile_page = pfile_page;
 		this.mid = mid;
-		this.title = title;
-		this.book_writer = book_writer;
+		this.book_title1 = book_title1;
+		this.book_title2 = book_title2;
+		this.book_writer1 = book_writer1;
+		this.book_writer2 = book_writer2;
 		this.book_cate = book_cate;
 		this.contents_table = contents_table;
 		this.book_intro = book_intro;
@@ -76,7 +100,7 @@ public class Book {
 		return pfile_page;
 	}
 
-	public void setPfil_page(int pfile_page) {
+	public void setPfile_page(int pfile_page) {
 		this.pfile_page = pfile_page;
 	}
 
@@ -88,20 +112,36 @@ public class Book {
 		this.mid = mid;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getBook_title1() {
+		return book_title1;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBook_title1(String book_title1) {
+		this.book_title1 = book_title1;
 	}
 
-	public String getBook_writer() {
-		return book_writer;
+	public String getBook_title2() {
+		return book_title2;
 	}
 
-	public void setBook_writer(String book_writer) {
-		this.book_writer = book_writer;
+	public void setBook_title2(String book_title2) {
+		this.book_title2 = book_title2;
+	}
+
+	public String getBook_writer1() {
+		return book_writer1;
+	}
+
+	public void setBook_writer1(String book_writer1) {
+		this.book_writer1 = book_writer1;
+	}
+
+	public String getBook_writer2() {
+		return book_writer2;
+	}
+
+	public void setBook_writer2(String book_writer2) {
+		this.book_writer2 = book_writer2;
 	}
 
 	public String getBook_cate() {

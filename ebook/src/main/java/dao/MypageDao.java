@@ -24,8 +24,9 @@ public class MypageDao {
 				, new RowMapper<Book>() {
 					@Override
 					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-						Book mbook = new Book(rs.getInt("bid"), rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer")
-								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getString("book_title2"), rs.getDate("book_date")
+								, rs.getString("book_writer1"), rs.getString("book_writer2")
+								, rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
 								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 								, rs.getString("mid"));
@@ -54,13 +55,13 @@ public class MypageDao {
 	
 //	구매목록 search
 	public List<BookCommand> myPurBook(String mid) {
-		List<BookCommand> purbook = jdbcTemplate.query("select pur_id, buy_date, p.bid, title, book_date, book_writer, book_cate, book_vol, price, cover_name, pfile_name, p.mid " + 
+		List<BookCommand> purbook = jdbcTemplate.query("select pur_id, buy_date, p.bid, book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name, pfile_name, p.mid " + 
 				"from purchase p, book b where p.bid = b.bid and p.mid=? order by pur_id desc"
 				, new RowMapper<BookCommand>() {
 					@Override
 					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
 						BookCommand buybook = new BookCommand(rs.getInt("pur_id"), rs.getDate("buy_date"), rs.getString("bid")
-								,  rs.getString("title"), rs.getDate("book_date"), rs.getString("book_writer"), rs.getString("book_cate")
+								,  rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1"), rs.getString("book_cate")
 								, rs.getInt("book_vol"), rs.getInt("price"), rs.getString("cover_name"), rs.getString("pfile_name"), rs.getString("mid"));
 						return buybook;
 					}
