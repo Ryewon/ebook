@@ -37,6 +37,7 @@
 							<td>
 								<button>상세보기</button> <br><br>
 								<button onclick="window.open('./viewer.jsp?pfile=${ulist.bid }_${ulist.pfile_name }')">읽기</button>
+								<button onclick="window.open('./viewer.jsp?pfile=${ulist.bid }_${ulist.pfile_name }')">삭제</button>
 							</td>
 						</tr>
 					</c:forEach>

@@ -87,6 +87,15 @@
 	}
 </script>
 
+<%
+	int listcount = ((Integer)request.getAttribute("listcount")).intValue();
+	int nowpage = ((Integer)request.getAttribute("page")).intValue();
+	int maxpage = ((Integer)request.getAttribute("maxpage")).intValue();
+	int startpage = ((Integer)request.getAttribute("startpage")).intValue();
+	int endpage = ((Integer)request.getAttribute("endpage")).intValue();
+	System.out.println("lc:"+ listcount + " np:" + nowpage + " mp:" + maxpage + " startpage:" + startpage + " endpage:" + endpage);
+%>
+
 <!-- 모달 -->
 <div id="buy_modal" class="modal">
 	<!-- Modal content -->
@@ -129,7 +138,7 @@
 cate = ${cate },
 mid = ${authInfo.mid }
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
-	
+	<br>
 	<c:choose>
 		<c:when test="${cate eq '검색'}">
 			<c:choose>
@@ -137,6 +146,7 @@ mid = ${authInfo.mid }
 					<p>일치하는 검색 결과가 없습니다.</p>
 				</c:when>
 				<c:otherwise>
+				<div>
 					<table>
 						<tbody>
 							<c:forEach var="srblist"  items="${srchBook }">
@@ -170,12 +180,39 @@ mid = ${authInfo.mid }
 									</td>
 								</tr>
 							</c:forEach>
+							<% if(listcount >= 5) { %>
+							<tr align="center" height="20">
+								<td colspan=7>
+									<% if(nowpage<=1){ %>
+									[이전]&nbsp;
+									<%} else { %>
+									<a href="/ebook/searchBook?page=<%= nowpage-1 %>">[이전]</a>&nbsp;
+									<%} %>
+									
+									<% for(int a = startpage; a <= endpage; a++) {
+										if(a==nowpage){%>
+										[<%=a %>]
+										<%} else { %>
+										<a href="/ebook/searchBook?page=<%= a %>">[<%= a %>]</a>&nbsp;
+										<%} %>
+									<%} %>
+									
+									<%if(nowpage >= maxpage) {%>
+									[다음]
+									<%} else { %>
+									<a href="/ebook/searchBook?page=<%= nowpage+1 %>">[다음]</a>
+									<%} %>
+								</td>
+							</tr> 
+							<%} %>
 						</tbody>
 					</table>
+					</div>
 				</c:otherwise>
 			</c:choose>
 		</c:when>
 		<c:when test="${cate eq '전체'}">
+			<div>
 			<h3>Best 도서</h3>
 			<table>
 				<tbody>
@@ -212,6 +249,8 @@ mid = ${authInfo.mid }
 					</c:forEach>
 				</tbody>
 			</table>
+			</div>
+			<div>
 			<h3>신간 도서</h3>
 			<table>
 				<tbody>
@@ -248,13 +287,21 @@ mid = ${authInfo.mid }
 					</c:forEach>
 				</tbody>
 			</table>
+			</div>
 		</c:when>
 		<c:otherwise>
 			<c:choose>
-				<c:when test="${empty book}">
+				<c:when test="${empty book && empty sorting}">
 					<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
 				</c:when>
 				<c:otherwise>
+					<div style="float: left;">
+						|<a href="/ebook/searchBook?price=전체&cate=${cate }&sorting=y">전체</a>|<a href="/ebook/searchBook?price=유료&cate=${cate }&sorting=y">유료</a>|<a href="/ebook/searchBook?price=무료&cate=${cate }&sorting=y">무료</a>|
+					</div>
+					<div style="float: right;">
+						/<a href="/ebook/searchBook?sortType=최신순&cate=${cate }&sorting=y">최신순</a>/<a href="/ebook/searchBook?sortType=인기순&cate=${cate }&sorting=y">인기순</a>/<a href="/ebook/searchBook?sortType=가나다순&cate=${cate }&sorting=y">가나다순</a>/
+					</div>
+					<div style="margin-top: 30px;">
 					<table>
 						<tbody>
 							<c:forEach var="blist"  items="${book }">
@@ -288,11 +335,38 @@ mid = ${authInfo.mid }
 									</td>
 								</tr>
 							</c:forEach>
+							<% if(listcount >= 5) { %>
+							<tr align="center" height="20">
+								<td colspan=7>
+									<% if(nowpage<=1){ %>
+									[이전]&nbsp;
+									<%} else { %>
+									<a href="/ebook/searchBook?page=<%= nowpage-1 %>">[이전]</a>&nbsp;
+									<%} %>
+									
+									<% for(int a = startpage; a <= endpage; a++) {
+										if(a==nowpage){%>
+										[<%=a %>]
+										<%} else { %>
+										<a href="/ebook/searchBook?page=<%= a %>">[<%= a %>]</a>&nbsp;
+										<%} %>
+									<%} %>
+									
+									<%if(nowpage >= maxpage) {%>
+									[다음]
+									<%} else { %>
+									<a href="/ebook/searchBook?page=<%= nowpage+1 %>">[다음]</a>
+									<%} %>
+								</td>
+							</tr> 
+							<%} %>
 						</tbody>
 					</table>
+					</div>
 				</c:otherwise>
 			</c:choose>
 		</c:otherwise>		
 	</c:choose>
+	
 </div>
 </div>

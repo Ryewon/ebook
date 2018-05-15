@@ -156,6 +156,7 @@
 		</ul>		
 	</div>
 	<form action="searchBook" method="post" onsubmit="return search();">
+		<input type="hidden" name="cate" value="검색" />
 		<div style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
 	    	<a href="./home"><img src="/ebook/logo.png" style="width: 100px; height: 40px;"></a>
 			<select style="height: 30px;" id="selSrch" name="selSrch">

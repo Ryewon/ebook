@@ -45,7 +45,8 @@ public class MypageController {
 		String mid = authInfo.getMid();
 		String orginPw = authInfo.getPw();
 		String inputPw = request.getParameter("pw");
-		String name = request.getParameter("name");
+		String name1 = request.getParameter("name");
+		String name2 = request.getParameter("name").replaceAll(" ", "");
 		String gender = request.getParameter("gender");
 		String phone = request.getParameter("phone");
 		String hint = request.getParameter("hint2");
@@ -54,8 +55,8 @@ public class MypageController {
 		System.out.println("in:" + inputPw);
 		if(orginPw.equals(inputPw)) {
 			System.out.println("쿼리날린다~");
-			mypageDao.updateInfo(name, gender, phone, hint, answer, mid);
-			authInfo.setName(name);
+			mypageDao.updateInfo(name1, name2, gender, phone, hint, answer, mid);
+			authInfo.setName(name1);
 			authInfo.setGender(gender);
 			authInfo.setPhone(phone);
 			authInfo.setHint(hint);

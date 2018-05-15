@@ -33,7 +33,10 @@ public class BookDao {
 
 	public void upBook(int bid, String title1, String title2, String writer1, String writer2, String cate, int price, String con_table, 
 			String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String mid) {
-			jdbcTemplate.update("insert into book values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)", 
+			jdbcTemplate.update("insert into book(bid, book_title1, book_title2, book_date, book_writer1, book_writer2"
+					+ ", book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path"
+					+ ", mid, bexist) "
+					+ "values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, 'yes')", 
 					bid, title1, title1, writer1, writer2, cate,
 							price, con_table, intro,
 							cfile, cpath, pfile, pCnt,
@@ -46,7 +49,10 @@ public class BookDao {
 	}
 	
 	public List<Book> cateBook1() {
-		List<Book> bestBook = jdbcTemplate.query("select * from book where rownum <=3 order by book_vol desc"
+		List<Book> bestBook = jdbcTemplate.query(
+				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ "from book where rownum <=3 and bexist = 'yes' order by book_vol desc"
 				, new RowMapper<Book>() {
 			@Override
 			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -62,7 +68,10 @@ public class BookDao {
 	}
 	
 	public List<Book> cateBook2() {
-		List<Book> newBook = jdbcTemplate.query("select * from book where rownum <=3 order by book_date desc"
+		List<Book> newBook = jdbcTemplate.query(
+				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ "from book where rownum <=3 and bexist = 'yes' order by book_date desc"
 				, new RowMapper<Book>() {
 			@Override
 			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -77,22 +86,22 @@ public class BookDao {
 		return newBook.isEmpty()?null:newBook;
 	}
 	
-	public List<Book> cateBook3(String cate) {
-		System.out.println(cate);
-		List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
-				, new RowMapper<Book>() {
-					@Override
-					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
-								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-								, rs.getString("mid"));
-						return mbook;
-					}
-				}, cate);
-		return book.isEmpty()?null:book;
-	}
+//	public List<Book> cateBook3(String cate) {
+//		System.out.println(cate);
+//		List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
+//				, new RowMapper<Book>() {
+//					@Override
+//					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+//						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+//								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+//								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+//								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+//								, rs.getString("mid"));
+//						return mbook;
+//					}
+//				}, cate);
+//		return book.isEmpty()?null:book;
+//	}
 	
 	public String buyCheck(String mid, int bid) {
 		String pur_id = null;
@@ -109,21 +118,23 @@ public class BookDao {
 		System.out.println("구매insert");
 		System.out.println(bid);
 		int pur_id = jdbcTemplate.queryForObject("select nvl(max(pur_id), 0)+1 from purchase", Integer.class);
-		jdbcTemplate.update("insert into purchase values(?, sysdate, ?, ?)", pur_id, mid, bid);
+		jdbcTemplate.update("insert into purchase (pur_id, buy_date, mid, bid, pexist) values(?, sysdate, ?, ?, 'yes')", pur_id, mid, bid);
 		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?", bid, bid);
 		jdbcTemplate.update("update member set point=? where mid=?", apoint, mid);
 		jdbcTemplate.update("insert into point values(?, ?, '구매', sysdate, ?)", ppoint, cpoint, mid);
 	}
 	
 	public Book bookInfo(int bid) {
-		Book book = jdbcTemplate.queryForObject("select * from book where bid=?"
+		Book book = jdbcTemplate.queryForObject(
+				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ "from book where bid=? and bexist = 'yes'"
 				, new RowMapper<Book>() {
 					@Override
 					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getString("book_title2"), rs.getDate("book_date")
-								, rs.getString("book_writer1"), rs.getString("book_writer2")
-								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date")
+								, rs.getString("book_writer1"), rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table")
+								, rs.getString("book_intro"), rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
 								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 								, rs.getString("mid"));
 						return mbook;
@@ -131,19 +142,21 @@ public class BookDao {
 				}, bid);
 		return book;
 	}
-	
-	public List<Book> searchBook(String selSrch, String searchCon) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	public List<Book> searchBook(int page, int limit, String selSrch, String searchCon) {
+		int startrow = (page -1 ) * 10 + 1;
+		int endrow = startrow + limit - 1;
 		System.out.println("Dao 와써요");
 		List<Book> rsbook = null;
 		String strLike = "%" + searchCon + "%";
 		System.out.println("                       "+strLike);
 		if(selSrch.equals("제목+작가")) {		
 			rsbook = jdbcTemplate.query(
-					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
+					"select rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
 					+ "from " 
-					+ "(select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
-					+ "from BOOK) " 
-					+ "where A like ? or B like ?"
+					+ "(select rownum rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
+					+ "from BOOK where bexist = 'yes') " 
+					+ "where (A like ? or B like ?) and (rnum>=? and rnum<=?)"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -154,10 +167,12 @@ public class BookDao {
 									, rs.getString("mid"));
 							return mbook;
 						}
-					}, strLike, strLike);
+					}, strLike, strLike, startrow, endrow);
 		} else if(selSrch.equals("제목")) {
 			rsbook = jdbcTemplate.query(
-					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from BOOK where book_title2 like ?"
+					"select rownum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+					+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+					+ "from BOOK where (bexist = 'yes' and book_title2 like ?) and (rownum>=? and rownum<=?)"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -168,10 +183,12 @@ public class BookDao {
 									, rs.getString("mid"));
 							return mbook;
 						}
-					}, strLike);
+					}, strLike, startrow, endrow);
 		} else {
 			rsbook = jdbcTemplate.query(
-					"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from BOOK where book_writer2 like ?"
+					"select rownum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+					+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+					+ "from BOOK where (bexist = 'yes' and book_writer2 like ?) and (rownum>=? and rownum<=?)"
 					, new RowMapper<Book>() {
 						@Override
 						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -182,10 +199,132 @@ public class BookDao {
 									, rs.getString("mid"));
 							return mbook;
 						}
-					}, strLike);
+					}, strLike, startrow, endrow);
 		}
 		System.out.println(rsbook);
 		return rsbook.isEmpty()?null:rsbook;
 		
+	}
+	
+	public int searchBookCnt(String selSrch, String searchCon) {
+		int cnt = 0;
+		String strLike = "%" + searchCon + "%";
+		if(selSrch.equals("제목+작가")) {		
+			cnt = jdbcTemplate.queryForObject(
+					"select count(*) " 
+					+ "from " 
+					+ "(select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
+					+ "from BOOK where bexist = 'yes') " 
+					+ "where A like ? or B like ? "
+					, Integer.class, strLike, strLike);
+		} else if(selSrch.equals("제목")) {
+			cnt = jdbcTemplate.queryForObject(
+					"select count(*) from BOOK where bexist = 'yes' and book_title2 like ?"
+					, Integer.class, strLike);
+		} else {
+			cnt = jdbcTemplate.queryForObject(
+					"select count(*) from BOOK where (bexist = 'yes' and book_writer2 like ?) and (rownum>=? and rownum<=?)"
+					, Integer.class, strLike);
+		}
+		return cnt;
+		
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public List<Book> sortedBook(int page, int limit, String cate, String price, String sortType) {
+		int startrow = (page -1 ) * 10 + 1;
+		int endrow = startrow + limit - 1;
+		
+		List<Book> book = null;
+		String totalQuery = null;
+		String orderQuery = " order by bid desc";
+		String whereQuery = " where (bexist = 'yes' and book_cate=?)";
+		if(price.equals("전체")) {
+			if(sortType.equals("최신순")) {
+				totalQuery = "select rnum, a.* from (select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			}
+		} else if(price.equals("유료")) {
+			whereQuery += " and price>0";
+			if(sortType.equals("최신순")) {
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			}
+		} else {
+			whereQuery += " and price=0";
+			if(sortType.equals("최신순")) {
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = "select row_number() over("+ orderQuery +"), bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book" + whereQuery;
+			}
+		}
+		book = jdbcTemplate.query(totalQuery, new RowMapper<Book>() {
+			@Override
+			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
+				Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
+						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
+						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
+						, rs.getString("mid"));
+				return mbook;
+			}
+		}, cate, startrow, endrow);
+		return book.isEmpty()?null:book;
+	}
+	
+	public int sortedBookCnt(String cate, String price, String sortType) {
+		int cnt = 0;
+		String totalQuery = null;
+		String mainQuery = "select count(*) from book";
+		String whereQuery = " where bexist = 'yes' and book_cate=?";
+		String orderQuery = " order by bid desc";
+		if(price.equals("전체")) {
+			if(sortType.equals("최신순")) {
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			}
+		} else if(price.equals("유료")) {
+			whereQuery += " and price>0";
+			if(sortType.equals("최신순")) {
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			}
+		} else {
+			whereQuery += " and price=0";
+			if(sortType.equals("최신순")) {
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else if(sortType.equals("인기순")) {
+				orderQuery = " order by book_vol desc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			} else {
+				orderQuery = " order by book_title1 asc";
+				totalQuery = mainQuery + whereQuery + orderQuery;
+			}
+		}
+		cnt = jdbcTemplate.queryForObject(totalQuery, Integer.class, cate);
+		return cnt;
 	}
 }

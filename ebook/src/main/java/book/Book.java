@@ -3,14 +3,36 @@ package book;
 import java.util.Date;
 
 public class Book {
-	private int bid, price, book_vol, pfile_page;
+	private int rownum, bid, price, book_vol, pfile_page;
 	private String book_title1, book_title2, book_writer1, book_writer2, book_cate, contents_table, book_intro, cover_name, cover_path,
 		pfile_name, pfile_path, mid;
-	private Date book_date;
+	private Date book_date, bmod_date, bdel_date;
+	private String bexist;
 	
 	public Book(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
 			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
 		super();
+		this.bid = bid;
+		this.price = price;
+		this.book_vol = book_vol;
+		this.pfile_page = pfile_page;
+		this.mid = mid;
+		this.book_title1 = book_title1;
+		this.book_writer1 = book_writer1;
+		this.book_cate = book_cate;
+		this.contents_table = contents_table;
+		this.book_intro = book_intro;
+		this.cover_name = cover_name;
+		this.cover_path = cover_path;
+		this.pfile_name = pfile_name;
+		this.pfile_path = pfile_path;
+		this.book_date = book_date;
+	}
+	
+	public Book(int rownum, int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
+			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
+		super();
+		this.rownum = rownum;
 		this.bid = bid;
 		this.price = price;
 		this.book_vol = book_vol;
@@ -49,8 +71,6 @@ public class Book {
 		this.pfile_path = pfile_path;
 		this.book_date = book_date;
 	}
-	
-	
 
 	public Book(int price, int pfile_page, String mid, String book_title1, String book_title2, Date book_date, String book_writer1, String book_writer2, String book_cate,
 			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name,
@@ -70,6 +90,41 @@ public class Book {
 		this.cover_path = cover_path;
 		this.pfile_name = pfile_name;
 		this.pfile_path = pfile_path;
+	}
+
+	public Book(int bid, int price, int book_vol, int pfile_page, String book_title1, String book_title2,
+			String book_writer1, String book_writer2, String book_cate, String contents_table, String book_intro,
+			String cover_name, String cover_path, String pfile_name, String pfile_path, String mid, Date book_date,
+			Date bmod_date, Date bdel_date, String bexist) {
+		super();
+		this.bid = bid;
+		this.price = price;
+		this.book_vol = book_vol;
+		this.pfile_page = pfile_page;
+		this.book_title1 = book_title1;
+		this.book_title2 = book_title2;
+		this.book_writer1 = book_writer1;
+		this.book_writer2 = book_writer2;
+		this.book_cate = book_cate;
+		this.contents_table = contents_table;
+		this.book_intro = book_intro;
+		this.cover_name = cover_name;
+		this.cover_path = cover_path;
+		this.pfile_name = pfile_name;
+		this.pfile_path = pfile_path;
+		this.mid = mid;
+		this.book_date = book_date;
+		this.bmod_date = bmod_date;
+		this.bdel_date = bdel_date;
+		this.bexist = bexist;
+	}
+
+	public int getRownum() {
+		return rownum;
+	}
+
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 
 	public int getBid() {
@@ -206,6 +261,30 @@ public class Book {
 
 	public void setBook_date(Date book_date) {
 		this.book_date = book_date;
+	}
+
+	public Date getBmod_date() {
+		return bmod_date;
+	}
+
+	public void setBmod_date(Date bmod_date) {
+		this.bmod_date = bmod_date;
+	}
+
+	public Date getBdel_date() {
+		return bdel_date;
+	}
+
+	public void setBdel_date(Date bdel_date) {
+		this.bdel_date = bdel_date;
+	}
+
+	public String getBexist() {
+		return bexist;
+	}
+
+	public void setBexist(String bexist) {
+		this.bexist = bexist;
 	}
 	
 	

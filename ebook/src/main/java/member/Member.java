@@ -1,5 +1,7 @@
 package member;
 
+import java.util.Date;
+
 public class Member {
 	private String mid;
 	private String pw;
@@ -9,6 +11,9 @@ public class Member {
 	private String hint;
 	private String answer;
 	private int point;
+	private Date mmod_date;
+	private Date mdel_date;
+	private String bexist;
 	
 	public Member(String mid, String pw, String name, String gender, String phone, String hint, String answer,
 			int point) {
@@ -21,6 +26,22 @@ public class Member {
 		this.hint = hint;
 		this.answer = answer;
 		this.point = point;
+	}
+
+	public Member(String mid, String pw, String name, String gender, String phone, String hint, String answer,
+			int point, Date mmod_date, Date mdel_date, String bexist) {
+		super();
+		this.mid = mid;
+		this.pw = pw;
+		this.name = name;
+		this.gender = gender;
+		this.phone = phone;
+		this.hint = hint;
+		this.answer = answer;
+		this.point = point;
+		this.mmod_date = mmod_date;
+		this.mdel_date = mdel_date;
+		this.bexist = bexist;
 	}
 
 	public Member(String mid) {
@@ -90,5 +111,30 @@ public class Member {
 	public void setPoint(int point) {
 		this.point = point;
 	}
+
+	public Date getMmod_date() {
+		return mmod_date;
+	}
+
+	public void setMmod_date(Date mmod_date) {
+		this.mmod_date = mmod_date;
+	}
+
+	public Date getMdel_date() {
+		return mdel_date;
+	}
+
+	public void setMdel_date(Date mdel_date) {
+		this.mdel_date = mdel_date;
+	}
+
+	public String getBexist() {
+		return bexist;
+	}
+
+	public void setBexist(String bexist) {
+		this.bexist = bexist;
+	}
+	
 	
 }

@@ -35,10 +35,23 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/home")
-	public String home(Model model) {
+	public String home(Model model, HttpServletRequest request) {
+		int listcount = 0;
+		int nowpage = 0;
+		int maxpage = 0;
+		int startpage = 0;
+		int endpage = 0;
+		
 		String cate = "전체";
 		List<Book> bestBook = bookDao.cateBook1();
 		List<Book> newBook = bookDao.cateBook2();
+		
+		request.setAttribute("maxpage", maxpage);
+		request.setAttribute("page", nowpage);
+		request.setAttribute("startpage", startpage);
+		request.setAttribute("endpage", endpage);
+		request.setAttribute("listcount", listcount);
+		
 		model.addAttribute("cate", cate);
 		model.addAttribute("bestBook", bestBook);
 		model.addAttribute("newBook", newBook);

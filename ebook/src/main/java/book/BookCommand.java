@@ -5,21 +5,23 @@ import java.util.Date;
 public class BookCommand {
 	private int pur_id;
 	private Date buy_date;
-	private String bid, title;
+	private String bid, book_title1, book_title2;
 	private Date book_date;
-	private String book_writer, book_cate;
+	private String book_writer1, book_writer2, book_cate;
 	private int book_vol, price;
 	private String cover_name, pfile_name, mid;
 	
-	public BookCommand(int pur_id, Date buy_date, String bid, String title, Date book_date, String book_writer,
-			String book_cate, int book_vol, int price, String cover_name, String pfile_name, String mid) {
+	public BookCommand(int pur_id, Date buy_date, String bid, String book_title1, Date book_date, String book_writer1,
+			 String book_cate, int book_vol, int price, String cover_name, String pfile_name, String mid) {
 		super();
 		this.pur_id = pur_id;
 		this.buy_date = buy_date;
 		this.bid = bid;
-		this.title = title;
+		this.book_title1 = book_title1;
+		this.book_title2 = book_title2;
 		this.book_date = book_date;
-		this.book_writer = book_writer;
+		this.book_writer1 = book_writer1;
+		this.book_writer2 = book_writer2;
 		this.book_cate = book_cate;
 		this.book_vol = book_vol;
 		this.price = price;
@@ -52,12 +54,20 @@ public class BookCommand {
 		this.bid = bid;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getBook_title1() {
+		return book_title1;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBook_title1(String book_title1) {
+		this.book_title1 = book_title1;
+	}
+
+	public String getBook_title2() {
+		return book_title2;
+	}
+
+	public void setBook_title2(String book_title2) {
+		this.book_title2 = book_title2;
 	}
 
 	public Date getBook_date() {
@@ -68,12 +78,20 @@ public class BookCommand {
 		this.book_date = book_date;
 	}
 
-	public String getBook_writer() {
-		return book_writer;
+	public String getBook_writer1() {
+		return book_writer1;
 	}
 
-	public void setBook_writer(String book_writer) {
-		this.book_writer = book_writer;
+	public void setBook_writer1(String book_writer1) {
+		this.book_writer1 = book_writer1;
+	}
+
+	public String getBook_writer2() {
+		return book_writer2;
+	}
+
+	public void setBook_writer2(String book_writer2) {
+		this.book_writer2 = book_writer2;
 	}
 
 	public String getBook_cate() {
@@ -122,5 +140,7 @@ public class BookCommand {
 
 	public void setMid(String mid) {
 		this.mid = mid;
-	}	
+	}
+
+
 }

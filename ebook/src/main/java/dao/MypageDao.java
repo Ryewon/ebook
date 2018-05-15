@@ -20,14 +20,17 @@ public class MypageDao {
 	}
 	
 	public List<Book> myUpBook(String mid) {
-		List<Book> book = jdbcTemplate.query("select * from book where mid = ? order by bid desc"
+		List<Book> book = jdbcTemplate.query(
+				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
+				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ "from book "
+				+ "where bexist = 'yes' and mid = ? order by bid desc"
 				, new RowMapper<Book>() {
 					@Override
 					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getString("book_title2"), rs.getDate("book_date")
-								, rs.getString("book_writer1"), rs.getString("book_writer2")
-								, rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
+						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date")
+								, rs.getString("book_writer1"), rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table")
+								, rs.getString("book_intro"), rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
 								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
 								, rs.getString("mid"));
 						return mbook;
@@ -37,11 +40,11 @@ public class MypageDao {
 		return book.isEmpty()?null:book;
 	}
 	
-	public void updateInfo(String name, String gender, String phone, String hint, String answer, String mid) {
-		jdbcTemplate.update("update member set name=?, gender=?, phone=?, hint=?, answer=? where mid = ?"
-				, name, gender, phone, hint, answer, mid);
-		jdbcTemplate.update("update book set book_writer=? where mid = ?"
-				, name, mid);
+	public void updateInfo(String name1, String name2, String gender, String phone, String hint, String answer, String mid) {
+		jdbcTemplate.update("update member set name=?, gender=?, phone=?, hint=?, answer=?, mmod_date=sysdate where mid = ?"
+				, name1, gender, phone, hint, answer, mid);
+		jdbcTemplate.update("update book set book_writer1=?, book_writer2=? where mid = ?"
+				, name1, name2 , mid);
 	}
 	
 	public String getPasswrod(String mid) {
@@ -50,7 +53,7 @@ public class MypageDao {
 	}
 	
 	public void updatePw(String mid, String pw) {
-		jdbcTemplate.update("update member set pw=? where mid = ?", pw, mid);
+		jdbcTemplate.update("update member set pw=?, mmod_date=sysdate where mid = ?", pw, mid);
 	}
 	
 //	구매목록 search

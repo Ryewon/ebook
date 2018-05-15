@@ -45,7 +45,7 @@
 							<td>
 								<button>상세보기</button> <br>
 							<br>
-								<button onclick="location.href='./viewer.jsp?pfile=${plist.pfile_name }'">읽기</button>
+								<button onclick="location.href='./viewer.jsp?pfile=${plist.bid}_${plist.pfile_name }'">읽기</button>
 							</td>
 						</tr>
 					</c:forEach>
