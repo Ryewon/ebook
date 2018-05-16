@@ -66,7 +66,10 @@
 					$.ajax({
 						type: "POST",
 						url: "/ebook/charge",
-						data: "mid=" + mid + "&ch_point=" + ch_point
+						data: "mid=" + mid + "&ch_point=" + ch_point,
+						success: function() {
+							window.location.reload();
+						}
 					});
 					$('#charge_modal').hide();
 				}
@@ -75,7 +78,10 @@
 				$.ajax({
 					type: "POST",
 					url: "/ebook/charge",
-					data: "mid=" + mid + "&ch_point=" + ch_point
+					data: "mid=" + mid + "&ch_point=" + ch_point,
+					success: function() {
+						window.location.reload();
+					}
 				});
 				$('#charge_modal').hide();
 				$("input:radio").attr("checked", false);

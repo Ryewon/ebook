@@ -128,6 +128,7 @@ public class BookController {
 		List<Book> book = null;
 		List<Book> bestBook = null;
 		List<Book> newBook = null;
+		List<Book> srchBook = null;
 
 		if (cate.equals("전체")) {
 			bestBook = bookDao.cateBook1();
@@ -136,14 +137,20 @@ public class BookController {
 			model.addAttribute("newBook", newBook);
 			
 		} else {
+			if (request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			
 			if (cate.equals("검색")) {
 				String selSrch = request.getParameter("selSrch");
 				String conSrch = request.getParameter("conSrch").replaceAll(" ", "");
 				
 				listcount = bookDao.searchBookCnt(selSrch, conSrch);
-				List<Book> srchBook = bookDao.searchBook(page, limit, selSrch, conSrch);	
-				
+				srchBook = bookDao.searchBook(page, limit, selSrch, conSrch);	
 				model.addAttribute("srchBook", srchBook);
+				model.addAttribute("selSrch", selSrch);
+				model.addAttribute("conSrch", conSrch);
+				
 			} else {
 				if (rprice != null) {
 					price = rprice;
@@ -157,29 +164,31 @@ public class BookController {
 				
 				model.addAttribute("sorting", sorting);
 				model.addAttribute("book", book);
+				model.addAttribute("price", rprice);
+				model.addAttribute("sortType", rsortType);
 			}
 			
 			System.out.println("listcount : " + listcount);
-			if (request.getParameter("page") != null) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
 			maxpage = (int) ((double) listcount / limit + 0.95);
 			startpage = (((int) ((double) page / 10 + 0.9)) - 1) * 10 + 1;
 			endpage = maxpage;
+			
+			System.out.println("startpage=" + startpage + "/ endpage=" + endpage);
 
-			if (endpage > maxpage + 10 - 1) {
-				endpage = startpage + 10 - 1;
+			if (endpage > maxpage) {
+				endpage = maxpage;
 			}
 
 		}
-
+		
+		model.addAttribute("cate", cate);
+		
 		request.setAttribute("page", page);
 		request.setAttribute("maxpage", maxpage);
 		request.setAttribute("startpage", startpage);
 		request.setAttribute("endpage", endpage);
 		request.setAttribute("listcount", listcount);
 
-		model.addAttribute("cate", cate);
 		return "/home";
 	}
 

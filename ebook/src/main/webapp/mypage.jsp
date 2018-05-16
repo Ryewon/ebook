@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
@@ -51,18 +52,18 @@ $(document).ready(function(){
 
 <%@ include file="../include/header.jsp" %>
 
-<div class="container" style="position:fixed; top: 95px;">
+<div class="container" style="position:fixed; top: 95px; float: left;">
 	<div>
 		<div id="sidebar-wrapper" class="sidebar-toggle">
 			<ul class="sidebar-nav">
 		    	<li>
-		      		<a href="#" onclick="change('infoPw');">개인정보 및 패스워드 재설정</a>
+		      		<a href="/ebook/mypage?spot=infoPw">개인정보 및 패스워드 재설정</a>
 		    	</li>
 		    	<li>
-		      		<a href="#" onclick="change('upBookList');">내가 올린 책</a>
+		      		<a href="/ebook/mypage?spot=upBookList">내가 올린 책</a>
 		    	</li>
 		    	<li>
-		      		<a href="#" onclick="change('buyList');">구매목록</a>
+		      		<a href="/ebook/mypage?spot=buyList">구매목록</a>
 		    	</li>
 		  	</ul>
 		</div>		
@@ -78,6 +79,10 @@ $(document).ready(function(){
 	
 	<div id="buyList">
 	  <jsp:include page="/mypage/buyList.jsp"></jsp:include>
+	</div>
+	
+	<div style="float: left;">
+		
 	</div>
 
 </div>		

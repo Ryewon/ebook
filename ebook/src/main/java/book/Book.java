@@ -3,7 +3,7 @@ package book;
 import java.util.Date;
 
 public class Book {
-	private int rownum, bid, price, book_vol, pfile_page;
+	private int bid, price, book_vol, pfile_page;
 	private String book_title1, book_title2, book_writer1, book_writer2, book_cate, contents_table, book_intro, cover_name, cover_path,
 		pfile_name, pfile_path, mid;
 	private Date book_date, bmod_date, bdel_date;
@@ -12,27 +12,6 @@ public class Book {
 	public Book(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
 			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
 		super();
-		this.bid = bid;
-		this.price = price;
-		this.book_vol = book_vol;
-		this.pfile_page = pfile_page;
-		this.mid = mid;
-		this.book_title1 = book_title1;
-		this.book_writer1 = book_writer1;
-		this.book_cate = book_cate;
-		this.contents_table = contents_table;
-		this.book_intro = book_intro;
-		this.cover_name = cover_name;
-		this.cover_path = cover_path;
-		this.pfile_name = pfile_name;
-		this.pfile_path = pfile_path;
-		this.book_date = book_date;
-	}
-	
-	public Book(int rownum, int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
-			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
-		super();
-		this.rownum = rownum;
 		this.bid = bid;
 		this.price = price;
 		this.book_vol = book_vol;
@@ -117,14 +96,6 @@ public class Book {
 		this.bmod_date = bmod_date;
 		this.bdel_date = bdel_date;
 		this.bexist = bexist;
-	}
-
-	public int getRownum() {
-		return rownum;
-	}
-
-	public void setRownum(int rownum) {
-		this.rownum = rownum;
 	}
 
 	public int getBid() {

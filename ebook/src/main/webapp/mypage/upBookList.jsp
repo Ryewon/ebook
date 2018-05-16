@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <div id="test">
 	<h2>내가 올린 책 목록</h2>
 	<c:choose>
@@ -35,12 +36,13 @@
 								<label>가격: ${ulist.price }</label>
 							</td>
 							<td>
-								<button>상세보기</button> <br><br>
-								<button onclick="window.open('./viewer.jsp?pfile=${ulist.bid }_${ulist.pfile_name }')">읽기</button>
-								<button onclick="window.open('./viewer.jsp?pfile=${ulist.bid }_${ulist.pfile_name }')">삭제</button>
+								<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
+								<button style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_${ulist.pfile_name }')">읽기</button><br>
+								<button style="margin-bottom: 3px;">삭제</button>
 							</td>
 						</tr>
 					</c:forEach>
+
 				</tbody>
 			</table>
 		</c:otherwise>

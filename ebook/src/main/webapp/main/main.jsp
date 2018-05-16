@@ -93,7 +93,6 @@
 	int maxpage = ((Integer)request.getAttribute("maxpage")).intValue();
 	int startpage = ((Integer)request.getAttribute("startpage")).intValue();
 	int endpage = ((Integer)request.getAttribute("endpage")).intValue();
-	System.out.println("lc:"+ listcount + " np:" + nowpage + " mp:" + maxpage + " startpage:" + startpage + " endpage:" + endpage);
 %>
 
 <!-- 모달 -->
@@ -186,21 +185,21 @@ mid = ${authInfo.mid }
 									<% if(nowpage<=1){ %>
 									[이전]&nbsp;
 									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage-1 %>">[이전]</a>&nbsp;
+									<a href="/ebook/searchBook?page=<%= nowpage-1 %>&cate=${cate}&selSrch=${selSrch}&conSrch=${conSrch}">[이전]</a>&nbsp;
 									<%} %>
 									
 									<% for(int a = startpage; a <= endpage; a++) {
 										if(a==nowpage){%>
 										[<%=a %>]
 										<%} else { %>
-										<a href="/ebook/searchBook?page=<%= a %>">[<%= a %>]</a>&nbsp;
+										<a href="/ebook/searchBook?page=<%= a %>&cate=${cate}&selSrch=${selSrch}&conSrch=${conSrch}">[<%= a %>]</a>&nbsp;
 										<%} %>
 									<%} %>
 									
 									<%if(nowpage >= maxpage) {%>
 									[다음]
 									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage+1 %>">[다음]</a>
+									<a href="/ebook/searchBook?page=<%= nowpage+1 %>&cate=${cate}&selSrch=${selSrch}&conSrch=${conSrch}">[다음]</a>
 									<%} %>
 								</td>
 							</tr> 
@@ -341,21 +340,21 @@ mid = ${authInfo.mid }
 									<% if(nowpage<=1){ %>
 									[이전]&nbsp;
 									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage-1 %>">[이전]</a>&nbsp;
+									<a href="/ebook/searchBook?page=<%= nowpage-1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[이전]</a>&nbsp;
 									<%} %>
 									
 									<% for(int a = startpage; a <= endpage; a++) {
 										if(a==nowpage){%>
 										[<%=a %>]
 										<%} else { %>
-										<a href="/ebook/searchBook?page=<%= a %>">[<%= a %>]</a>&nbsp;
+										<a href="/ebook/searchBook?page=<%= a %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[<%= a %>]</a>&nbsp;
 										<%} %>
 									<%} %>
 									
 									<%if(nowpage >= maxpage) {%>
 									[다음]
 									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage+1 %>">[다음]</a>
+									<a href="/ebook/searchBook?page=<%= nowpage+1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[다음]</a>
 									<%} %>
 								</td>
 							</tr> 
@@ -367,6 +366,5 @@ mid = ${authInfo.mid }
 			</c:choose>
 		</c:otherwise>		
 	</c:choose>
-	
 </div>
 </div>

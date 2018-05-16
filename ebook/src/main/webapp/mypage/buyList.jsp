@@ -43,9 +43,9 @@
 								<label>가격: ${plist.price }</label>
 							</td>
 							<td>
-								<button>상세보기</button> <br>
-							<br>
-								<button onclick="location.href='./viewer.jsp?pfile=${plist.bid}_${plist.pfile_name }'">읽기</button>
+								<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
+								<button style="margin-bottom: 3px;" onclick="location.href='./viewer.jsp?pfile=${plist.bid}_${plist.pfile_name }'">읽기</button><br>
+								<button style="margin-bottom: 3px;">삭제</button><br>
 							</td>
 						</tr>
 					</c:forEach>
