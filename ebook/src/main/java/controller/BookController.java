@@ -35,7 +35,7 @@ public class BookController {
 	}
 
 	@RequestMapping(value = "/uploadBook", method = RequestMethod.POST)
-	public String upladBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file) {
+	public String upladBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) {
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
 		int bid = bookDao.suchBid();
@@ -107,8 +107,7 @@ public class BookController {
 		// cpath, pfile, pCnt, ppath, ipath, mid);
 		bookDao.upBook(bid, title1, title2, writer1, writer2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt,
 				ppath, mid);
-
-		return "/home";
+		return "redirect:./home";
 	}
 
 	@RequestMapping(value = "/searchBook")

@@ -19,12 +19,14 @@ public class MypageDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public List<Book> myUpBook(String mid) {
+	public List<Book> myUpBook(String mid, int page, int limit) {
+		int startrow = (page -1 ) * 5 + 1;
+		int endrow = startrow + limit - 1;
 		List<Book> book = jdbcTemplate.query(
-				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
-				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
-				+ "from book "
-				+ "where bexist = 'yes' and mid = ? order by bid desc"
+				"select a.* from " 
+				+ "(select row_number() over(order by book_date desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
+				+ "from book " 
+				+ "where bexist = 'yes' and mid = ?)a where rnum >=? and rnum <=?"
 				, new RowMapper<Book>() {
 					@Override
 					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -35,9 +37,17 @@ public class MypageDao {
 								, rs.getString("mid"));
 						return mbook;
 					}
-				}, mid);
+				}, mid, startrow, endrow);
 		
 		return book.isEmpty()?null:book;
+	}
+	
+	public int myUpBookCnt(String mid) {
+		int cnt = 0;
+		cnt = jdbcTemplate.queryForObject(
+				"select count(*) from book where bexist = 'yes' and mid = ? order by book_date desc"
+				, Integer.class, mid);
+		return cnt;
 	}
 	
 	public void updateInfo(String name1, String name2, String gender, String phone, String hint, String answer, String mid) {
@@ -57,9 +67,15 @@ public class MypageDao {
 	}
 	
 //	구매목록 search
-	public List<BookCommand> myPurBook(String mid) {
-		List<BookCommand> purbook = jdbcTemplate.query("select pur_id, buy_date, p.bid, book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name, pfile_name, p.mid " + 
-				"from purchase p, book b where p.bid = b.bid and p.mid=? order by pur_id desc"
+	public List<BookCommand> myPurBook(String mid, int page, int limit) {
+		int startrow = (page -1 ) * 5 + 1;
+		int endrow = startrow + limit - 1;
+		List<BookCommand> purbook = jdbcTemplate.query(
+				"select a.* from " 
+				+ "(select row_number() over(order by buy_date desc) rnum, pur_id, buy_date, p.bid"
+				+ ", book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name"
+				+ ", pfile_name, p.mid " 
+				+ "from purchase p, book b where p.bid = b.bid and p.mid=?) a where rnum >= ? and rnum <= ?"
 				, new RowMapper<BookCommand>() {
 					@Override
 					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -68,8 +84,17 @@ public class MypageDao {
 								, rs.getInt("book_vol"), rs.getInt("price"), rs.getString("cover_name"), rs.getString("pfile_name"), rs.getString("mid"));
 						return buybook;
 					}
-				}, mid);
+				}, mid, startrow, endrow);
 		
 		return purbook.isEmpty()?null:purbook;
+	}
+	
+	public int myPurBookCnt(String mid) {
+		int cnt = 0;
+		cnt = jdbcTemplate.queryForObject(
+				"select count(*) " + 
+				"from purchase p, book b where p.bid = b.bid and p.mid=? order by buy_date desc"
+				, Integer.class, mid);
+		return cnt;
 	}
 }

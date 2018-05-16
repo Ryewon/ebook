@@ -87,17 +87,24 @@
 			return false;
 		}
 	}
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// upBookList 쪽 스크립트임
 
 
 </script>
+
+<%
+	int listcount = ((Integer)request.getAttribute("listcount")).intValue();
+	int nowpage = ((Integer)request.getAttribute("page")).intValue();
+	int maxpage = ((Integer)request.getAttribute("maxpage")).intValue();
+	int startpage = ((Integer)request.getAttribute("startpage")).intValue();
+	int endpage = ((Integer)request.getAttribute("endpage")).intValue();
+%>
+
 <body>
 
 <%@ include file="../include/header.jsp" %>
 
-<div class="container" style="position:fixed; top: 95px; float: left;">
+<div class="container" style="position:fixed; top: 95px; float: left; height: 600px; overflow: auto;">
 	<div>
 		<div id="sidebar-wrapper" class="sidebar-toggle">
 			<ul class="sidebar-nav">
@@ -204,11 +211,155 @@
 			</c:when>
 			
 			<c:when test="${spot eq 'upBookList' }">
-				
+				<div id="test">
+					<h2>내가 올린 책 목록</h2>
+					<c:choose>
+						<c:when test="${empty upbook}">
+							<p>작성하신 책이 없습니다.</p>
+						</c:when>
+						<c:otherwise>
+							<table>
+								<tbody>
+									<c:forEach var="ulist"  items="${upbook }">
+										<tr style="border-bottom: 1px solid #8C8C8C;">
+											<td>
+												<c:choose>
+													<c:when test="${!empty ulist.cover_path }">
+														<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${ulist.bid }_${ulist.cover_name}"/></th>
+													</c:when>
+													<c:otherwise>
+														<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td style="width: 200px;">
+												<input type="hidden" id="bookId" name="bookId" value="${ulist.bid }" />
+												<label>카테고리: </label> ${ulist.book_cate } <br>
+												<label>제목: </label> ${ulist.book_title1 } <br>
+												<label>작가: </label> ${ulist.book_writer1 } <br>
+												<label>작성일: </label> ${ulist.book_date } <br>
+												<label>판매량: </label> ${ulist.book_vol } <br>
+											</td>
+											<td style="width: 100px;">
+												<label>가격: ${ulist.price }</label>
+											</td>
+											<td>
+												<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
+												<button style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_${ulist.pfile_name }')">읽기</button><br>
+												<button style="margin-bottom: 3px;">삭제</button>
+											</td>
+										</tr>
+									</c:forEach>
+									<% if(listcount > 5) { %>
+									<tr align="center" height="20">
+										<td colspan=7>
+											<% if(nowpage<=1){ %>
+											[이전]&nbsp;
+											<%} else { %>
+											<a href="/ebook/mypage?page=<%= nowpage-1 %>&spot=${spot}">[이전]</a>&nbsp;
+											<%} %>
+											
+											<% for(int a = startpage; a <= endpage; a++) {
+												if(a==nowpage){%>
+												[<%=a %>]
+												<%} else { %>
+												<a href="/ebook/mypage?page=<%= a %>&spot=${spot}">[<%= a %>]</a>&nbsp;
+												<%} %>
+											<%} %>
+											
+											<%if(nowpage >= maxpage) {%>
+											[다음]
+											<%} else { %>
+											<a href="/ebook/mypage?page=<%= nowpage+1 %>&spot=${spot}">[다음]</a>
+											<%} %>
+										</td>
+									</tr> 
+									<%} %>
+								</tbody>
+							</table>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</c:when>
 			
 			<c:otherwise>
-				
+				<div id="test">
+					<h2>구매목록</h2>
+					<c:choose>
+						<c:when test="${empty purbook}">
+							<p>구매하신 책이 없습니다.</p>
+						</c:when>
+						<c:otherwise>
+							<table>
+								<tbody>
+									<c:forEach var="plist" items="${purbook }">
+										<tr>
+											<th style="width: 200px;">구매일: ${plist.buy_date }</th>
+										</tr>
+										<tr style="border-bottom: 1px solid #8C8C8C;">
+											<c:choose>
+												<c:when test="${!empty plist.cover_name }">
+													<td>
+														<th style="width: 120px;">
+															<img style="width: 100px; height: 100px;" src="/ebook/cuploads/${plist.bid }_${plist.cover_name}" />
+														</th>
+													</td>
+												</c:when>
+												<c:otherwise>
+													<td>
+														<th style="width: 120px;">
+															<img style="width: 100px; height: 100px;" src="/ebook/no_image.png" />
+														</th>
+													</td>
+												</c:otherwise>
+											</c:choose>				
+											<td style="width: 200px;"><input type="hidden" id="bookId" name="bookId" value="${plist.bid }" /> 
+												<label>카테고리: </label>${plist.book_cate } <br> 
+												<label>제목: </label> ${plist.book_title1 } <br> 
+												<label>작가: </label> ${plist.book_writer1 } <br> 
+												<label>작성일: </label> ${plist.book_date } <br> 
+												<label>판매량: </label> ${plist.book_vol } <br>
+											</td>
+											<td style="width: 100px;">
+												<label>가격: ${plist.price }</label>
+											</td>
+											<td>
+												<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
+												<button style="margin-bottom: 3px;" onclick="location.href='./viewer.jsp?pfile=${plist.bid}_${plist.pfile_name }'">읽기</button><br>
+												<button style="margin-bottom: 3px;">삭제</button><br>
+											</td>
+										</tr>
+									</c:forEach>
+									<% if(listcount > 5) { %>
+									<tr align="center" height="20">
+										<td colspan=7>
+											<% if(nowpage<=1){ %>
+											[이전]&nbsp;
+											<%} else { %>
+											<a href="/ebook/mypage?page=<%= nowpage-1 %>&spot=${spot}">[이전]</a>&nbsp;
+											<%} %>
+											
+											<% for(int a = startpage; a <= endpage; a++) {
+												if(a==nowpage){%>
+												[<%=a %>]
+												<%} else { %>
+												<a href="/ebook/mypage?page=<%= a %>&spot=${spot}">[<%= a %>]</a>&nbsp;
+												<%} %>
+											<%} %>
+											
+											<%if(nowpage >= maxpage) {%>
+											[다음]
+											<%} else { %>
+											<a href="/ebook/mypage?page=<%= nowpage+1 %>&spot=${spot}">[다음]</a>
+											<%} %>
+										</td>
+									</tr> 
+									<%} %>
+								</tbody>
+							</table>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</c:otherwise>
 		</c:choose>
 	</div>

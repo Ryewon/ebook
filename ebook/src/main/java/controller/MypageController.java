@@ -29,12 +29,48 @@ public class MypageController {
 
 	@RequestMapping(value = "/mypage")
 	public String upBook(HttpServletRequest request, Model model) {
+		int page = 1;
+		int limit = 5;
+		int listcount = 0;
+		int maxpage = 0;
+		int startpage = 0;
+		int endpage = 0;
+		
+		String spot = request.getParameter("spot");
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
-		List<Book> upbook = mypageDao.myUpBook(mid);
-		List<BookCommand> purbook = mypageDao.myPurBook(mid);
-		model.addAttribute("upbook", upbook);
-		model.addAttribute("purbook", purbook);
+		
+		if(spot.equals("infoPw")) {
+			
+		} else {
+			if (request.getParameter("page") != null) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			if(spot.equals("upBookList")) {
+				listcount = mypageDao.myUpBookCnt(mid);
+				List<Book> upbook = mypageDao.myUpBook(mid, page, limit);
+				model.addAttribute("upbook", upbook);			
+			} else {
+				listcount = mypageDao.myPurBookCnt(mid);
+				List<BookCommand> purbook = mypageDao.myPurBook(mid, page, limit);
+				model.addAttribute("purbook", purbook);
+			}
+			maxpage = (int) ((double) listcount / limit + 0.95);
+			startpage = (((int) ((double) page / 10 + 0.9)) - 1) * 10 + 1;
+			endpage = maxpage;
+
+			if (endpage > maxpage) {
+				endpage = maxpage;
+			}
+		}
+		
+		request.setAttribute("page", page);
+		request.setAttribute("maxpage", maxpage);
+		request.setAttribute("startpage", startpage);
+		request.setAttribute("endpage", endpage);
+		request.setAttribute("listcount", listcount);
+		
+		model.addAttribute("spot", spot);
 		return "/mypage";
 	}
 	
@@ -53,6 +89,7 @@ public class MypageController {
 		String answer = request.getParameter("answer");
 		System.out.println("or:" + orginPw);
 		System.out.println("in:" + inputPw);
+		model.addAttribute("spot","infoPw");
 		if(orginPw.equals(inputPw)) {
 			System.out.println("쿼리날린다~");
 			mypageDao.updateInfo(name1, name2, gender, phone, hint, answer, mid);
@@ -79,6 +116,7 @@ public class MypageController {
 		String npw = request.getParameter("new_pw1");
 		String pw = mypageDao.getPasswrod(mid);
 		System.out.println("현재비번: " + pw);
+		model.addAttribute("spot","infoPw");
 		if(pw.equals(cpw)) {
 			System.out.println("바꿀 쿼리 실행할거임");
 			mypageDao.updatePw(mid, npw);
@@ -98,6 +136,7 @@ public class MypageController {
 	@RequestMapping(value = "/mypage/pass") 
 	public String pass(@RequestParam(value="changePw") String changePw, Model model) {
 		model.addAttribute("changePw", changePw);
+		model.addAttribute("spot","infoPw");
 		return "mypage";
 	}
 /*	@RequestMapping(value = "/infoPw") 

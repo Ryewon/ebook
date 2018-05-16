@@ -179,7 +179,7 @@ mid = ${authInfo.mid }
 									</td>
 								</tr>
 							</c:forEach>
-							<% if(listcount >= 5) { %>
+							<% if(listcount > 5) { %>
 							<tr align="center" height="20">
 								<td colspan=7>
 									<% if(nowpage<=1){ %>
@@ -334,7 +334,7 @@ mid = ${authInfo.mid }
 									</td>
 								</tr>
 							</c:forEach>
-							<% if(listcount >= 5) { %>
+							<% if(listcount > 5) { %>
 							<tr align="center" height="20">
 								<td colspan=7>
 									<% if(nowpage<=1){ %>

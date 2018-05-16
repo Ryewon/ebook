@@ -154,7 +154,7 @@
 			</c:if>
 			<c:if test="${! empty authInfo }">
 				<li><label style="padding: 10px 35px"><c:out value="${authInfo.name }(${authInfo.mid })" />님</label></li>
-				<li><a href="/ebook/mypage" class="btn btn-custom" style="width:119px">MyPage</a></li>
+				<li><a href="/ebook/mypage?spot=infoPw" class="btn btn-custom" style="width:119px">MyPage</a></li>
 				<li><a href="#" class="btn btn-custom" style="width:119px" onclick="charge_show();">포인트 충전</a></li>
 				<li><a href="/ebook/upbook" class="btn btn-custom" style="width:119px">책 올리기</a></li>
 				<li><a href="/ebook/logout" class="btn btn-custom" style="width:119px">로그아웃</a></li>
