@@ -20,5 +20,6 @@
 	
 	<bean class="controller.MypageController">
 		<property name="mypageDao" ref="mypageDao" />
+		<property name="bookDao" ref="bookDao" />
 	</bean>
 </beans>

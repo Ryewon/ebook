@@ -137,7 +137,7 @@
 					<c:choose>
 						<c:when test="${!empty bookInfo.cover_name }">							
 							<th style="width: 120px;">
-								<img style="width: 100px; height: 100px;" src="/ebook/cuploads/${bookInfo.bid }_${bookInfo.cover_name}" />
+								<img style="width: 100px; height: 100px;" src="/ebook/cuploads/${bookInfo.bid }_coverFile" />
 							</th>							
 						</c:when>
 						<c:otherwise>							

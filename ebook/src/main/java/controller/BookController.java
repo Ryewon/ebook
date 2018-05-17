@@ -66,9 +66,9 @@ public class BookController {
 			System.out.println("cfile 널 처리1");
 			cpath = "";
 		} else {
-			cpath = request.getParameter("cupdir") + bid + "_" + cfile;
+			cpath = request.getParameter("cupdir") + bid + "_coverFile";
 		}
-		String ppath = request.getParameter("pupdir") + bid + "_" + pfile;
+		String ppath = request.getParameter("pupdir") + bid + "_pdfFile";
 		// String ipath = request.getParameter("iupdir")+ bid +"_";
 
 		int pCnt = 0;

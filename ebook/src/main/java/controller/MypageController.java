@@ -16,15 +16,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.Book;
 import book.BookCommand;
+import dao.BookDao;
 import dao.MypageDao;
 import member.AuthInfo;
 
 @Controller
 public class MypageController {
 	MypageDao mypageDao;
-
+	BookDao bookDao;
+	
 	public void setMypageDao(MypageDao mypageDao) {
 		this.mypageDao = mypageDao;
+	}
+	
+	public void setBookDao(BookDao bookDao) {
+		this.bookDao = bookDao;
 	}
 
 	@RequestMapping(value = "/mypage")
@@ -43,14 +49,28 @@ public class MypageController {
 		if(spot.equals("infoPw")) {
 			
 		} else {
+			String delId = request.getParameter("delId");
+			System.out.println("delId: "+ delId);
+			
 			if (request.getParameter("page") != null) {
 				page = Integer.parseInt(request.getParameter("page"));
 			}
+			
 			if(spot.equals("upBookList")) {
+				if(delId!=null) {
+					System.out.println("여기는 내가 올린책 지우기 전");
+					int bid = Integer.parseInt(delId);
+					mypageDao.DelupBook(bid);
+				}
 				listcount = mypageDao.myUpBookCnt(mid);
 				List<Book> upbook = mypageDao.myUpBook(mid, page, limit);
 				model.addAttribute("upbook", upbook);			
 			} else {
+				if(delId!=null) {
+					System.out.println("여기는 내가 산 책 지우기 전");
+					int pur_id = Integer.parseInt(delId);
+					mypageDao.DelbuyBook(pur_id);
+				}
 				listcount = mypageDao.myPurBookCnt(mid);
 				List<BookCommand> purbook = mypageDao.myPurBook(mid, page, limit);
 				model.addAttribute("purbook", purbook);
@@ -71,7 +91,7 @@ public class MypageController {
 		request.setAttribute("listcount", listcount);
 		
 		model.addAttribute("spot", spot);
-		return "/mypage";
+		return "mypage/mypage";
 	}
 	
 	@RequestMapping(value = "/infoModify")
@@ -103,11 +123,11 @@ public class MypageController {
 			return "redirect:/mypage";
 		} else {
 			model.addAttribute("check", "miss");
-			return "/mypage";
+			return "/mypage/mypage";
 		}
 	}
 	
-	@RequestMapping(value = "passModify")
+	@RequestMapping(value = "/passModify")
 	public String passModify(HttpServletRequest request, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		System.out.println("비번바꾸는 컨트롤러");
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
@@ -128,7 +148,7 @@ public class MypageController {
 			return "redirect:/mypage/pass";
 		} else {			
 			model.addAttribute("changePw", "n");
-			return "mypage";
+			return "/mypage/mypage";
 		}
 	}
 	
@@ -137,7 +157,14 @@ public class MypageController {
 	public String pass(@RequestParam(value="changePw") String changePw, Model model) {
 		model.addAttribute("changePw", changePw);
 		model.addAttribute("spot","infoPw");
-		return "mypage";
+		return "/mypage/mypage";
+	}
+	
+	@RequestMapping(value = "/modifyBook")
+	public String modifyBook(HttpServletRequest request) {
+		int bid = Integer.parseInt(request.getParameter("bid"));
+		Book book = bookDao.bookInfo(bid);
+		return "/mypage/modifyBook";
 	}
 /*	@RequestMapping(value = "/infoPw") 
 	public String infoPw() {

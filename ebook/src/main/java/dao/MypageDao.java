@@ -97,4 +97,12 @@ public class MypageDao {
 				, Integer.class, mid);
 		return cnt;
 	}
+	
+	public void DelupBook(int bid) {
+		jdbcTemplate.update("update book set bdel_date=sysdate, bexist='no' where bid=?", bid);
+	}
+	
+	public void DelbuyBook(int pur_id) {
+		jdbcTemplate.update("update purchase set pdel_date=sysdate, pexist='no' where pur_id=?", pur_id);
+	}
 }

@@ -153,7 +153,7 @@ mid = ${authInfo.mid }
 									<td>
 										<c:choose>
 											<c:when test="${!empty srblist.cover_path }">
-												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${srblist.bid }_${srblist.cover_name}"/></th>
+												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${srblist.bid }_coverFile"/></th>
 											</c:when>
 											<c:otherwise>
 												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
@@ -220,7 +220,7 @@ mid = ${authInfo.mid }
 							<td>
 								<c:choose>
 									<c:when test="${!empty bestlist.cover_path }">
-										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${bestlist.bid }_${bestlist.cover_name}"/></th>
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${bestlist.bid }_coverFile"/></th>
 									</c:when>
 									<c:otherwise>
 										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
@@ -258,7 +258,7 @@ mid = ${authInfo.mid }
 							<td>
 								<c:choose>
 									<c:when test="${!empty newlist.cover_path }">
-										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${newlist.bid }_${newlist.cover_name}"/></th>
+										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${newlist.bid }_coverFile"/></th>
 									</c:when>
 									<c:otherwise>
 										<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
@@ -303,62 +303,70 @@ mid = ${authInfo.mid }
 					<div style="margin-top: 30px;">
 					<table>
 						<tbody>
-							<c:forEach var="blist"  items="${book }">
-								<tr style="border-bottom: 1px solid #8C8C8C;">
-									<td>
-										<c:choose>
-											<c:when test="${!empty blist.cover_path }">
-												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_${blist.cover_name}"/></th>
-											</c:when>
-											<c:otherwise>
-												<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
-											</c:otherwise>
-										</c:choose>
-									</td>
-									<td style="width: 200px;">
-										<input type="hidden" value="${blist.bid }" />
-										<label>카테고리: </label> ${blist.book_cate } <br>
-										<label>제목: </label> ${blist.book_title1 } <br>
-										<label>작가: </label> ${blist.book_writer1 } <br>
-										<label>작성일: </label> ${blist.book_date } <br>
-										<label>판매량: </label> ${blist.book_vol } <br>
-									</td>
-									<td style="width: 100px;">
-										<label>가격: ${blist.price }</label>
-									</td>
-									<td>
-										<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
-										<c:if test="${authInfo.mid != blist.mid }">
-											<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
-										</c:if>
-									</td>
-								</tr>
-							</c:forEach>
-							<% if(listcount > 5) { %>
-							<tr align="center" height="20">
-								<td colspan=7>
-									<% if(nowpage<=1){ %>
-									[이전]&nbsp;
-									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage-1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[이전]</a>&nbsp;
+							<c:choose>
+								<c:when test="${empty book }">
+									해당하는 책이 존재하지 않습니다.
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="blist"  items="${book }">
+										<tr style="border-bottom: 1px solid #8C8C8C;">
+											<td>
+												<c:choose>
+													<c:when test="${!empty blist.cover_path }">
+														<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/cuploads/${blist.bid }_coverFile"/></th>
+													</c:when>
+													<c:otherwise>
+														<th style="width: 120px;"><img style="width: 100px; height: 100px;" src="/ebook/no_image.png"/></th>
+													</c:otherwise>
+												</c:choose>
+											</td>
+											<td style="width: 200px;">
+												<input type="hidden" value="${blist.bid }" />
+												<label>카테고리: </label> ${blist.book_cate } <br>
+												<label>제목: </label> ${blist.book_title1 } <br>
+												<label>작가: </label> ${blist.book_writer1 } <br>
+												<label>작성일: </label> ${blist.book_date } <br>
+												<label>판매량: </label> ${blist.book_vol } <br>
+											</td>
+											<td style="width: 100px;">
+												<label>가격: ${blist.price }</label>
+											</td>
+											<td>
+												<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
+												<c:if test="${authInfo.mid != blist.mid }">
+													<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
+												</c:if>
+											</td>
+										</tr>
+									</c:forEach>
+									<% if(listcount > 5) { %>
+									<tr align="center" height="20">
+										<td colspan=7>
+											<% if(nowpage<=1){ %>
+											[이전]&nbsp;
+											<%} else { %>
+											<a href="/ebook/searchBook?page=<%= nowpage-1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[이전]</a>&nbsp;
+											<%} %>
+											
+											<% for(int a = startpage; a <= endpage; a++) {
+												if(a==nowpage){%>
+												[<%=a %>]
+												<%} else { %>
+												<a href="/ebook/searchBook?page=<%= a %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[<%= a %>]</a>&nbsp;
+												<%} %>
+											<%} %>
+											
+											<%if(nowpage >= maxpage) {%>
+											[다음]
+											<%} else { %>
+											<a href="/ebook/searchBook?page=<%= nowpage+1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[다음]</a>
+											<%} %>
+										</td>
+									</tr> 
 									<%} %>
-									
-									<% for(int a = startpage; a <= endpage; a++) {
-										if(a==nowpage){%>
-										[<%=a %>]
-										<%} else { %>
-										<a href="/ebook/searchBook?page=<%= a %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[<%= a %>]</a>&nbsp;
-										<%} %>
-									<%} %>
-									
-									<%if(nowpage >= maxpage) {%>
-									[다음]
-									<%} else { %>
-									<a href="/ebook/searchBook?page=<%= nowpage+1 %>&cate=${cate}&price=${price}&sortType=${sortType}&sorting=y">[다음]</a>
-									<%} %>
-								</td>
-							</tr> 
-							<%} %>
+								</c:otherwise>
+							</c:choose>
+							
 						</tbody>
 					</table>
 					</div>
