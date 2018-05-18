@@ -7,7 +7,7 @@
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>${param.title } - ${param.writer }</title>
 <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
 <script src="//mozilla.github.io/pdf.js/build/pdf.worker.js"></script>
 <script src="https://code.jquery.com/jquery-latest.js"></script>

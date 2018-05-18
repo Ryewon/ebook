@@ -2,16 +2,22 @@ package controller;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.Book;
@@ -160,15 +166,159 @@ public class MypageController {
 		return "/mypage/mypage";
 	}
 	
+	//책 수정 페이지로 이동
 	@RequestMapping(value = "/modifyBook")
-	public String modifyBook(HttpServletRequest request) {
+	public String modifyBook(HttpServletRequest request, Model model) {
 		int bid = Integer.parseInt(request.getParameter("bid"));
 		Book book = bookDao.bookInfo(bid);
+		String intro = book.getBook_intro();
+		String contable = book.getContents_table();
+		System.out.println("intro:" + intro);
+		System.out.println("contable:" + contable);
+		if(intro!=null ) {			
+			intro=book.getBook_intro().replaceAll("<br>", "\r\n");
+			book.setBook_intro(intro);
+		}
+		if(contable!=null) {
+			contable = book.getContents_table().replaceAll("<br>", "\r\n");	
+			System.out.println("바꾼 목차:" + contable);
+			book.setContents_table(contable);
+		}
+		model.addAttribute("book", book);
+		
 		return "/mypage/modifyBook";
 	}
-/*	@RequestMapping(value = "/infoPw") 
-	public String infoPw() {
 	
-		return "mypage/infoPw";
-	}*/
+	@RequestMapping(value = "/modifyUpBook")
+	public String modifyUpBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) {
+		int bid = Integer.parseInt(request.getParameter("bid"));
+		String cate = request.getParameter("cate");
+		String free = request.getParameter("free");
+		String pre_price = (String) request.getParameter("price");
+		System.out.println("변환전가격:  " + pre_price + "   원");
+		int price = 0;
+		if (pre_price.isEmpty()) {
+			System.out.println("가격0");
+			price = 0;
+		} else {
+			System.out.println("가격 변환");
+			price = Integer.parseInt(pre_price);
+		}
+		String title1 = request.getParameter("title");
+		String title2 = title1.replaceAll(" ", "");
+		String intro = request.getParameter("intro").replace("\r\n", "<br>");
+		String con_table = request.getParameter("con_table").replace("\r\n", "<br>");
+		System.out.println("cfile에 넣기");
+		
+		String orgCoverName = request.getParameter("OrgCoverName");
+		String orgPfileName = request.getParameter("OrgPfileName");
+		String coverName = request.getParameter("coverName");
+		String pfileName = request.getParameter("pfileName");
+		
+		String cfile = null;
+		String cpath = null;
+		String pfile = null;
+		String ppath = null;
+		int pCnt = 0;
+		PDDocument doc = null;
+		
+		if(coverName.equals("")) {
+			if(orgPfileName.equals(pfileName)) {
+				mypageDao.modifyCoverBook(title1, title2, cate, price, con_table, intro, cfile, cpath, bid);
+			} else {
+				pfile = file.get(1).getOriginalFilename();
+				ppath = request.getParameter("pupdir") + bid + "_pdfFile";
+				try {
+					File pdf_file = new File(ppath);
+					file.get(1).transferTo(pdf_file);
+					doc = PDDocument.load(pdf_file);
+					pCnt = doc.getPageCount();
+
+					doc.close();
+				} catch (IOException e) {
+					System.out.println("File 변환 예외발생");
+				}
+				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+			}
+		} else {
+			if(orgCoverName.equals(coverName)) {
+				if(orgPfileName.equals(pfileName)) {
+					mypageDao.modifyBook(title1, title2, cate, price, con_table, intro, bid);
+				} else {
+					pfile = file.get(1).getOriginalFilename();
+					ppath = request.getParameter("pupdir") + bid + "_pdfFile";
+					try {
+						File pdf_file = new File(ppath);
+						file.get(1).transferTo(pdf_file);
+						doc = PDDocument.load(pdf_file);
+						pCnt = doc.getPageCount();
+
+						doc.close();
+					} catch (IOException e) {
+						System.out.println("File 변환 예외발생");
+					}
+					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, bid);
+				}
+			} else {
+				if(orgPfileName.equals(pfileName)) {
+					cfile = file.get(0).getOriginalFilename();
+					cpath = request.getParameter("cupdir") + bid + "_coverFile";
+					try {
+						File cover_file = new File(cpath);
+						file.get(0).transferTo(cover_file);				
+					} catch (IOException e) {
+						System.out.println("File 변환 예외발생");
+					}
+					mypageDao.modifyCoverBook(title1, title2, cate, price, con_table, intro, cfile, cpath, bid);
+				} else {
+					cfile = file.get(0).getOriginalFilename();
+					cpath = request.getParameter("cupdir") + bid + "_coverFile";
+					try {
+						File cover_file = new File(cpath);
+						file.get(0).transferTo(cover_file);
+						
+						File pdf_file = new File(ppath);
+						file.get(1).transferTo(pdf_file);
+						doc = PDDocument.load(pdf_file);
+						pCnt = doc.getPageCount();
+			
+						doc.close();
+					} catch (IOException e) {
+						System.out.println("File 변환 예외발생");
+					}
+					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+				}
+			}
+		}
+//		int page = 1;
+//		int limit = 5;
+//		int listcount = 0;
+//		int maxpage = 0;
+//		int startpage = 0;
+//		int endpage = 0;
+//		
+//		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+//		String mid = authInfo.getMid();
+//		
+//		listcount = mypageDao.myUpBookCnt(mid);
+//		List<Book> upbook = mypageDao.myUpBook(mid, page, limit);
+//		model.addAttribute("upbook", upbook);		
+//		
+//		maxpage = (int) ((double) listcount / limit + 0.95);
+//		startpage = (((int) ((double) page / 10 + 0.9)) - 1) * 10 + 1;
+//		endpage = maxpage;
+//
+//		if (endpage > maxpage) {
+//			endpage = maxpage;
+//		}
+//		
+//		request.setAttribute("page", page);
+//		request.setAttribute("maxpage", maxpage);
+//		request.setAttribute("startpage", startpage);
+//		request.setAttribute("endpage", endpage);
+//		request.setAttribute("listcount", listcount);
+		
+		model.addAttribute("spot", "upBookList");
+		return "redirect:mypage";
+	}
 }

@@ -1,7 +1,13 @@
 @charset "UTF-8";
+@import url(//fonts.googleapis.com/earlyaccess/notosanskhmerui.css);
 
-#booklistdiv{
+*{
+	font-family: 'Noto Sans Khmer UI', sans-serif;
+}
+
+/* #booklistdiv{
 	width: 1000px;
 	padding-left: 10%;
 	padding-right: 10%;
-}
+	margin: 0 auto;
+} */

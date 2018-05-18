@@ -3,7 +3,7 @@
 
 <nav id="topMenu">
 	<ul>
-		<li><a class="menuLink" href="/ebook/searchBook?cate=전체&price=전체&sortType=최신순">전체</a></li>
+		<li><a class="menuLink" href="/ebook/searchBook?cate=전체&price=전체&sortType=최신순">Best&신간 도서</a></li>
 		<li><a class="menuLink" href="/ebook/searchBook?cate=소설&price=전체&sortType=최신순">소설</a></li>
 		<li><a class="menuLink" href="/ebook/searchBook?cate=만화&price=전체&sortType=최신순">만화</a></li>
 		<li><a class="menuLink" href="/ebook/searchBook?cate=시/에세이&price=전체&sortType=최신순">시/에세이</a></li>

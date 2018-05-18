@@ -133,7 +133,6 @@
 					<label style="display: inline-table;">
 					<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
 					<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/puploads/")%>" />
-					<input type="hidden" id="iupdir" name="iupdir" value="<%=request.getRealPath("/iuploads/")%>" />
 				</div>
 			</div>
 			<br>

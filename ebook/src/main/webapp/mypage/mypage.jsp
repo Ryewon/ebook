@@ -180,13 +180,17 @@
 							<div>
 								<label>힌트</label> 
 								<select id="hint" name="hint" onchange="hintEdit();">
-									<option value="가장 좋아하는 색깔은?">가장 좋아하는 색깔은?</option>
-									<option value="가장 소중한 보물은?">가장 소중한 보물은?</option>
-									<option value="어렸을 적 짝꿍의 이름은?">어렸을 적 짝꿍의 이름은?</option>
-									<option value="기억에 남는 장소는?">기억에 남는 장소는?</option>
-									<option value="기타">기타</option>
+									<option value="가장 좋아하는 색깔은?" <c:if test="${authInfo.hint eq '가장 좋아하는 색깔은?'}"> selected </c:if>>가장 좋아하는 색깔은?</option> 
+									<option value="가장 소중한 보물은?" <c:if test="${authInfo.hint eq '가장 소중한 보물은?'}"> selected </c:if>>가장 소중한 보물은?</option>
+									<option value="어렸을 적 짝꿍의 이름은?" <c:if test="${authInfo.hint eq '어렸을 적 짝꿍의 이름은?'}"> selected </c:if>>어렸을 적 짝꿍의 이름은?</option>
+									<option value="기억에 남는 장소는?" <c:if test="${authInfo.hint eq '기억에 남는 장소는?'}"> selected </c:if>>기억에 남는 장소는?</option>
+									<option value="기타" <c:if test="${authInfo.hint ne '가장 좋아하는 색깔은?'
+																	 && authInfo.hint ne '가장 소중한 보물은?'
+																	 && authInfo.hint ne '어렸을 적 짝꿍의 이름은?'
+																	 && authInfo.hint ne '기억에 남는 장소는?'}"> selected 
+														</c:if>>기타</option>
 								</select> 
-								<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly /> 
+								<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly /> 
 								<span id="ckHint"></span>
 							</div>
 							<div>
@@ -365,8 +369,8 @@
 													</td>
 													<td>
 														<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
-														<button style="margin-bottom: 3px;" onclick="location.href='./viewer.jsp?pfile=${plist.bid}_pdfFile'">읽기</button><br>
-														<button style="margin-bottom: 3px;" onclick="delCheck('${plist.bid}', 'buyList')">삭제</button><br>
+														<button style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile')">읽기</button><br>
+														<button style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>
 													</td>
 												</tr>
 											</c:forEach>

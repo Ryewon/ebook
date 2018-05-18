@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=115" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=115" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=135" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=1252" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>
 
@@ -28,6 +28,7 @@
 						$("#buyCon").html("이미 구매하신 책입니다.");
 						$("#cbtn").html("확인");
 						$("#reloadBtn").hide();
+						$("#pointCon").hide();
 						$("#buyBtn").hide();
 						$('#point_con').hide();
 						$('#buyalert').hide();
@@ -56,6 +57,7 @@
 									success : function() {
 										$("#buyTitle").html("알림");
 										$("#buyCon").html("구매되었습니다.");
+										$("#pointCon").hide();
 										$("#closeBtn").hide();
 										$("#buyBtn").hide();
 										$("#reloadBtn").show();
@@ -68,11 +70,12 @@
 				}
 			});
 		}  else {
+			$("#buyalert").hide();
 			$("#buyTitle").html("알림");
 			$("#buyCon").html("로그인 후 구매해주세요.");
 			$("#closeBtn").html("확인");
 			$("#pointCon").hide();
-			$('#buyalert').hide();
+			$('#reloadBtn').hide();
 			$("#buyBtn").hide();
 			$('#buy_modal').show();
 		}
@@ -133,13 +136,14 @@
 
 <div style="top: 95px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
-<div id="booklistdiv" class="container" style="position: fixed; top: 150px; height: 800px; overflow: auto;">
+<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%;">
 cate = ${cate },
 mid = ${authInfo.mid }
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	<br>
 	<c:choose>
 		<c:when test="${cate eq '검색'}">
+			<div style="margin: 0 auto; width: 600px;">
 			<c:choose>
 				<c:when test="${empty srchBook}">
 					<p>일치하는 검색 결과가 없습니다.</p>
@@ -209,9 +213,10 @@ mid = ${authInfo.mid }
 					</div>
 				</c:otherwise>
 			</c:choose>
+			</div>
 		</c:when>
 		<c:when test="${cate eq '전체'}">
-			<div>
+			<div style="margin: 0 auto; width: 600px;">
 			<h3>Best 도서</h3>
 			<table>
 				<tbody>
@@ -249,7 +254,7 @@ mid = ${authInfo.mid }
 				</tbody>
 			</table>
 			</div>
-			<div>
+			<div style="margin: 0 auto; width: 600px;">
 			<h3>신간 도서</h3>
 			<table>
 				<tbody>
@@ -289,6 +294,7 @@ mid = ${authInfo.mid }
 			</div>
 		</c:when>
 		<c:otherwise>
+			<div style="margin: 0 auto; width: 600px;">
 			<c:choose>
 				<c:when test="${empty book && empty sorting}">
 					<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
@@ -299,7 +305,7 @@ mid = ${authInfo.mid }
 					</div>
 					<div style="float: right;">
 						/<a href="/ebook/searchBook?sortType=최신순&cate=${cate }&sorting=y">최신순</a>/<a href="/ebook/searchBook?sortType=인기순&cate=${cate }&sorting=y">인기순</a>/<a href="/ebook/searchBook?sortType=가나다순&cate=${cate }&sorting=y">가나다순</a>/
-					</div>
+					</div> <br>
 					<div style="margin-top: 30px;">
 					<table>
 						<tbody>
@@ -372,6 +378,7 @@ mid = ${authInfo.mid }
 					</div>
 				</c:otherwise>
 			</c:choose>
+			</div>
 		</c:otherwise>		
 	</c:choose>
 </div>

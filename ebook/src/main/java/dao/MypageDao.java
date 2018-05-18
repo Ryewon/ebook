@@ -3,6 +3,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -75,7 +76,7 @@ public class MypageDao {
 				+ "(select row_number() over(order by buy_date desc) rnum, pur_id, buy_date, p.bid"
 				+ ", book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name"
 				+ ", pfile_name, p.mid " 
-				+ "from purchase p, book b where p.bid = b.bid and p.mid=?) a where rnum >= ? and rnum <= ?"
+				+ "from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes') a where rnum >= ? and rnum <= ?"
 				, new RowMapper<BookCommand>() {
 					@Override
 					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -93,7 +94,7 @@ public class MypageDao {
 		int cnt = 0;
 		cnt = jdbcTemplate.queryForObject(
 				"select count(*) " + 
-				"from purchase p, book b where p.bid = b.bid and p.mid=? order by buy_date desc"
+				"from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes' order by buy_date desc"
 				, Integer.class, mid);
 		return cnt;
 	}
@@ -104,5 +105,31 @@ public class MypageDao {
 	
 	public void DelbuyBook(int pur_id) {
 		jdbcTemplate.update("update purchase set pdel_date=sysdate, pexist='no' where pur_id=?", pur_id);
+	}
+	
+	public void modifyCoverBook(String title1, String title2, String cate, int price, String con_table, String intro, String cfile, String cpath, int bid) {
+		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
+				+ "cover_name=?, cover_path=?, bmod_date=sysdate where bid=?"
+				, title1, title2, cate, price, con_table, intro, cfile, cpath, bid);
+	}
+	
+	public void modifyPdfBook(String title1, String title2, String cate, int price, String con_table, String intro
+			, String pfile, int pCnt, String ppath, int bid) {
+		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
+				+ "pfile_name=?, pfile_page=?, pfile_path=?, bmod_date=sysdate where bid=?"
+				, title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, bid);
+	}
+	
+	public void modifyCoverPdfBook(String title1, String title2, String cate, int price, String con_table, String intro, String cfile, String cpath
+			, String pfile, int pCnt, String ppath, int bid) {
+		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
+				+ "cover_name=?, cover_path=?, pfile_name=?, pfile_page=?, pfile_path=?, bmod_date=sysdate where bid=?"
+				, title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+	}
+	
+	public void modifyBook(String title1, String title2, String cate, int price, String con_table, String intro, int bid) {
+		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
+				+ "bmod_date=sysdate where bid=?"
+				, title1, title2, cate, price, con_table, intro, bid);
 	}
 }

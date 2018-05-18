@@ -1,10 +1,13 @@
 package controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Controller;
@@ -198,8 +201,11 @@ public class BookController {
 	}
 
 	@RequestMapping(value = "/buyBook")
-	public @ResponseBody String buyBook(String mid, int bid, int cpoint, int ppoint, int apoint) {
+	public @ResponseBody String buyBook(String mid, int bid, int cpoint, int ppoint, int apoint, HttpServletRequest request, HttpSession session) {
 		bookDao.buyBook(mid, bid, cpoint, ppoint, apoint);
+		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+		authInfo.setPoint(apoint);
+		session.setAttribute("authInfo", authInfo);
 		return "";
 	}
 

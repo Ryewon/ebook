@@ -27,6 +27,7 @@
 					if(buyck =='already') {
 						$("#buyTitle").html("알림");
 						$("#buyCon").html("이미 구매하신 책입니다.");
+						$("#pointCon").hide();
 						$("#cbtn").html("확인");
 						$("#reloadBtn").hide();
 						$("#buyBtn").hide();
@@ -58,6 +59,7 @@
 										$("#buyTitle").html("알림");
 										$("#buyCon").html("구매되었습니다.");
 										$("#closeBtn").hide();
+										$("#pointCon").hide();
 										$("#buyBtn").hide();
 										$("#reloadBtn").show();
 										$('#buy_modal').show();
@@ -68,12 +70,14 @@
 					}			
 				}
 			});
-		}  else {
+		}  else {		
+			$("#buyalert").hide();
 			$("#buyTitle").html("알림");
 			$("#buyCon").html("로그인 후 구매해주세요.");
 			$("#closeBtn").html("확인");
 			$("#pointCon").hide();
 			$("#buyBtn").hide();
+			$("#reloadBtn").hide();
 			$('#buy_modal').show();
 		}
 	}

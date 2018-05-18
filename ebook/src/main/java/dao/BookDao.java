@@ -110,7 +110,7 @@ public class BookDao {
 	public String buyCheck(String mid, int bid) {
 		String pur_id = null;
 		try {
-			pur_id=jdbcTemplate.queryForObject("select pur_id from purchase where mid=? and bid=?", String.class, mid, bid);		
+			pur_id=jdbcTemplate.queryForObject("select pur_id from purchase where mid=? and bid=? and pexist='yes'", String.class, mid, bid);		
 			System.out.println(pur_id);
 			return "already";
 		} catch (Exception e) {
@@ -217,15 +217,7 @@ public class BookDao {
 	public int searchBookCnt(String selSrch, String searchCon) {
 		int cnt = 0;
 		String strLike = "%" + searchCon + "%";
-		if(selSrch.equals("제목+작가")) {		
-			cnt = jdbcTemplate.queryForObject(
-					"select count(*) " 
-					+ "from " 
-					+ "(select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
-					+ "from BOOK where bexist = 'yes') " 
-					+ "where A like ? or B like ? "
-					, Integer.class, strLike, strLike);
-		} else if(selSrch.equals("제목")) {
+		if(selSrch.equals("제목")) {
 			cnt = jdbcTemplate.queryForObject(
 					"select count(*) from BOOK where bexist = 'yes' and book_title2 like ?"
 					, Integer.class, strLike);
