@@ -13,20 +13,20 @@
 	// id 입력란에 key 입력하면 중복검사 결과 초기화
 	function delDuChk() {
 		$('#ck').val("");
-		document.getElementById("ckText").innerHTML = "아이디 중복확인 해주세요.";
+		//document.getElementById("ckText").innerHTML = "아이디 중복확인 해주세요.";
 	}
 	
 	// ID 중복 검사
 	function ckID() {
 		var mid= $('#mid').val();
+		var idRegexp = /^[a-zA-Z0-9]{5,20}$/;
 		
 		if (mid=="") {
 			document.getElementById("ckText").innerHTML = "ID를 입력해 주세요.";
 		} else {
-//			var idRegexp = /^[a-z][a-zA-Z0-9]{7,19}$/;
-//			if(!mid.match(idRegexp)) {
-//				document.getElementById("ckText").innerHTML = "영문자 소문자로 시작해서 8~20 글자로 입력하세요";
-//			} else {
+			if(!document.joinForm.mid.value.match(idRegexp)) {
+				document.getElementById("ckText").innerHTML = "아이디를 8~20 글자의 영소문자나 숫자를 입력하세요";
+			} else {
 				$.ajax({
 					type : "POST",
 					url : "/ebook/ckID",
@@ -44,7 +44,7 @@
 						}
 					}
 				});
-//			}
+			}
 		}
 	}
 
@@ -53,6 +53,7 @@
 		if(index == "4") {
 			$('#hint2').attr('readonly', false);
 			$('#hint2').val("");
+			$('#hint2').focus();
 		} else {
 			$('#hint2').attr('readonly', true);
 			$('#hint2').val(document.joinForm.hint[index].value);
@@ -60,34 +61,31 @@
 		}
 	}
 
-	//회원가입 정규식
-	//function checkValue() {
-//		var nameExp=/^ [가-힣]{2,5}$/;
-//		var phoneExp=/^01([0|1|6|7|8|9|]?)-?([0-9]{3,4})-?([0-9]{4})$/;
-//		var regExp=/^ [a-z][a-zA-Z0-9]{7,10}$/;
-//		var pwExp=/^ (?=.*[a-zA-Z])(?=.*\d)|(?=.*\W)).{8,20}$/;
-//		if(! $('#name').val().match(nameExp)) {
-//			document.getElementById("ckName").innerHTML = "정확한 이름을 입력하세요.";
-//			return false;
-//		} else if(! $('#phone').val().match(phoneExp)) {
-//			document.getElementById("ckPhone").innerHTML = "올바른 휴대폰번호를 입력하세요";
-//			return false;
-//		} else if(! $('#mid').val().match(regExp)) {
-//			document.getElementById("ckText").innerHTML = "아이디를 8~20 글자의 영소문자나 숫자를 입력하세요.";
-//			return false;
-//		} else if(! $('#pw').val().match(pwExp)) {
-//			document.getElementById("ckPw").innerHTML = "비밀번호를 8~20글자 사이로 입력하세요";	
-//			return false;
-//		} 
-	//}
-
 	function checkValue() {
+		var nameExp=/^[가-힣]{2,5}$/;
+		var phoneExp=/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+		var regExp=/^[a-zA-Z0-9]{5,20}$/;
+		var pwExp=/^(?=.*[a-zA-Z])(?=.*\d)|(?=.*\W).{8,20}$/;
+
 		if($('#name').val()=="") {
 			document.getElementById("ckName").innerHTML = "이름을 입력하세요.";
 			document.getElementById("name").focus();
 			$("#ckName").show();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.joinForm.name.value.match(nameExp)) {
+			document.getElementById("ckName").innerHTML = "올바른 이름을 입력하세요.";
+			document.getElementById("name").focus();
+			$("#ckName").show();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -98,17 +96,30 @@
 			$("#ckName").hide();
 			$("#ckGender").show();
 			$("#ckPhone").hide();
+			$("#ckText").hide();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
 			$("#ckAnswer").hide();
 			return false;
 		} else if($('#phone').val()=="") {
-			document.getElementById("ckPhone").innerHTML = "연락처를 입력하세요.";
+			document.getElementById("ckPhone").innerHTML = "휴대폰번호를 입력하세요.";
 			document.getElementById("phone").focus();
 			$("#ckName").hide();
 			$("#ckGender").hide();;
 			$("#ckPhone").show();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.joinForm.phone.value.match(phoneExp)) {
+			document.getElementById("ckPhone").innerHTML = "올바른 휴대폰번호를 입력하세요";
+			$("#ckName").hide();
+			$("#ckGender").hide();;
+			$("#ckPhone").show();
+			$("#ckText").hide();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -120,6 +131,18 @@
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").show();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.joinForm.mid.value.match(regExp)) {
+			document.getElementById("ckText").innerHTML = "아이디를 8~20 글자의 영소문자나 숫자를 입력하세요";
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").show();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -131,6 +154,18 @@
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").show();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.joinForm.pw.value.match(pwExp)) {
+			document.getElementById("ckPw").innerHTML = "패스워드를 8~20글자 사이로 입력하세요";	
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
 			$("#ckPw").show();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -166,6 +201,7 @@
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").hide();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").show();
@@ -177,6 +213,7 @@
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").hide();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -188,6 +225,7 @@
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
+			$("#ckText").show();
 			$("#ckPw").hide();
 			$("#ckRepw").hide();
 			$("#ckHint").hide();
@@ -196,6 +234,11 @@
 		}
 	}
 </script>
+<style type="text/css">
+	.alertSmall {
+		color : red;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -207,36 +250,39 @@
 							<fieldset>
 								<div>
 									<label style="width: 60px">이름</label>
-									<input id="name" name="name" type="text" class="input-text-control"/>
-									<span id="ckName"></span>
+									<input id="name" name="name" type="text" class="input-text-control"/><br>
+									<small class="alertSmall" id="ckName"></small>
 								</div>
 								<div>
 									<label style="width: 60px">성별</label>
 									<input type="radio" name="gender" value="m"> 남 &nbsp; &nbsp;
-									<input type="radio" name="gender" value="f"> 여
-									<span id="ckGender"></span>
+									<input type="radio" name="gender" value="f"> 여 <br>
+									<small class="alertSmall" id="ckGender"></small>
 								</div>
 								<div>
 									<label style="width: 60px">H/P</label>
-									<input id="phone" name="phone" type="text" class="input-text-control"/>
-									<span id="ckPhone"></span>
+									<input id="phone" name="phone" type="text" class="input-text-control"/><br>
+									<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
+									<small class="alertSmall" id="ckPhone"></small>
 								</div>
 								<div>
 									<label style="width: 60px">ID</label>
 									<input id="mid" name="mid" type="text" class="input-text-control" onkeypress="delDuChk();"/>
-									<input id="dubtn" name="dubtn" value="중복검사" type="button" onclick="ckID();"/>
-									<span id="ckText"></span>
+									<input id="dubtn" name="dubtn" value="중복검사" type="button" onclick="ckID();"/><br>
+									<small>(5~20글자의 영문자, 숫자의 조합으로 입력)</small><br>
+									<small class="alertSmall" id="ckText"></small>
 									<input type="hidden" id="ck" name="ck"/>
 								</div>
 								<div>
 									<label style="width: 60px">P/W</label>
 									<input id="pw" name="pw" type="password" class="input-text-control"/>
-									<span id="ckPw"></span>
+									<small>(8~20 글자)</small><br>
+									<small class="alertSmall" id="ckPw"></small>
 								</div>
 								<div>
 									<label style="width: 60px">P/W 확인</label>
-									<input id="repw" name="repw" type="password" class="input-text-control"/>
-									<span id="ckRepw"></span>
+									<input id="repw" name="repw" type="password" class="input-text-control"/><br>
+									<small class="alertSmall" id="ckRepw"></small>
 								</div>
 								<div>
 									<label style="width: 60px">힌트</label>
@@ -247,13 +293,13 @@
 										<option value="기억에 남는 장소는?">기억에 남는 장소는?</option>
 										<option value="기타">기타</option>
 									</select>
-									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly />
-									<span id="ckHint"></span>
+									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly /><br>
+									<small class="alertSmall" id="ckHint"></small>
 								</div>
 								<div>
 									<label style="width: 60px">답변</label>
-									<input id="answer" name="answer" type="text" class="input-text-control"/>
-									<span id="ckAnswer"></span>
+									<input id="answer" name="answer" type="text" class="input-text-control"/><br>
+									<small class="alertSmall" id="ckAnswer"></small>
 								</div>
 								<br />
 								<input class="btn btn-lg btn-success btn-block" type="submit" value="완료" />

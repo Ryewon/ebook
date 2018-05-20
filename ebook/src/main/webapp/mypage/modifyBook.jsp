@@ -76,8 +76,15 @@
 	}
 	
 	function close_pop(flag) {
-           $('#myModal').hide();
-      	}
+    	$('#myModal').hide();
+    }
+	
+	function onlyNum(price) {
+		 $(price).keyup(function(){
+	         $(this).val($(this).val().replace(/[^0-9]/g,""));
+	    }); 
+	}
+	
 </script>
 </head>
 <%@ include file="../include/header.jsp" %>
@@ -133,7 +140,7 @@
 					<input type="text" id="price" name="price" value="${book.price }" />원
 				</c:if>
 				<c:if test="${book.price eq '0' }">
-					<input type="text" id="price" name="price"  readonly />원
+					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" readonly />원
 				</c:if>
 			</div>
 		</div>

@@ -61,6 +61,12 @@
 		function close_pop(flag) {
             $('#myModal').hide();
        	}
+		
+		function onlyNum(price) {
+			 $(price).keyup(function(){
+		         $(this).val($(this).val().replace(/[^0-9]/g,""));
+		    }); 
+		}
 	</script>
 </head>
 <%@ include file="../include/header.jsp" %>
@@ -111,7 +117,7 @@
 				</div>
 				<div style="display: inline-table; width: 300px">
 					<label>가격</label> &nbsp;
-					<input type="text" id="price" name="price"  readonly />원
+					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" readonly />원
 				</div>
 			</div>
 			<br />

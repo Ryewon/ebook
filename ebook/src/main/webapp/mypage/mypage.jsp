@@ -52,38 +52,137 @@
 	}
 	
 	function inputCheck() {
-		if($('#pw').val()=="") {
+		var nameExp=/^[가-힣]{2,5}$/;
+		var phoneExp=/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
+
+		if($('#name').val()=="") {
+			document.getElementById("ckName").innerHTML = "이름을 입력하세요.";
+			document.getElementById("name").focus();
+			$("#ckName").show();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.infoForm.name.value.match(nameExp)) {
+			document.getElementById("ckName").innerHTML = "올바른 이름을 입력하세요.";
+			document.getElementById("name").focus();
+			$("#ckName").show();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if(document.infoForm.gender.value=="") {
+			document.getElementById("ckGender").innerHTML = "성별을 선택하세요.";
+			$("#ckName").hide();
+			$("#ckGender").show();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if($('#phone').val()=="") {
+			document.getElementById("ckPhone").innerHTML = "휴대폰번호를 입력하세요.";
+			document.getElementById("phone").focus();
+			$("#ckName").hide();
+			$("#ckGender").hide();;
+			$("#ckPhone").show();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if (! document.infoForm.phone.value.match(phoneExp)) {
+			document.getElementById("ckPhone").innerHTML = "올바른 휴대폰번호를 입력하세요";
+			$("#ckName").hide();
+			$("#ckGender").hide();;
+			$("#ckPhone").show();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
+			return false;
+		} else if($('#hint2').val()=="") {
+			document.getElementById("ckHint").innerHTML = "힌트를 입력하세요.";
+			document.getElementById("hint").focus();
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").show();
+			$("#ckAnswer").hide();
+			return false;
+		} else if($('#answer').val()=="") {
+			document.getElementById("ckAnswer").innerHTML = "답변을 입력하세요.";
+			document.getElementById("answer").focus();
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").show();
+			return false;
+		} else if ($('#pw').val()=="") {
 			$('#con').html('패스워드를 입력해주세요.');
 			$('#myModal').show();
 			return false;
-		}
-		
+		}		
 	}
 	
 	function changePass() {
+		var pwExp=/^(?=.*[a-zA-Z])(?=.*\d)|(?=.*\W).{8,20}$/;
+		
 		if($('#cur_pw').val() == "") {
 			document.getElementById("alert1").innerHTML = "현재 패스워드를 입력해 주세요.";
-			document.getElementById("alert2").innerHTML = "";
-			document.getElementById("alert3").innerHTML = "";
-			document.getElementById("alert4").innerHTML = "";
+			$('#alert1').show();
+			$('#alert2').hide();
+			$('#alert3').hide();
+			$('#alert4').hide();
 			return false;
 		} else if($('#new_pw1').val() == "") {
-			document.getElementById("alert1").innerHTML = "";
+			$('#alert1').hide();
 			document.getElementById("alert2").innerHTML = "새로운 패스워드를 입력해 주세요.";
-			document.getElementById("alert3").innerHTML = "";
-			document.getElementById("alert4").innerHTML = "";
+			$('#alert2').show();
+			$('#alert3').hide();
+			$('#alert4').hide();
 			return false;
-		} else if($('#new_pw2').val() == "") {
-			document.getElementById("alert1").innerHTML = "";
-			document.getElementById("alert2").innerHTML = "";
+		} 
+		/* else if(! $('#new_pw1').val().match(pwExp)) {
+			$('#alert1').hide();
+			document.getElementById("alert2").innerHTML = "패스워드를 8~20글자 사이로 입력하세요";
+			$('#alert2').show();
+			$('#alert3').hide();
+			$('#alert4').hide();
+			return false;
+		}  */
+		else if($('#new_pw2').val() == "") {
+			$('#alert1').hide();
+			$('#alert2').hide();
 			document.getElementById("alert3").innerHTML = "새 패스워드 확인을 입력해 주세요.";
-			document.getElementById("alert4").innerHTML = "";
+			$('#alert3').show();
+			$('#alert4').hide();
 			return false;
 		} else if($('#new_pw1').val() != $('#new_pw2').val()) {
-			document.getElementById("alert1").innerHTML = "";
-			document.getElementById("alert2").innerHTML = "";
-			document.getElementById("alert3").innerHTML = "";
+			$('#alert1').hide();
+			$('#alert2').hide();
+			$('#alert3').hide();
 			document.getElementById("alert4").innerHTML = "새 패스워드를 확인해 주세요.";
+			$('#alert4').show();
 			return false;
 		}
 	}
@@ -114,7 +213,11 @@
 		});
 	}
 </script>
-
+<style type="text/css">
+	.alertSmall {
+		color : red;
+	}
+</style>
 <body>
 
 <%@ include file="../include/header.jsp" %>
@@ -161,6 +264,7 @@
 							<div>
 								<label>아이디 &nbsp;</label> ${authInfo.mid } <br>
 								<label>이름 &nbsp;</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
+								<small class="alertSmall" id="ckName"></small>
 							</div>
 							<div>
 								<c:choose>
@@ -173,9 +277,12 @@
 										&nbsp; &nbsp; <input type="radio" name="gender" value="f"  checked="checked" />여
 									</c:otherwise>
 								</c:choose>
+								<small class="alertSmall" id="ckGender"></small>
 							</div>
 							<div>
 								<label>휴대전화 &nbsp;</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
+								<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
+								<small class="alertSmall" id="ckPhone"></small>
 							</div>
 							<div>
 								<label>힌트</label> 
@@ -191,10 +298,11 @@
 														</c:if>>기타</option>
 								</select> 
 								<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly /> 
-								<span id="ckHint"></span>
+								<small class="alertSmall" id="ckHint"></small>
 							</div>
 							<div>
 								<label style="width: 60px">답변</label> <input id="answer" name="answer" type="text" value="${authInfo.answer }" />
+								<small class="alertSmall" id="ckAnswer"></small>
 							</div>
 							<div>
 								<label>보유포인트  </label> ${authInfo.point } point
@@ -211,14 +319,15 @@
 						<form accept-charset="UTF-8" role="form" name="passForm" action="passModify" method="post" onsubmit="return changePass();">
 							<div>
 								<label>현재 패스워드 &nbsp;</label><input type="password" id="cur_pw" name="cur_pw" /> 
-								<span id="alert1" ></span>
+								<small class="alertSmall" id="alert1" ></small>
 								<br>
 								<label>새 패스워드 &nbsp;</label><input type="password" id="new_pw1" name="new_pw1" /> 
-								<span id="alert2" ></span>
+								<small>(8~20 글자)</small><br>
+								<small class="alertSmall" id="alert2" ></small>
 								<br>
 								<label>새 패스워드 확인 &nbsp;</label><input type="password" id="new_pw2" name="new_pw2" />
-								<span id="alert3" ></span><br>
-								<span id="alert4" ></span>
+								<small class="alertSmall" id="alert3" ></small><br>
+								<small class="alertSmall" id="alert4" ></small>
 							</div>
 							<input type="submit" value="확인"/>
 						</form>

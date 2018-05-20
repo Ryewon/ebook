@@ -53,7 +53,9 @@ public class MypageController {
 		String mid = authInfo.getMid();
 		
 		if(spot.equals("infoPw")) {
-			
+			String changePw = request.getParameter("changePw");
+			model.addAttribute("changePw", changePw);
+			model.addAttribute("spot", "infoPw");
 		} else {
 			String delId = request.getParameter("delId");
 			System.out.println("delId: "+ delId);
@@ -88,6 +90,7 @@ public class MypageController {
 			if (endpage > maxpage) {
 				endpage = maxpage;
 			}
+			model.addAttribute("spot", spot);
 		}
 		
 		request.setAttribute("page", page);
@@ -96,7 +99,6 @@ public class MypageController {
 		request.setAttribute("endpage", endpage);
 		request.setAttribute("listcount", listcount);
 		
-		model.addAttribute("spot", spot);
 		return "mypage/mypage";
 	}
 	
@@ -150,21 +152,23 @@ public class MypageController {
 			session.setAttribute("authInfo", authInfo);
 //			model.addAttribute("changePw", "y");
 //			return "redirect:/mypage/{changePw}";
+			redirectAttributes.addAttribute("spot", "infoPw");
 			redirectAttributes.addAttribute("changePw", "y");
-			return "redirect:/mypage/pass";
+			return "redirect:mypage";
 		} else {			
+			model.addAttribute("spot","infoPw");
 			model.addAttribute("changePw", "n");
 			return "/mypage/mypage";
 		}
 	}
 	
-	//패스워드 변경 성공시 확인 값 던져줌
+/*	//패스워드 변경 성공시 확인 값 던져줌
 	@RequestMapping(value = "/mypage/pass") 
 	public String pass(@RequestParam(value="changePw") String changePw, Model model) {
 		model.addAttribute("changePw", changePw);
 		model.addAttribute("spot","infoPw");
 		return "/mypage/mypage";
-	}
+	}*/
 	
 	//책 수정 페이지로 이동
 	@RequestMapping(value = "/modifyBook")
