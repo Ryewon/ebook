@@ -34,6 +34,23 @@
 		}
 	});
 	
+	$(document).ready(function(){
+		var spot= "<c:out value='${spot }'/>";
+		if (spot=="infoPw") {
+			$('#sidebar-wrapper li > a').eq(0).addClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(1).removeClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(2).removeClass('sideRemain');
+		} else if (spot=="upBookList") {
+			$('#sidebar-wrapper li > a').eq(0).removeClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(1).addClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(2).removeClass('sideRemain');
+		} else {
+			$('#sidebar-wrapper li > a').eq(0).removeClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(1).removeClass('sideRemain');
+			$('#sidebar-wrapper li > a').eq(2).addClass('sideRemain');
+		}
+	});
+	
 	function close_pop(flag) {
 	    $('#myModal').hide();
 	}
@@ -216,6 +233,10 @@
 <style type="text/css">
 	.alertSmall {
 		color : red;
+	}
+	
+	.sideRemain {
+		background-color: #B2CCFF;
 	}
 </style>
 <body>

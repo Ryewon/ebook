@@ -1,6 +1,108 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<script>
+	$(document).ready(function () {
+		var cate = "<c:out value='${cate }'/>";
+		console.log(cate);
+		if(cate=='전체') {
+			$('#topMenu li > a').eq(0).addClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='소설') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).addClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='만화') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).addClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='시/에세이') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).addClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='역사/문화') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).addClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='예술') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).addClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='기술') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).addClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else if (cate=='논문') {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).addClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).addClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
+		}
+	});
+</script>
+
+<style>
+
+</style>
+
 <nav id="topMenu">
 	<ul>
 		<li><a class="menuLink" href="/ebook/searchBook?cate=전체&price=전체&sortType=최신순">Best&신간 도서</a></li>

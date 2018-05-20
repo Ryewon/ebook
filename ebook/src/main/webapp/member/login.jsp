@@ -10,6 +10,14 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js?ver=441"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
+<script type="text/javascript">
+	window.history.forward();
+	function noBack() {
+		window.history.forward();
+	}
+
+</script>
 </head>
 <body>
 	<div class="container">
