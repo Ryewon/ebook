@@ -97,7 +97,7 @@
 		<div style="border: 1px;">
 			<div>
 				<label>카테고리</label> &nbsp;
-				<select id="cate" name="cate">
+				<select id="cate" name="cate" style="height: 25px;">
 					<option value="소설">소설</option>
 					<option value="만화">만화</option>
 					<option value="시/에세이">시/에세이</option>

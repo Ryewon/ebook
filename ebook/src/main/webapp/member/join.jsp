@@ -62,6 +62,8 @@
 	}
 
 	function checkValue() {
+		$('.alertSmall').css("margin-left","60px");
+		
 		var nameExp=/^[가-힣]{2,5}$/;
 		var phoneExp=/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
 		var regExp=/^[a-zA-Z0-9]{5,20}$/;
@@ -237,21 +239,24 @@
 <style type="text/css">
 	.alertSmall {
 		color : red;
+		
 	}
 </style>
 </head>
 <body>
-	<div class="container">
+	<div style="width: 100%; height: 100%; position: fixed; background-color: #EBF7FF">
+	<div class="container" style="margin: 13% auto;">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div class="panel panel-default">
 					<div class="panel-body">
+						<div style="text-align: center;"><a href="./home"><img src="/ebook/logo.png" style="width: 200px; height: 80px;"></a></div>
 						<form accept-charset="UTF-8" role="form" name="joinForm" action="memberJoin" method="post" onsubmit="return checkValue();">
 							<fieldset>
 								<div>
 									<label style="width: 60px">이름</label>
 									<input id="name" name="name" type="text" class="input-text-control"/><br>
-									<small class="alertSmall" id="ckName"></small>
+									<small class="alertSmall" id="ckName" ></small>
 								</div>
 								<div>
 									<label style="width: 60px">성별</label>
@@ -293,7 +298,7 @@
 										<option value="기억에 남는 장소는?">기억에 남는 장소는?</option>
 										<option value="기타">기타</option>
 									</select>
-									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly /><br>
+									<div style="padding-left: 64px;"><input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly /></div><br>
 									<small class="alertSmall" id="ckHint"></small>
 								</div>
 								<div>
@@ -309,6 +314,7 @@
 				</div>	
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

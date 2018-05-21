@@ -55,3 +55,7 @@
 text-decoration: none;
 color: #04A3ED;
 }
+
+select {
+	height: 30px;
+}

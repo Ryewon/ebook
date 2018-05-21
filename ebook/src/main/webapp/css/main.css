@@ -2,7 +2,18 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskhmerui.css);
 
 *{
-	font-family: 'Noto Sans Khmer UI', sans-serif;
+	font-family: 'Noto Sans KR', cursive;
+}
+
+select {
+	height: 30px;
+}
+
+.nomalBtn {
+	background-color: #6F6F6F;
+	color: #FFFFFF;
+	text-align: center;
+	border-radius: 10px;
 }
 
 /* #booklistdiv{

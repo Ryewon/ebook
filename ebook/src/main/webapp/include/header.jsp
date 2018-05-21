@@ -21,6 +21,16 @@
 		});
 	});
 	
+	function logoutAjax() {
+		$.ajax({
+			type: "POST",
+			url: "/ebook/logout",
+			success: function() {
+				location.replace("home");
+			}
+		});
+	}
+	
 	function charge_show() {
 		$('#charge_modal').show();
 	}
@@ -153,11 +163,11 @@
 				<li><a href="/ebook/join" class="btn btn-custom" style="width:119px">회원가입</a></li>
 			</c:if>
 			<c:if test="${! empty authInfo }">
-				<li><label style="padding: 10px 35px"><c:out value="${authInfo.name }(${authInfo.mid })" />님</label></li>
+				<li><label style="padding: 10px 35px"><c:out value="${authInfo.name }(${authInfo.mid })" />님 &nbsp;/ <small>보유포인트(<c:out value="${authInfo.point }" /> point)</small></label></li>
 				<li><a href="/ebook/mypage?spot=infoPw" class="btn btn-custom" style="width:119px">MyPage</a></li>
 				<li><a href="#" class="btn btn-custom" style="width:119px" onclick="charge_show();">포인트 충전</a></li>
 				<li><a href="/ebook/upbook" class="btn btn-custom" style="width:119px">책 올리기</a></li>
-				<li><a href="/ebook/logout" class="btn btn-custom" style="width:119px">로그아웃</a></li>
+				<li><a href="/ebook/logout" class="btn btn-custom" style="width:119px" onclick="logoutAjax();">로그아웃</a></li>
 			</c:if>
 		</ul>		
 	</div>
@@ -166,10 +176,15 @@
 		<div style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
 	    	<a href="./home"><img src="/ebook/logo.png" style="width: 100px; height: 40px;"></a>
 			<select style="height: 30px;" id="selSrch" name="selSrch">
-				<option value="제목">제목</option>
-				<option value="작가">작가</option>
+				<option value="제목"<c:if test="${selSrch eq '제목'}"> selected </c:if>>제목</option>
+				<option value="작가"<c:if test="${selSrch eq '작가'}"> selected </c:if>>작가</option>
 	         </select>
-	         <input type="text" style="width: 300px; height: 30px;" id="conSrch" name="conSrch"  placeholder="검색할 내용을 적어주세요">          
+	         <c:if test="${conSrch eq null }">
+	         	<input type="text" style="width: 300px; height: 30px;" id="conSrch" name="conSrch"  placeholder="검색할 내용을 적어주세요">          	         
+	         </c:if>
+	         <c:if test="${conSrch ne null }">
+	         	<input type="text" style="width: 300px; height: 30px;" id="conSrch" name="conSrch"  value="${conSrch }">
+	         </c:if>
 	         <input type="submit" style="height: 30px;" value="검색">
          </div>
 	</form>

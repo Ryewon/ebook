@@ -1,7 +1,5 @@
 package controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -151,7 +149,7 @@ public class BookController {
 				srchBook = bookDao.searchBook(page, limit, selSrch, conSrch);	
 				model.addAttribute("srchBook", srchBook);
 				model.addAttribute("selSrch", selSrch);
-				model.addAttribute("conSrch", conSrch);
+				model.addAttribute("conSrch", request.getParameter("conSrch"));
 				
 			} else {
 				if (rprice != null) {
@@ -214,6 +212,7 @@ public class BookController {
 		int bid = Integer.parseInt(request.getParameter("bid"));
 		Book book = bookDao.bookInfo(bid);
 		model.addAttribute("bookInfo", book);
+		model.addAttribute("cate", request.getParameter("cate"));
 		return "main/bookDetail";
 	}
 

@@ -85,7 +85,7 @@
 			$('#topMenu li > a').eq(6).removeClass('remain');
 			$('#topMenu li > a').eq(7).addClass('remain');
 			$('#topMenu li > a').eq(8).removeClass('remain');
-		} else {
+		} else if (cate=='외국도서') {
 			$('#topMenu li > a').eq(0).removeClass('remain');
 			$('#topMenu li > a').eq(1).removeClass('remain');
 			$('#topMenu li > a').eq(2).removeClass('remain');
@@ -95,6 +95,16 @@
 			$('#topMenu li > a').eq(6).removeClass('remain');
 			$('#topMenu li > a').eq(7).addClass('remain');
 			$('#topMenu li > a').eq(8).removeClass('remain');
+		} else {
+			$('#topMenu li > a').eq(0).removeClass('remain');
+			$('#topMenu li > a').eq(1).removeClass('remain');
+			$('#topMenu li > a').eq(2).removeClass('remain');
+			$('#topMenu li > a').eq(3).removeClass('remain');
+			$('#topMenu li > a').eq(4).removeClass('remain');
+			$('#topMenu li > a').eq(5).removeClass('remain');
+			$('#topMenu li > a').eq(6).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).removeClass('remain');
 		}
 	});
 </script>
@@ -103,6 +113,7 @@
 
 </style>
 
+<div style="width: 100%; position: fixed; border-bottom: 4px solid #4f5467;">
 <nav id="topMenu">
 	<ul>
 		<li><a class="menuLink" href="/ebook/searchBook?cate=전체&price=전체&sortType=최신순">Best&신간 도서</a></li>
@@ -116,3 +127,4 @@
 		<li><a class="menuLink" href="/ebook/searchBook?cate=외국도서&price=전체&sortType=최신순">외국도서</a></li>
 	</ul> 
 </nav>
+</div>

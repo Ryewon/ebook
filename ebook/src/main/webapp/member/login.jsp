@@ -13,18 +13,19 @@
 
 <script type="text/javascript">
 	window.history.forward();
-	function noBack() {
-		window.history.forward();
-	}
-
+	$(document).ready(function () {
+		$('#mid').focus();
+	})
 </script>
 </head>
 <body>
-	<div class="container">
+<div style="width: 100%; height: 100%; position: fixed; background-color: #EBF7FF">
+	<div class="container" style="margin: 15% auto;">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body" style="text-align: center;">
+						<a href="./home"><img src="/ebook/logo.png" style="width: 200px; height: 80px;"></a>
 						<form accept-charset="UTF-8" role="form" method="post" action="ckLogin" onsubmit="return ckLogin();">
 							<fieldset>
 								<div class="form-group">
@@ -60,5 +61,6 @@
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 </html>

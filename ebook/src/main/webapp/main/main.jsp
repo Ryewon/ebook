@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=1252" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=1252" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=22" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=12" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
-<script>
-
+<script>	
 	function buyCheck(bid, price) {
 		var mid = $('#curMid').val();	
 		var cpoint = null;
@@ -134,11 +133,10 @@
 	</div>
  </div>
 
-<div style="top: 95px; position: fixed;">
+<div style="top: 102px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
-<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%;">
-cate = ${cate },
-mid = ${authInfo.mid }
+<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%; margin: 50px auto;">
+
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	<br>
 	<c:choose>
@@ -176,9 +174,9 @@ mid = ${authInfo.mid }
 										<label>가격: ${srblist.price }</label>
 									</td>
 									<td>
-										<button onclick="location.href='/ebook/bookDetail?bid=${srblist.bid }'">상세보기</button> <br/><br/>
+										<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${srblist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
 										<c:if test="${authInfo.mid != srblist.mid }">
-											<button onclick="buyCheck('${srblist.bid}','${srblist.price}');">구매</button>
+											<button class="" onclick="buyCheck('${srblist.bid}','${srblist.price}');">구매</button>
 										</c:if>
 									</td>
 								</tr>
@@ -217,7 +215,7 @@ mid = ${authInfo.mid }
 		</c:when>
 		<c:when test="${cate eq '전체'}">
 			<div style="margin: 0 auto; width: 600px;">
-			<h3>Best 도서</h3>
+			<h3><b>Best 도서</b></h3>
 			<table>
 				<tbody>
 					<c:forEach var="bestlist"  items="${bestBook }">
@@ -244,7 +242,7 @@ mid = ${authInfo.mid }
 								<label>가격: ${bestlist.price }</label>
 							</td>
 							<td>
-								<button onclick="location.href='/ebook/bookDetail?bid=${bestlist.bid }'">상세보기</button> <br/><br/>
+								<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${bestlist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
 								<c:if test="${authInfo.mid != bestlist.mid }">
 									<button onclick="buyCheck('${bestlist.bid}','${bestlist.price}');">구매</button>
 								</c:if>
@@ -255,7 +253,7 @@ mid = ${authInfo.mid }
 			</table>
 			</div>
 			<div style="margin: 0 auto; width: 600px;">
-			<h3>신간 도서</h3>
+			<h3><b>신간 도서</b></h3>
 			<table>
 				<tbody>
 					<c:forEach var="newlist"  items="${newBook }">
@@ -282,7 +280,7 @@ mid = ${authInfo.mid }
 								<label>가격: ${newlist.price }</label>
 							</td>
 							<td>
-								<button onclick="location.href='/ebook/bookDetail?bid=${newlist.bid }'">상세보기</button> <br/><br/>
+								<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${newlist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
 								<c:if test="${authInfo.mid != newlist.mid }">
 									<button onclick="buyCheck('${newlist.bid}','${newlist.price}');">구매</button>
 								</c:if>
@@ -338,7 +336,7 @@ mid = ${authInfo.mid }
 												<label>가격: ${blist.price }</label>
 											</td>
 											<td>
-												<button onclick="location.href='/ebook/bookDetail?bid=${blist.bid }'">상세보기</button> <br/><br/>
+												<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${blist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
 												<c:if test="${authInfo.mid != blist.mid }">
 													<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
 												</c:if>

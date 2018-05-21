@@ -116,7 +116,7 @@
 	<div style="border: 1px;">
 		<div>
 			<label>카테고리</label> &nbsp;
-			<select id="cate" name="cate">
+			<select id="cate" name="cate" style="height: 25px;">
 				<option value="소설" <c:if test="${book.book_cate eq '소설' }"> selected </c:if>>소설</option>
 				<option value="만화" <c:if test="${book.book_cate eq '만화' }"> selected </c:if>>만화</option>
 				<option value="시/에세이" <c:if test="${book.book_cate eq '시/에세이' }"> selected </c:if>>시/에세이</option>
