@@ -22,4 +22,13 @@
 		<property name="mypageDao" ref="mypageDao" />
 		<property name="bookDao" ref="bookDao" />
 	</bean>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/mypage*"/>
+			<mvc:mapping path="/modifyBook*"/>
+			<mvc:mapping path="/ebook/viewer.jsp"/>
+			<bean class="interceptor.AuthenticationInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 </beans>

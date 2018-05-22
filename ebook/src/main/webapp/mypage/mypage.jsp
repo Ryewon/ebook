@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=1435" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=22" />
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -242,25 +242,24 @@
 <body>
 
 <%@ include file="../include/header.jsp" %>
-
-<div class="container" style="position:fixed; top: 95px; float: left;">
-	<div>
-		<div id="sidebar-wrapper" class="sidebar-toggle">
-			<ul class="sidebar-nav">
-		    	<li>
-		      		<a href="/ebook/mypage?spot=infoPw">개인정보 및 패스워드 재설정</a>
-		    	</li>
-		    	<li>
-		      		<a href="/ebook/mypage?spot=upBookList">내가 올린 책</a>
-		    	</li>
-		    	<li>
-		      		<a href="/ebook/mypage?spot=buyList">구매목록</a>
-		    	</li>
-		  	</ul>
-		</div>		
-	</div>
+<div style="position: fixed; top: 85px; width: 100%; height: 100%; background-color: #F6F6F6">
+<div style="width: 1000px; margin: 0 auto; height: 100%; background-color: white;">
 	
-	<div style="float: left;">
+	<div id="sidebar-wrapper" class="sidebar-toggle">
+		<ul class="sidebar-nav">
+	    	<li>
+	      		<a href="/ebook/mypage?spot=infoPw">개인정보 및 패스워드 재설정</a>
+	    	</li>
+	    	<li>
+	      		<a href="/ebook/mypage?spot=upBookList">내가 올린 책</a>
+	    	</li>
+	    	<li>
+	      		<a href="/ebook/mypage?spot=buyList">구매목록</a>
+	    	</li>
+	  	</ul>
+	</div>		
+	
+	<div style="width: 700px;">
 		<c:choose>
 			<c:when test="${spot eq 'infoPw' }">
 				<div id="myModal" class="modal">
@@ -283,30 +282,30 @@
 						<input type="hidden" id="check" name="check" value="${check }">
 						<form accept-charset="UTF-8" role="form" name="infoForm" action="infoModify" method="post" onsubmit="return inputCheck();">
 							<div>
-								<label>아이디 &nbsp;</label> ${authInfo.mid } <br>
-								<label>이름 &nbsp;</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
-								<small class="alertSmall" id="ckName"></small>
+								<label style="width: 100px;">아이디 &nbsp;</label> ${authInfo.mid } <br>
+								<label style="width: 100px;">이름 &nbsp;</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
+								<small style="margin-left: 100px;" class="alertSmall" id="ckName"></small>
 							</div>
 							<div>
 								<c:choose>
 									<c:when test="${authInfo.gender == 'm' }" >
-										<label>성별 &nbsp;</label> <input type="radio" name="gender" value="m" checked="checked"/>남
+										<label style="width: 100px;">성별 &nbsp;</label> <input type="radio" name="gender" value="m" checked="checked"/>남
 										&nbsp; &nbsp; <input type="radio" name="gender" value="f" />여
 									</c:when>
 									<c:otherwise>
-										<label>성별 &nbsp;</label> <input type="radio" name="gender" value="m"/>남
+										<label style="width: 100px;">성별 &nbsp;</label> <input type="radio" name="gender" value="m"/>남
 										&nbsp; &nbsp; <input type="radio" name="gender" value="f"  checked="checked" />여
 									</c:otherwise>
 								</c:choose>
-								<small class="alertSmall" id="ckGender"></small>
+								<small style="margin-left: 100px;" class="alertSmall" id="ckGender"></small>
 							</div>
 							<div>
-								<label>휴대전화 &nbsp;</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
+								<label style="width: 100px;">휴대전화 &nbsp;</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
 								<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
-								<small class="alertSmall" id="ckPhone"></small>
+								<small style="margin-left: 100px;" class="alertSmall" id="ckPhone"></small>
 							</div>
 							<div>
-								<label>힌트</label> 
+								<label style="width: 100px;">힌트</label> 
 								<select id="hint" name="hint" onchange="hintEdit();">
 									<option value="가장 좋아하는 색깔은?" <c:if test="${authInfo.hint eq '가장 좋아하는 색깔은?'}"> selected </c:if>>가장 좋아하는 색깔은?</option> 
 									<option value="가장 소중한 보물은?" <c:if test="${authInfo.hint eq '가장 소중한 보물은?'}"> selected </c:if>>가장 소중한 보물은?</option>
@@ -319,17 +318,17 @@
 														</c:if>>기타</option>
 								</select> 
 								<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly /> 
-								<small class="alertSmall" id="ckHint"></small>
+								<small style="margin-left: 100px;" class="alertSmall" id="ckHint"></small>
 							</div>
 							<div>
-								<label style="width: 60px">답변</label> <input id="answer" name="answer" type="text" value="${authInfo.answer }" />
-								<small class="alertSmall" id="ckAnswer"></small>
+								<label style="width: 100px">답변</label> <input id="answer" name="answer" type="text" value="${authInfo.answer }" />
+								<small style="margin-left: 100px;" class="alertSmall" id="ckAnswer"></small>
 							</div>
 							<div>
-								<label>보유포인트  </label> ${authInfo.point } point
+								<label style="width: 100px;">보유포인트  </label> ${authInfo.point } point
 							</div>
-							<label>패스워드 &nbsp;</label><input type="password" id="pw" name="pw" /> <br>
-							<input type="submit" value="수정"/>
+							<label style="width: 100px;">패스워드 &nbsp;</label><input type="password" id="pw" name="pw" /> <br>
+							<div style="text-align: center;"><input class="submitBtn" type="submit" value="수정"/></div>
 						</form>
 					</div>
 					
@@ -350,7 +349,7 @@
 								<small class="alertSmall" id="alert3" ></small><br>
 								<small class="alertSmall" id="alert4" ></small>
 							</div>
-							<input type="submit" value="확인"/>
+							<div style="text-align: center;"><input class="submitBtn" type="submit" value="확인"/></div>
 						</form>
 					</div>
 				</div>
@@ -417,10 +416,10 @@
 														<label>가격: ${ulist.price }</label>
 													</td>
 													<td>
-														<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
-														<button style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile')">읽기</button><br>
-														<button style="margin-bottom: 3px;" onclick="location.href='/ebook/modifyBook?bid=${ulist.bid}'">수정</button><br>
-														<button style="margin-bottom: 3px;" onclick="delCheck('${ulist.bid}', 'upBookList');">삭제</button>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile')">읽기</button><br>
+														<button class="modifyBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/modifyBook?bid=${ulist.bid}'">수정</button><br>
+														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${ulist.bid}', 'upBookList');">삭제</button>
 													</td>
 												</tr>
 											</c:forEach>
@@ -498,9 +497,9 @@
 														<label>가격: ${plist.price }</label>
 													</td>
 													<td>
-														<button style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
-														<button style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile')">읽기</button><br>
-														<button style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile')">읽기</button><br>
+														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>
 													</td>
 												</tr>
 											</c:forEach>
@@ -539,6 +538,6 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-
+</div>
 </div>		
 </body>

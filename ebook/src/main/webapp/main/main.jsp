@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/navbar.css?ver=22" />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=12" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/main.css?ver=122" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>	
 	function buyCheck(bid, price) {
@@ -135,8 +135,8 @@
 
 <div style="top: 102px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
-<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%; margin: 50px auto;">
-
+<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%; margin: 50px auto; background-color: #F6F6F6;">
+	<div style="width: 1000px; background-color: white; margin: 0 auto; height: 100%;">
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	<br>
 	<c:choose>
@@ -174,9 +174,9 @@
 										<label>가격: ${srblist.price }</label>
 									</td>
 									<td>
-										<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${srblist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
+										<button class="normalBtn" onclick="location.href='/ebook/bookDetail?bid=${srblist.bid }&cate=${cate }'">상세보기</button> <br/>
 										<c:if test="${authInfo.mid != srblist.mid }">
-											<button class="" onclick="buyCheck('${srblist.bid}','${srblist.price}');">구매</button>
+											<button class="buyBtn" onclick="buyCheck('${srblist.bid}','${srblist.price}');">구매</button>
 										</c:if>
 									</td>
 								</tr>
@@ -242,9 +242,9 @@
 								<label>가격: ${bestlist.price }</label>
 							</td>
 							<td>
-								<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${bestlist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
+								<button class="normalBtn" onclick="location.href='/ebook/bookDetail?bid=${bestlist.bid }&cate=${cate }'">상세보기</button> <br/>
 								<c:if test="${authInfo.mid != bestlist.mid }">
-									<button onclick="buyCheck('${bestlist.bid}','${bestlist.price}');">구매</button>
+									<button class="buyBtn" onclick="buyCheck('${bestlist.bid}','${bestlist.price}');">구매</button>
 								</c:if>
 							</td>
 						</tr>
@@ -280,9 +280,9 @@
 								<label>가격: ${newlist.price }</label>
 							</td>
 							<td>
-								<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${newlist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
+								<button class="normalBtn" onclick="location.href='/ebook/bookDetail?bid=${newlist.bid }&cate=${cate }'">상세보기</button> <br/>
 								<c:if test="${authInfo.mid != newlist.mid }">
-									<button onclick="buyCheck('${newlist.bid}','${newlist.price}');">구매</button>
+									<button class="buyBtn" onclick="buyCheck('${newlist.bid}','${newlist.price}');">구매</button>
 								</c:if>
 							</td>
 						</tr>
@@ -336,9 +336,9 @@
 												<label>가격: ${blist.price }</label>
 											</td>
 											<td>
-												<button class="nomalBtn" onclick="location.href='/ebook/bookDetail?bid=${blist.bid }&cate=${cate }'">상세보기</button> <br/><br/>
+												<button class="normalBtn" onclick="location.href='/ebook/bookDetail?bid=${blist.bid }&cate=${cate }'">상세보기</button> <br/>
 												<c:if test="${authInfo.mid != blist.mid }">
-													<button onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
+													<button class="buyBtn" onclick="buyCheck('${blist.bid}','${blist.price}');">구매</button>
 												</c:if>
 											</td>
 										</tr>
@@ -379,5 +379,6 @@
 			</div>
 		</c:otherwise>		
 	</c:choose>
+	</div>
 </div>
 </div>

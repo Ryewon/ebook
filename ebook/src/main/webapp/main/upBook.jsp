@@ -152,7 +152,8 @@
 				<label>목차</label><br>
 				<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll"></textarea>
 			</div>
-			<input type="submit" value="올리기">
+			<br>
+			<div style="text-align: center;"><input class="submitBtn" type="submit" value="올리기"></div>
 		</div>
 		</form>
 </div>

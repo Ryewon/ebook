@@ -1,4 +1,4 @@
-package member;
+package interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +10,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		if(request.getSession().getAttribute("authInfo") == null ) { 
 			//로그인페이지로 redirect 
-			response.sendRedirect("/login");	
+			response.sendRedirect("/ebook/login");	
 			return false; 
 		} else {
 			return true;

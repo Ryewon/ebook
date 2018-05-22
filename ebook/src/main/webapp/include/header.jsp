@@ -7,7 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css?ver=22" />
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css?ver=212" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=323" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <script>

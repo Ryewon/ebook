@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+*, h1, h2, h3, h4, h5, h6 {
+	font-family: 'Noto Sans KR', cursive;
+}
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -9,13 +15,13 @@
 
 #sidebar-wrapper {
   /* top: 52px; */
-  left: -200px;
+  /* left: -200px; */
   width: 250px;
   background-color: #eaeeff;
   color: white;
   position: fixed;
   height: 100%;
-  z-index: 1;
+ /*  z-index: 1; */
 }
 .sidebar-nav {
   position: absolute;
@@ -44,17 +50,17 @@
 }
 #sidebar-wrapper.sidebar-toggle {
   transition: all 0.3s ease-out;
-  margin-left: -200px;
+  /* margin-left: -200px; */
 }
 @media (min-width: 768px) {
   #sidebar-wrapper.sidebar-toggle {
     transition: 0s;
-    left: 200px;
+    /* left: 200px; */
   }
 }
 
 #test{
-	width: 800px;
+	width: 700px;
 	margin-left: 300px;
     /*     padding-right: 15px;
     padding-left: 15px;
@@ -63,5 +69,32 @@
 }
 
 select {
-	height: 25px;
+	height: 20px;
+}
+
+.normalBtn {
+	background-color: #6F6F6F;
+	color: #FFFFFF;
+	text-align: center;
+	border-radius: 5px;
+	width: 80px;
+	border: none;
+}
+
+.modifyBtn {
+	background-color: #5e80d9;
+	color: #FFFFFF;
+	text-align: center;
+	border-radius: 5px;
+	width: 80px;
+	border: none;
+}
+
+.deleteBtn {
+	background-color: #ff6868;
+	color: #FFFFFF;
+	text-align: center;
+	border-radius: 5px;
+	width: 80px;
+	border: none;
 }
