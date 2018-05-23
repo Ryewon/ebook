@@ -93,8 +93,8 @@
 			$('#topMenu li > a').eq(4).removeClass('remain');
 			$('#topMenu li > a').eq(5).removeClass('remain');
 			$('#topMenu li > a').eq(6).removeClass('remain');
-			$('#topMenu li > a').eq(7).addClass('remain');
-			$('#topMenu li > a').eq(8).removeClass('remain');
+			$('#topMenu li > a').eq(7).removeClass('remain');
+			$('#topMenu li > a').eq(8).addClass('remain');
 		} else {
 			$('#topMenu li > a').eq(0).removeClass('remain');
 			$('#topMenu li > a').eq(1).removeClass('remain');

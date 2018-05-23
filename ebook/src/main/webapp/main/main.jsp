@@ -135,8 +135,9 @@
 
 <div style="top: 102px; position: fixed;">
 <%@ include file="./navbar.jsp" %>
-<div id="booklistdiv" style="position: fixed; height: 800px; overflow: auto; width: 100%; margin: 50px auto; background-color: #F6F6F6;">
+<div id="booklistdiv" style="position: fixed; height: 100%; overflow: auto; width: 100%; margin: 50px auto; background-color: #F6F6F6;">
 	<div style="width: 1000px; background-color: white; margin: 0 auto; height: 100%;">
+	<div style="height: 800px; overflow: auto;">
 	<input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
 	<br>
 	<c:choose>
@@ -379,6 +380,7 @@
 			</div>
 		</c:otherwise>		
 	</c:choose>
+	</div>
 	</div>
 </div>
 </div>

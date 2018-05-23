@@ -16,6 +16,8 @@
 <script>
 //infoPw 쪽 스크립트임
 	$(document).ready(function(){
+		$('#alert2').hide();
+		
 		var check = $('#check').val();
 		var checkPw = $('#checkPw').val();
 		
@@ -225,7 +227,7 @@
 			data: "spot=" + spot + "&delId="+delId ,
 			success: function() {
 				$('#delModal').hide();
-				window.location.reload();
+				window.location.href="/ebook/mypage?spot="+spot+"&page=1";
 			}			
 		});
 	}
@@ -242,7 +244,7 @@
 <body>
 
 <%@ include file="../include/header.jsp" %>
-<div style="position: fixed; top: 85px; width: 100%; height: 100%; background-color: #F6F6F6">
+<div style="position: fixed; top: 103px; width: 100%; height: 100%; background-color: #F6F6F6">
 <div style="width: 1000px; margin: 0 auto; height: 100%; background-color: white;">
 	
 	<div id="sidebar-wrapper" class="sidebar-toggle">
@@ -280,27 +282,27 @@
 					<div>
 						<h2>개인정보</h2>
 						<input type="hidden" id="check" name="check" value="${check }">
-						<form accept-charset="UTF-8" role="form" name="infoForm" action="infoModify" method="post" onsubmit="return inputCheck();">
+						<form accept-charset="UTF-8" role="form" name="infoForm" action="infoModify" method="post" onsubmit="return inputCheck();"  style="padding-top: 20px;">
 							<div>
-								<label style="width: 100px;">아이디 &nbsp;</label> ${authInfo.mid } <br>
-								<label style="width: 100px;">이름 &nbsp;</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
+								<label style="width: 100px;">아이디</label> ${authInfo.mid } <br>
+								<label style="width: 100px;">이름</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckName"></small>
 							</div>
 							<div>
 								<c:choose>
 									<c:when test="${authInfo.gender == 'm' }" >
-										<label style="width: 100px;">성별 &nbsp;</label> <input type="radio" name="gender" value="m" checked="checked"/>남
+										<label style="width: 100px;">성별</label> <input type="radio" name="gender" value="m" checked="checked"/>남
 										&nbsp; &nbsp; <input type="radio" name="gender" value="f" />여
 									</c:when>
 									<c:otherwise>
-										<label style="width: 100px;">성별 &nbsp;</label> <input type="radio" name="gender" value="m"/>남
+										<label style="width: 100px;">성별</label> <input type="radio" name="gender" value="m"/>남
 										&nbsp; &nbsp; <input type="radio" name="gender" value="f"  checked="checked" />여
 									</c:otherwise>
 								</c:choose>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckGender"></small>
 							</div>
 							<div>
-								<label style="width: 100px;">휴대전화 &nbsp;</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
+								<label style="width: 100px;">휴대전화</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
 								<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckPhone"></small>
 							</div>
@@ -325,31 +327,30 @@
 								<small style="margin-left: 100px;" class="alertSmall" id="ckAnswer"></small>
 							</div>
 							<div>
-								<label style="width: 100px;">보유포인트  </label> ${authInfo.point } point
+								<label style="width: 100px;">보유포인트</label> ${authInfo.point } point
 							</div>
-							<label style="width: 100px;">패스워드 &nbsp;</label><input type="password" id="pw" name="pw" /> <br>
-							<div style="text-align: center;"><input class="submitBtn" type="submit" value="수정"/></div>
+							<label style="width: 100px;">패스워드</label><input type="password" id="pw" name="pw" /> <br>
+							<div style="text-align: center; margin-top: 20px;"><input class="submitBtn" type="submit" value="수정"/></div>
 						</form>
 					</div>
 					
 					<br>
-					<div class="">
+					<div>
 						<input type="hidden" id="checkPw" value="${changePw }"/>
 						<h2>패스워드 재설정</h2>
-						<form accept-charset="UTF-8" role="form" name="passForm" action="passModify" method="post" onsubmit="return changePass();">
+						<form accept-charset="UTF-8" role="form" name="passForm" action="passModify" method="post" onsubmit="return changePass();" style="padding-top: 20px;">
 							<div>
-								<label>현재 패스워드 &nbsp;</label><input type="password" id="cur_pw" name="cur_pw" /> 
+								<label style="width: 140px;">현재 패스워드 &nbsp;</label><input type="password" id="cur_pw" name="cur_pw" /> 
 								<small class="alertSmall" id="alert1" ></small>
 								<br>
-								<label>새 패스워드 &nbsp;</label><input type="password" id="new_pw1" name="new_pw1" /> 
-								<small>(8~20 글자)</small><br>
+								<label style="width: 140px;">새 패스워드 &nbsp;<small>(8~20 글자)</small></label><input type="password" id="new_pw1" name="new_pw1" /> 
 								<small class="alertSmall" id="alert2" ></small>
 								<br>
-								<label>새 패스워드 확인 &nbsp;</label><input type="password" id="new_pw2" name="new_pw2" />
+								<label style="width: 140px;">새 패스워드 확인 &nbsp;</label><input type="password" id="new_pw2" name="new_pw2" />
 								<small class="alertSmall" id="alert3" ></small><br>
 								<small class="alertSmall" id="alert4" ></small>
 							</div>
-							<div style="text-align: center;"><input class="submitBtn" type="submit" value="확인"/></div>
+							<div style="text-align: center; margin-top: 20px;"><input class="submitBtn" type="submit" value="확인"/></div>
 						</form>
 					</div>
 				</div>
@@ -361,6 +362,8 @@
 					int maxpage = ((Integer)request.getAttribute("maxpage")).intValue();
 					int startpage = ((Integer)request.getAttribute("startpage")).intValue();
 					int endpage = ((Integer)request.getAttribute("endpage")).intValue();
+					System.out.println(nowpage);
+					System.out.println(nowpage);
 				%>		
 				<div id="delModal" class="modal">
 					<!-- Modal content -->
@@ -373,10 +376,10 @@
 			          </p>
 			          <p><br /></p>
 			          <div style="text-align: center;">
-				          <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 10px;" onClick="delBook();">
+				          <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 5px;" onClick="delBook();">
 					          <span class="pop_bt" style="font-size: 13pt;" > 확인 </span>
 					      </span>
-					      <span style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_del();">
+					      <span style="cursor:pointer;background-color:#DDDDDD; text-align: center;padding-bottom: 10px;padding-top: 10px; margin: 5px;" onClick="close_del();">
 					          <span class="pop_bt" style="font-size: 13pt;" > 닫기 </span>
 					      </span>
 				      </div>
@@ -467,36 +470,32 @@
 										<tbody>
 											<c:forEach var="plist" items="${purbook }">
 												<tr>
-													<th style="width: 200px;">구매일: ${plist.buy_date }</th>
+													<th style="width: 150px;">구매일: ${plist.buy_date }</th>
 												</tr>
 												<tr style="border-bottom: 1px solid #8C8C8C;">
 													<c:choose>
 														<c:when test="${!empty plist.cover_name }">
 															<td>
-																<th style="width: 120px;">
-																	<img style="width: 100px; height: 100px;" src="/ebook/cuploads/${plist.bid }_coverFile" />
-																</th>
+																<img style="width: 100px; height: 100px; margin-left: 35px;" src="/ebook/cuploads/${plist.bid }_coverFile" />
 															</td>
 														</c:when>
 														<c:otherwise>
 															<td>
-																<th style="width: 120px;">
-																	<img style="width: 100px; height: 100px;" src="/ebook/no_image.png" />
-																</th>
+																<img style="width: 100px; height: 100px; margin-left: 35px;" src="/ebook/no_image.png" />
 															</td>
 														</c:otherwise>
 													</c:choose>				
 													<td style="width: 200px;">
-														<label>카테고리: </label>${plist.book_cate } <br> 
-														<label>제목: </label> ${plist.book_title1 } <br> 
-														<label>작가: </label> ${plist.book_writer1 } <br> 
-														<label>작성일: </label> ${plist.book_date } <br> 
-														<label>판매량: </label> ${plist.book_vol } <br>
+														<label style="width: 70px; text-align: right;">카테고리: &nbsp;</label> ${plist.book_cate } <br>
+														<label style="width: 70px; text-align: right;">제목: &nbsp;</label> ${plist.book_title1 } <br> 
+														<label style="width: 70px; text-align: right;">작가: &nbsp;</label> ${plist.book_writer1 } <br>
+														<label style="width: 70px; text-align: right;">작성일: &nbsp;</label> ${plist.book_date } <br> 
+														<label style="width: 70px; text-align: right;">판매량: &nbsp;</label> ${plist.book_vol } <br>
 													</td>
 													<td style="width: 100px;">
 														<label>가격: ${plist.price }</label>
 													</td>
-													<td>
+													<td style="width: 100px;">
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile')">읽기</button><br>
 														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>

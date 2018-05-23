@@ -134,10 +134,12 @@
 
 <!-- 상세 내역 -->
 <input type="hidden" id="curMid" name="curMid" value="${authInfo.mid }" />
-<div style="top:150px; width: 100%; height: 100%; position: fixed;">
-	<div style="margin: 5% auto; width: 600px;">
+<div style="top:150px; width: 100%; height: 100%; position: fixed; background-color: #F6F6F6;">
+	<div style="margin:auto; width: 1000px; height: 100%; background-color: white;">
 		<div>
-			<table style="margin: 0 auto;">
+			<br>
+			<h2 style="margin: 0 200px;">책 상세보기</h2><br><br>
+			<table style="margin: auto;	">
 				<tbody>
 					<tr>
 						<c:choose>
@@ -170,9 +172,9 @@
 				</tbody>
 			</table>
 		</div>
-		<div>
+		<div style="width:600px; margin: 20px auto;">
 			<h4>책 소개</h4>
-			<div style="border: solid; border-color: black; width: 600px; height: auto;">
+			<div style="border: 1.5px solid; border-color: black; width: 600px; height: auto; padding: 15px;">
 				<c:choose>
 					<c:when test="${!empty bookInfo.book_intro }">						
 						${bookInfo.book_intro }
@@ -183,9 +185,9 @@
 				</c:choose>	
 			</div>
 		</div>
-		<div>
+		<div style="width:600px; margin: 20px auto;">
 			<h4>목차</h4>
-			<div style="border: solid; border-color: black; width: 600px; height: auto;">
+			<div style="border: 1.5px solid; border-color: black; width: 600px; height: auto; padding: 15px;">
 				<c:choose>
 					<c:when test="${!empty bookInfo.contents_table }">						
 						${bookInfo.contents_table }

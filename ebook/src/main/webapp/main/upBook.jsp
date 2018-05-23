@@ -20,16 +20,35 @@
 	
 		function readURL(input) {
 			console.log("함수실행");
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-				
-				reader.onload = function (e) {
-					$('#imgView').attr('src', e.target.result);
+			var pathpoint = input.value.lastIndexOf('.');
+			var filepoint = input.value.substring(pathpoint + 1, input.length);
+			var filetype = filepoint.toLowerCase();
+			if(filetype=='jpg'||filetype=='gif'||filetype=='png'||filetype=='jpeg') {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					
+					reader.onload = function (e) {
+						$('#imgView').attr('src', e.target.result);
+					}
+					reader.readAsDataURL(input.files[0]);
+				} else {
+					$('#imgView').attr('src', '/ebook/no_image.png');
 				}
-				reader.readAsDataURL(input.files[0]);
 			} else {
+				alert('지원하지 않는 파일형식입니다.');
 				$('#imgView').attr('src', '/ebook/no_image.png');
+				input.value="";
 			}
+		}
+		
+		function changePfile(input) {
+			var pathpoint = input.value.lastIndexOf('.');
+			var filepoint = input.value.substring(pathpoint + 1, input.length);
+			var filetype = filepoint.toLowerCase();
+			if(filetype!='pdf') {
+				alert('지원하지 않는 파일형식입니다.');
+				input.value="";
+			}	
 		}
 	
 		function checkUpload() {
@@ -41,21 +60,30 @@
 			if (radio == false) {
 				console.log("라디오");
 				$('#con').html('유료/무료를 선택하세요.');
+				$('#mcloseBtn').val("닫기");
+				$('#mSubmitBtn').hide();
 				$('#myModal').show();
-				return false;
 			} else if (freeCk=='유료' && $('#price').val()=='') {			
 				$('#con').html('유료 가격을 입력하세요.');
+				$('#mcloseBtn').val("닫기");
+				$('mSubmitBtn').hide();
 				$('#myModal').show();
-				return false;
 			} else if (title == "") {			
 				$('#con').html('제목을 입력하세요.');
+				$('#mcloseBtn').val("닫기");
+				$('#mSubmitBtn').hide();
 				$('#myModal').show();
-				return false;
 			} else if (pfile == "") {
 				$('#con').html('pdf 파일을 올려주세요.');
+				$('#mcloseBtn').val("닫기");
+				$('#mSubmitBtn').hide();
 				$('#myModal').show();
-				return false;
-			}
+			} else {
+				$('#con').html('책을 게시하시겠습니까?');
+				$('#mcloseBtn').val("취소");
+				$('#mSubmitBtn').show();
+				$('#myModal').show();
+			} 
 		}
 		
 		function close_pop(flag) {
@@ -70,30 +98,29 @@
 	</script>
 </head>
 <%@ include file="../include/header.jsp" %>
-<div id="myModal" class="modal">
-	<!-- Modal content -->
-	<div class="modal-content">
-	          <p style="text-align: center;">
-	          	<span style="font-size: 14pt;">
-	          		<b><span style="font-size: 24pt;">알림</span></b>
-	          	</span>
-	          </p>
-	          <p style="text-align: center; line-height: 1.5;"><br />
-	          <span id="con"></span>
-	          </p>
-	          <p><br /></p>
-	      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
-	          <span class="pop_bt" style="font-size: 13pt;" >
-	               닫기
-	          </span>
-	      </div>
-	</div>
- </div>
-		
-<div style="top: 90px; position: fixed; margin-left: 27.5%;">
-		<h1>책 올리기</h1>	
-		<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" 
-		enctype="multipart/form-data" onsubmit="return checkUpload();">
+<div style=" width: 100%; height: 100%; position: fixed; background-color: #F6F6F6;">
+<div style="top: 90px; position: fixed; width: 1000px; margin:0 24%; height: 100%; background-color: white; padding: 30px 10%;">
+		<h2>책 올리기</h2>	<br><br><br>
+		<form accept-charset="UTF-8" role="form" name="upBook" action="uploadBook" method="post" enctype="multipart/form-data">
+			<div id="myModal" class="modal">
+				<!-- Modal content -->
+				<div class="modal-content">
+			          <p style="text-align: center;">
+			          	<span style="font-size: 14pt;">
+			          		<b><span style="font-size: 24pt;">알림</span></b>
+			          	</span>
+			          </p>
+			          <p style="text-align: center; line-height: 1.5;"><br />
+			          <span id="con"></span>
+			          </p>
+			          <p><br /></p>
+			          <div style="text-align: center;">
+					      <input class="submitBtn" type="submit" id="mSubmitBtn" value="확인">
+					      <input type="button" id="mcloseBtn" class="submitBtn" onClick="close_pop();"/>
+				      </div>
+				</div>
+			 </div>
+				
 		<div style="border: 1px;">
 			<div>
 				<label>카테고리</label> &nbsp;
@@ -126,7 +153,7 @@
 					<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
 				</div>
 				<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
-				<div style="display: inline-table; width: 400px;">
+				<div style="display: inline-table; width: 300px;">
 					<label>표지 첨부</label> &nbsp;
 					<label style="display: inline-table;">
 					<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
@@ -137,7 +164,7 @@
 					<br>
 					<label>PDF 첨부</label> &nbsp;
 					<label style="display: inline-table;">
-					<input name="file" type="file" id ="pfile" accept=".pdf" onchange="" /></label>
+					<input name="file" type="file" id ="pfile" accept=".pdf" onchange="changePfile(this)" /></label>
 					<input type="hidden" id="pupdir" name="pupdir" value="<%=request.getRealPath("/puploads/")%>" />
 				</div>
 			</div>
@@ -153,7 +180,8 @@
 				<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll"></textarea>
 			</div>
 			<br>
-			<div style="text-align: center;"><input class="submitBtn" type="submit" value="올리기"></div>
+			<div style="text-align: center;"><input class="submitBtn" type="button" value="올리기" onclick="checkUpload();"></div>
 		</div>
 		</form>
+</div>
 </div>

@@ -4,12 +4,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -61,6 +63,7 @@ public class MypageController {
 			System.out.println("delId: "+ delId);
 			
 			if (request.getParameter("page") != null) {
+				System.out.println(request.getParameter("page"));
 				page = Integer.parseInt(request.getParameter("page"));
 			}
 			
@@ -90,9 +93,9 @@ public class MypageController {
 			if (endpage > maxpage) {
 				endpage = maxpage;
 			}
+
 			model.addAttribute("spot", spot);
 		}
-		
 		request.setAttribute("page", page);
 		request.setAttribute("maxpage", maxpage);
 		request.setAttribute("startpage", startpage);
@@ -194,7 +197,7 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "/modifyUpBook")
-	public String modifyUpBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) {
+	public String modifyUpBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) throws Exception {
 		int bid = Integer.parseInt(request.getParameter("bid"));
 		String cate = request.getParameter("cate");
 		String free = request.getParameter("free");
@@ -277,6 +280,8 @@ public class MypageController {
 				} else {
 					cfile = file.get(0).getOriginalFilename();
 					cpath = request.getParameter("cupdir") + bid + "_coverFile";
+					pfile = file.get(1).getOriginalFilename();
+					ppath = request.getParameter("pupdir") + bid + "_pdfFile";
 					try {
 						File cover_file = new File(cpath);
 						file.get(0).transferTo(cover_file);
@@ -323,6 +328,7 @@ public class MypageController {
 //		request.setAttribute("listcount", listcount);
 		
 		model.addAttribute("spot", "upBookList");
-		return "redirect:mypage";
+		
+		return "redirect:/mypage";
 	}
 }

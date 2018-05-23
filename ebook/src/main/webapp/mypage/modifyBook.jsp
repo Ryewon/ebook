@@ -25,28 +25,48 @@
 
 	function readURL(input) {
 		console.log("함수실행");
-		if (input.files && input.files[0]) {
-			var reader = new FileReader();
-			
-			reader.onload = function (e) {
-				$('#imgView').attr('src', e.target.result);
+		var pathpoint = input.value.lastIndexOf('.');
+		var filepoint = input.value.substring(pathpoint + 1, input.length);
+		var filetype = filepoint.toLowerCase();
+		if(filetype=='jpg'||filetype=='gif'||filetype=='png'||filetype=='jpeg') {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				
+				reader.onload = function (e) {
+					$('#imgView').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+				$('#coverName').val(input.files[0].name);
+			} else {
+				$('#imgView').attr('src', '/ebook/no_image.png');
+				$('#coverName').val("");
 			}
-			reader.readAsDataURL(input.files[0]);
-			$('#coverName').val(input.files[0].name);
+			console.log("coverchange:" + $('#coverName').val());
 		} else {
+			alert('지원하지 않는 파일형식입니다.');
 			$('#imgView').attr('src', '/ebook/no_image.png');
 			$('#coverName').val("");
+			input.value="";
 		}
-		console.log("coverchange:" + $('#coverName').val());
+		
 	}
 	
 	function changePfile(input) {
-		if (input.files && input.files[0]) {			
-			$('#pfileName').val(input.files[0].name);
+		var pathpoint = input.value.lastIndexOf('.');
+		var filepoint = input.value.substring(pathpoint + 1, input.length);
+		var filetype = filepoint.toLowerCase();
+		if(filetype=='pdf') {
+			if (input.files && input.files[0]) {			
+				$('#pfileName').val(input.files[0].name);
+			} else {
+				$('#pfileName').val("");
+			}
+			console.log("pfilechange:" + $('#pfileName').val());
 		} else {
+			alert('지원하지 않는 파일형식입니다.');
 			$('#pfileName').val("");
-		}
-		console.log("pfilechange:" + $('#pfileName').val());
+			input.value="";
+		}	
 	}
 
 	function checkUpload() {
@@ -58,21 +78,30 @@
 		if (radio == false) {
 			console.log("라디오");
 			$('#con').html('유료/무료를 선택하세요.');
+			$('#mcloseBtn').val("닫기");
+			$('#mSubmitBtn').hide();
 			$('#myModal').show();
-			return false;
 		} else if (freeCk=='유료' && $('#price').val()=='') {			
 			$('#con').html('유료 가격을 입력하세요.');
+			$('#mcloseBtn').val("닫기");
+			$('#mSubmitBtn').hide();
 			$('#myModal').show();
-			return false;
 		} else if (title == "") {			
 			$('#con').html('제목을 입력하세요.');
+			$('#mcloseBtn').val("닫기");
+			$('#mSubmitBtn').hide();
 			$('#myModal').show();
-			return false;
 		} else if (pfile == "") {
 			$('#con').html('pdf 파일을 올려주세요.');
+			$('#mcloseBtn').val("닫기");
+			$('#mSubmitBtn').hide();
 			$('#myModal').show();
-			return false;
-		}
+		} else {
+			$('#con').html('책을 수정하시겠습니까?');
+			$('#mcloseBtn').val("취소");
+			$('#mSubmitBtn').show();
+			$('#myModal').show();
+		} 
 	}
 	
 	function close_pop(flag) {
@@ -88,30 +117,29 @@
 </script>
 </head>
 <%@ include file="../include/header.jsp" %>
-<div id="myModal" class="modal">
-	<!-- Modal content -->
-	<div class="modal-content">
-	          <p style="text-align: center;">
-	          	<span style="font-size: 14pt;">
-	          		<b><span style="font-size: 24pt;">알림</span></b>
-	          	</span>
-	          </p>
-	          <p style="text-align: center; line-height: 1.5;"><br />
-	          <span id="con"></span>
-	          </p>
-	          <p><br /></p>
-	      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
-	          <span class="pop_bt" style="font-size: 13pt;" >
-	               닫기
-	          </span>
-	      </div>
-	</div>
-</div>
-		
-<div style="top: 90px; position: fixed; margin-left: 27.5%;">
-	<h1>책 수정하기</h1>	
-	<form accept-charset="UTF-8" role="form" name="modifyUpBook" action="modifyUpBook" method="post" 
-	enctype="multipart/form-data" onsubmit="return checkUpload();">
+
+<div style=" width: 100%; height: 100%; position: fixed; background-color: #F6F6F6;">	
+<div style="top: 90px; position: fixed; width: 1000px; margin:0 24%; height: 100%; background-color: white; padding: 30px 10%;">
+	<h2>책 수정하기</h2><br><br><br>
+	<form accept-charset="UTF-8" role="form" name="modifyUpBook" action="modifyUpBook" method="post" enctype="multipart/form-data">
+	<div id="myModal" class="modal">
+				<!-- Modal content -->
+				<div class="modal-content">
+			          <p style="text-align: center;">
+			          	<span style="font-size: 14pt;">
+			          		<b><span style="font-size: 24pt;">알림</span></b>
+			          	</span>
+			          </p>
+			          <p style="text-align: center; line-height: 1.5;"><br />
+			          <span id="con"></span>
+			          </p>
+			          <p><br /></p>
+			          <div style="text-align: center;">
+					      <input class="submitBtn" type="submit" id="mSubmitBtn" value="확인">
+					      <input type="button" id="mcloseBtn" class="submitBtn" onClick="close_pop();"/>
+				      </div>
+				</div>
+			 </div>
 	<input type="hidden" id="bid" name="bid" value="${book.bid }">
 	<div style="border: 1px;">
 		<div>
@@ -151,11 +179,11 @@
 					<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
 				</c:if>
 				<c:if test="${! empty book.cover_name }">
-					<img style="width: 200px; height: 200px; border: 1px;" src="/ebook/cuploads/${book.bid }_coverFile"  />
+					<img style="width: 200px; height: 200px; border: 1px;" id="imgView" src="/ebook/cuploads/${book.bid }_coverFile"  />
 				</c:if>
 			</div>
 			<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
-			<div style="display: inline-table; width: 400px;">
+			<div style="display: inline-table; width: 300px;">
 				<label>표지 첨부</label> &nbsp;
 				<label style="display: inline-table;">
 				<input type="hidden" id="OrgCoverName" name="OrgCoverName" value="${book.cover_path }">
@@ -185,7 +213,9 @@
 			<label>목차</label><br>
 			<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll">${book.contents_table }</textarea>
 		</div>
-		<input type="submit" value="올리기">
+		<br>
+		<div style="text-align: center;"><input class="submitBtn" type="button" value="올리기" onclick="checkUpload();"></div>
 	</div>
 	</form>
+</div>
 </div>

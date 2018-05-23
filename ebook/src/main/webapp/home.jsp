@@ -5,7 +5,7 @@
 	<title>RWeBook</title>
 </head>
 <body>
-<div style="overflow: auto; height: 950px;">
+<div>
 <%@ include file="./include/header.jsp" %>
 
 <%@ include file="./main/main.jsp" %>

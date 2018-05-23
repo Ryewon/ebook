@@ -108,7 +108,7 @@ public class BookController {
 		// cpath, pfile, pCnt, ppath, ipath, mid);
 		bookDao.upBook(bid, title1, title2, writer1, writer2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt,
 				ppath, mid);
-		return "redirect:./home";
+		return "redirect:/home";
 	}
 
 	@RequestMapping(value = "/searchBook")
@@ -158,14 +158,15 @@ public class BookController {
 				if (rsortType != null) {
 					sortType = rsortType;
 				}
-
+				System.out.println("price:" + price);
+				System.out.println("sortType:" + sortType);
 				listcount = bookDao.sortedBookCnt(cate, price, sortType);
 				book = bookDao.sortedBook(page, limit, cate, price, sortType);
 				
 				model.addAttribute("sorting", sorting);
 				model.addAttribute("book", book);
-				model.addAttribute("price", rprice);
-				model.addAttribute("sortType", rsortType);
+				model.addAttribute("price", price);
+				model.addAttribute("sortType", sortType);
 			}
 			
 			System.out.println("listcount : " + listcount);
