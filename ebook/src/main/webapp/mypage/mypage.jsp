@@ -55,6 +55,7 @@
 	
 	function close_pop(flag) {
 	    $('#myModal').hide();
+	    window.location.href="/ebook/mypage?spot=infoPw";
 	}
 	
 	function hintEdit() {

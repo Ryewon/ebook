@@ -41,6 +41,7 @@ public class BookDao {
 							price, con_table, intro,
 							cfile, cpath, pfile, pCnt,
 							ppath, mid);
+			jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
 		}
 	
 	public int suchBid() {
@@ -126,6 +127,7 @@ public class BookDao {
 		jdbcTemplate.update("update book set book_vol=(select book_vol+1 from book where bid=?) where bid=?", bid, bid);
 		jdbcTemplate.update("update member set point=? where mid=?", apoint, mid);
 		jdbcTemplate.update("insert into point values(?, ?, '구매', sysdate, ?)", ppoint, cpoint, mid);
+		jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
 	}
 	
 	public Book bookInfo(int bid) {

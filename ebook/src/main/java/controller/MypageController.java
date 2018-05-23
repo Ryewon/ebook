@@ -198,6 +198,8 @@ public class MypageController {
 	
 	@RequestMapping(value = "/modifyUpBook")
 	public String modifyUpBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) throws Exception {
+		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
+		String mid = authInfo.getMid();
 		int bid = Integer.parseInt(request.getParameter("bid"));
 		String cate = request.getParameter("cate");
 		String free = request.getParameter("free");
@@ -245,7 +247,7 @@ public class MypageController {
 				} catch (IOException e) {
 					System.out.println("File 변환 예외발생");
 				}
-				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
 			}
 		} else {
 			if(orgCoverName.equals(coverName)) {
@@ -264,7 +266,7 @@ public class MypageController {
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
-					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, bid);
+					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, mid, bid);
 				}
 			} else {
 				if(orgPfileName.equals(pfileName)) {
@@ -295,7 +297,7 @@ public class MypageController {
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
-					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
 				}
 			}
 		}

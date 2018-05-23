@@ -114,17 +114,19 @@ public class MypageDao {
 	}
 	
 	public void modifyPdfBook(String title1, String title2, String cate, int price, String con_table, String intro
-			, String pfile, int pCnt, String ppath, int bid) {
+			, String pfile, int pCnt, String ppath, String mid, int bid) {
 		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
 				+ "pfile_name=?, pfile_page=?, pfile_path=?, bmod_date=sysdate where bid=?"
 				, title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, bid);
+		jdbcTemplate.update("update bookmark set lastpage=1, lastdate=sysdate where mid=? and bid=?", mid, bid);
 	}
 	
 	public void modifyCoverPdfBook(String title1, String title2, String cate, int price, String con_table, String intro, String cfile, String cpath
-			, String pfile, int pCnt, String ppath, int bid) {
+			, String pfile, int pCnt, String ppath, String mid, int bid) {
 		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
 				+ "cover_name=?, cover_path=?, pfile_name=?, pfile_page=?, pfile_path=?, bmod_date=sysdate where bid=?"
-				, title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
+				, title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
+		jdbcTemplate.update("update bookmark set lastpage=1, lastdate=sysdate where mid=? and bid=?", mid, bid);
 	}
 	
 	public void modifyBook(String title1, String title2, String cate, int price, String con_table, String intro, int bid) {

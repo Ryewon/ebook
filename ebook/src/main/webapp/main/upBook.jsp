@@ -34,6 +34,8 @@
 				} else {
 					$('#imgView').attr('src', '/ebook/no_image.png');
 				}
+			} else if(filetype=='') {
+				$('#imgView').attr('src', '/ebook/no_image.png');
 			} else {
 				alert('지원하지 않는 파일형식입니다.');
 				$('#imgView').attr('src', '/ebook/no_image.png');
@@ -45,7 +47,7 @@
 			var pathpoint = input.value.lastIndexOf('.');
 			var filepoint = input.value.substring(pathpoint + 1, input.length);
 			var filetype = filepoint.toLowerCase();
-			if(filetype!='pdf') {
+			if(filetype!='pdf' && filetype!='') {
 				alert('지원하지 않는 파일형식입니다.');
 				input.value="";
 			}	
