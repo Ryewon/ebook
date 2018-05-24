@@ -19,19 +19,34 @@
 		$('#alert2').hide();
 		
 		var check = $('#check').val();
+		var checkInfo = "<c:out value='${changeInfo }' />";
 		var checkPw = $('#checkPw').val();
 		
 		if(check=="miss") {
 			$('#con').html('패스워드가 일치하지 않습니다.');
+			$('#refreshBtn').hide();
+			$('#closeBtn').show();
 			$('#myModal').show();
 		}
+		
+		if(checkInfo=="y") {
+			$('#con').html('개인정보 변경이 완료되었습니다.');
+			$('#refreshBtn').show();
+			$('#closeBtn').hide();
+			$('#myModal').show();
+		}
+		
 		console.log(checkPw)
 		if(checkPw=="y") {
 			$('#con').html('패스워드 변경이 완료되었습니다.');
+			$('#refreshBtn').show();
+			$('#closeBtn').hide();
 			$('#myModal').show();
 			$('#checkPw').val('');
 		} else if(checkPw=="n") {
 			$('#con').html('현재 패스워드를 확인해 주세요.');
+			$('#refreshBtn').hide();
+			$('#closeBtn').show();
 			$('#myModal').show();
 		}
 	});
@@ -56,6 +71,10 @@
 	function close_pop(flag) {
 	    $('#myModal').hide();
 	    window.location.href="/ebook/mypage?spot=infoPw";
+	}
+	
+	function mdclose() {
+		$('#myModal').hide();
 	}
 	
 	function hintEdit() {
@@ -159,6 +178,8 @@
 			return false;
 		} else if ($('#pw').val()=="") {
 			$('#con').html('패스워드를 입력해주세요.');
+			$('#refreshBtn').hide();
+			$('#closeBtn').show();
 			$('#myModal').show();
 			return false;
 		}		
@@ -273,7 +294,10 @@
 					          <span id="con"></span>
 					          </p>
 					          <p><br /></p>
-					      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+					      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" id="refreshBtn" onClick="close_pop();">
+					          <span class="pop_bt" style="font-size: 13pt;" >닫기</span>
+					      </div>
+					      <div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" id="closeBtn" onClick="mdclose();">
 					          <span class="pop_bt" style="font-size: 13pt;" >닫기</span>
 					      </div>
 					</div>
@@ -421,7 +445,7 @@
 													</td>
 													<td>
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
-														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile')">읽기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${ulist.lastpage }&bid=${ulist.bid }')">읽기</button><br>
 														<button class="modifyBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/modifyBook?bid=${ulist.bid}'">수정</button><br>
 														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${ulist.bid}', 'upBookList');">삭제</button>
 													</td>
@@ -498,7 +522,7 @@
 													</td>
 													<td style="width: 100px;">
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
-														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile')">읽기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${plist.lastpage }&bid=${plist.bid }')">읽기</button><br>
 														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>
 													</td>
 												</tr>

@@ -20,22 +20,22 @@ public class MypageDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public List<Book> myUpBook(String mid, int page, int limit) {
+	public List<BookCommand> myUpBook(String mid, int page, int limit) {
 		int startrow = (page -1 ) * 5 + 1;
 		int endrow = startrow + limit - 1;
-		List<Book> book = jdbcTemplate.query(
-				"select a.* from " 
-				+ "(select row_number() over(order by book_date desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
-				+ "from book " 
-				+ "where bexist = 'yes' and mid = ?)a where rnum >=? and rnum <=?"
-				, new RowMapper<Book>() {
+		List<BookCommand> book = jdbcTemplate.query(
+				"select a.* from " + 
+				"(select row_number() over(order by book_date desc, b.bid desc) rnum, b.bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, b.mid, m.lastpage " + 
+				"from book  b, bookmark m " + 
+				"where b.mid = m.mid and b.bid=m.bid and b.mid=? and bexist = 'yes' ) a where rnum>=? and rnum<=?"
+				, new RowMapper<BookCommand>() {
 					@Override
-					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date")
+					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
+						BookCommand mbook = new BookCommand(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date")
 								, rs.getString("book_writer1"), rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table")
 								, rs.getString("book_intro"), rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
 								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-								, rs.getString("mid"));
+								, rs.getString("mid"), rs.getInt("lastpage"));
 						return mbook;
 					}
 				}, mid, startrow, endrow);
@@ -72,17 +72,20 @@ public class MypageDao {
 		int startrow = (page -1 ) * 5 + 1;
 		int endrow = startrow + limit - 1;
 		List<BookCommand> purbook = jdbcTemplate.query(
-				"select a.* from " 
-				+ "(select row_number() over(order by buy_date desc) rnum, pur_id, buy_date, p.bid"
-				+ ", book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name"
-				+ ", pfile_name, p.mid " 
-				+ "from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes') a where rnum >= ? and rnum <= ?"
+				"select b.* from" + 
+				"(select row_number() over(order by buy_date desc, pur_id desc) rnum, a.*, m.lastpage from " + 
+				"(select pur_id, buy_date, p.bid pbid" + 
+				", book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name" + 
+				", pfile_name, p.mid pmid " + 
+				"from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes') a, bookmark m " + 
+				"where pbid=m.bid and pmid=m.mid and pmid=?) b where rnum >= ? and rnum <= ?"
 				, new RowMapper<BookCommand>() {
 					@Override
 					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
-						BookCommand buybook = new BookCommand(rs.getInt("pur_id"), rs.getDate("buy_date"), rs.getString("bid")
+						BookCommand buybook = new BookCommand(rs.getInt("pur_id"), rs.getDate("buy_date"), rs.getInt("bid")
 								,  rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1"), rs.getString("book_cate")
-								, rs.getInt("book_vol"), rs.getInt("price"), rs.getString("cover_name"), rs.getString("pfile_name"), rs.getString("mid"));
+								, rs.getInt("book_vol"), rs.getInt("price"), rs.getString("cover_name"), rs.getString("pfile_name")
+								, rs.getString("mid"), rs.getInt("lastpage"));
 						return buybook;
 					}
 				}, mid, startrow, endrow);
@@ -99,12 +102,14 @@ public class MypageDao {
 		return cnt;
 	}
 	
-	public void DelupBook(int bid) {
+	public void DelupBook(String mid, int bid) {
 		jdbcTemplate.update("update book set bdel_date=sysdate, bexist='no' where bid=?", bid);
+		jdbcTemplate.update("delete from bookmark where mid = ? and bid = ?", mid, bid);
 	}
 	
-	public void DelbuyBook(int pur_id) {
+	public void DelbuyBook(String mid, int pur_id) {
 		jdbcTemplate.update("update purchase set pdel_date=sysdate, pexist='no' where pur_id=?", pur_id);
+		jdbcTemplate.update("delete from bookmark where mid = ? and bid = (select bid from purchase where pur_id = ?)", mid, pur_id);
 	}
 	
 	public void modifyCoverBook(String title1, String title2, String cate, int price, String con_table, String intro, String cfile, String cpath, int bid) {
@@ -133,5 +138,9 @@ public class MypageDao {
 		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
 				+ "bmod_date=sysdate where bid=?"
 				, title1, title2, cate, price, con_table, intro, bid);
+	}
+	
+	public void addBookMark(String mid, int bid, int lastpage) {
+		jdbcTemplate.update("update bookmark set lastpage=?, lastdate=sysdate where mid=? and bid=?", lastpage, mid, bid);
 	}
 }

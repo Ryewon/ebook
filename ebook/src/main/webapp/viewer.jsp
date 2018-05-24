@@ -22,7 +22,7 @@
 		pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 		
 		var pdfDoc = null,
-			pageNum = 1,
+			pageNum = Number('${param.lastpage}'),
 			pageRendering = false,
 			pageNumPending = null,
 			scale = 2.0,
@@ -74,11 +74,13 @@
 		* finised. Otherwise, executes rendering immediately.
 		*/
 		function queueRenderPage(num) {
+			$('#lastReadPage').val(num);
 			if (pageRendering) {
 			 	pageNumPending = num;
 			} else {
 			 	renderPage(num);
 			}
+			console.log($('#lastReadPage').val());
 		}
 		
 		/**
@@ -119,8 +121,12 @@
 		document.querySelector('#page_num').addEventListener('keypress', function (e) {
 		    var key = e.which || e.keyCode;
 		    var inputPage = Number($('#page_num').val()); 
-		    if (key == 13) { // 13 is enter
-		    	queueRenderPage(inputPage);
+		    if(inputPage <= pdfDoc.numPages) {
+			    if (key == 13) { // 13 is enter
+			    	queueRenderPage(inputPage);
+			    }
+		    } else {
+		    	alert("마지막 페이지 보다 큰 페이지 입니다.");
 		    }
 		});
 		
@@ -135,8 +141,24 @@
 		    	onNextPage();
 		    } 
 		}
-		
 	}
+	
+	$(window).bind("beforeunload", function (e) {
+		var mid = '${param.mid }';
+		var bid = Number('${param.bid }');
+		var markPage = $('#lastReadPage').val(); 
+		
+		$.ajax({
+			type: "POST",
+			url: "/ebook/bookmark",
+			data: "mid=" + mid + "&bid="+ bid + "&lastpage=" + markPage,
+		}); 
+		console.log("asdf");
+		window.opener.location.reload();
+		window.close();
+	});
+	
+	
 </script>
 
 <style>
@@ -147,7 +169,7 @@
 
 </head>
 <body>
-	
+	<input type="hidden" id="lastReadPage" name="lastReadPage" />
 	<input type="hidden" id="file_name" name="file_name" value="<%= request.getParameter("pfile") %>">
 	<div style="padding-left: 400px;">
 		<h1>${param.title } - ${param.writer }</h1>

@@ -71,7 +71,7 @@ public class Book {
 		this.pfile_path = pfile_path;
 	}
 
-	public Book(int bid, int price, int book_vol, int pfile_page, String book_title1, String book_title2,
+/*	public Book(int bid, int price, int book_vol, int pfile_page, String book_title1, String book_title2,
 			String book_writer1, String book_writer2, String book_cate, String contents_table, String book_intro,
 			String cover_name, String cover_path, String pfile_name, String pfile_path, String mid, Date book_date,
 			Date bmod_date, Date bdel_date, String bexist) {
@@ -96,7 +96,7 @@ public class Book {
 		this.bmod_date = bmod_date;
 		this.bdel_date = bdel_date;
 		this.bexist = bexist;
-	}
+	}*/
 
 	public int getBid() {
 		return bid;

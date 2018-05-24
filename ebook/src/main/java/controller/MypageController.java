@@ -1,17 +1,10 @@
 package controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -55,7 +48,9 @@ public class MypageController {
 		String mid = authInfo.getMid();
 		
 		if(spot.equals("infoPw")) {
+			String changeInfo = request.getParameter("changeInfo");
 			String changePw = request.getParameter("changePw");
+			model.addAttribute("changeInfo", changeInfo);
 			model.addAttribute("changePw", changePw);
 			model.addAttribute("spot", "infoPw");
 		} else {
@@ -71,16 +66,16 @@ public class MypageController {
 				if(delId!=null) {
 					System.out.println("여기는 내가 올린책 지우기 전");
 					int bid = Integer.parseInt(delId);
-					mypageDao.DelupBook(bid);
+					mypageDao.DelupBook(mid, bid);
 				}
 				listcount = mypageDao.myUpBookCnt(mid);
-				List<Book> upbook = mypageDao.myUpBook(mid, page, limit);
+				List<BookCommand> upbook = mypageDao.myUpBook(mid, page, limit);
 				model.addAttribute("upbook", upbook);			
 			} else {
 				if(delId!=null) {
 					System.out.println("여기는 내가 산 책 지우기 전");
 					int pur_id = Integer.parseInt(delId);
-					mypageDao.DelbuyBook(pur_id);
+					mypageDao.DelbuyBook(mid, pur_id);
 				}
 				listcount = mypageDao.myPurBookCnt(mid);
 				List<BookCommand> purbook = mypageDao.myPurBook(mid, page, limit);
@@ -106,7 +101,7 @@ public class MypageController {
 	}
 	
 	@RequestMapping(value = "/infoModify")
-	public String infoModify(HttpServletRequest request, HttpSession session, Model model) {
+	public String infoModify(HttpServletRequest request, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
 		System.out.println("info 컨트롤러");
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
@@ -131,7 +126,9 @@ public class MypageController {
 			authInfo.setAnswer(answer);
 			session.setAttribute("authInfo", authInfo);
 			System.out.println(authInfo.getName());
-			return "redirect:/mypage";
+			redirectAttributes.addAttribute("spot", "infoPw");
+			redirectAttributes.addAttribute("changeInfo", "y");
+			return "redirect:mypage";
 		} else {
 			model.addAttribute("check", "miss");
 			return "/mypage/mypage";
@@ -332,5 +329,12 @@ public class MypageController {
 		model.addAttribute("spot", "upBookList");
 		
 		return "redirect:/mypage";
+	}
+	
+	@RequestMapping("/bookmark")
+	public void bookMark(String mid, String bid, String lastpage) {
+		int bookId = Integer.parseInt(bid);
+		int lpage = Integer.parseInt(lastpage);
+		mypageDao.addBookMark(mid, bookId, lpage);
 	}
 }

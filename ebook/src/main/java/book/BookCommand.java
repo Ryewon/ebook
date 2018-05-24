@@ -2,32 +2,57 @@ package book;
 
 import java.util.Date;
 
+/**
+ * @author intern2
+ *
+ */
 public class BookCommand {
-	private int pur_id;
+	private int pur_id, bid;
 	private Date buy_date;
-	private String bid, book_title1, book_title2;
+	private String book_title1, book_title2;
 	private Date book_date;
-	private String book_writer1, book_writer2, book_cate;
+	private String book_writer1, book_writer2, book_cate, contents_table, book_intro;
 	private int book_vol, price;
-	private String cover_name, pfile_name, mid;
+	private String cover_name, cover_path, pfile_name, pfile_path, mid;
+	private int lastpage;
 	
-	public BookCommand(int pur_id, Date buy_date, String bid, String book_title1, Date book_date, String book_writer1,
-			 String book_cate, int book_vol, int price, String cover_name, String pfile_name, String mid) {
+	public BookCommand(int pur_id, Date buy_date, int bid, String book_title1, Date book_date, String book_writer1,
+			 String book_cate, int book_vol, int price, String cover_name, String pfile_name, String mid, int lastpage) {
 		super();
 		this.pur_id = pur_id;
 		this.buy_date = buy_date;
 		this.bid = bid;
 		this.book_title1 = book_title1;
-		this.book_title2 = book_title2;
 		this.book_date = book_date;
 		this.book_writer1 = book_writer1;
-		this.book_writer2 = book_writer2;
 		this.book_cate = book_cate;
 		this.book_vol = book_vol;
 		this.price = price;
 		this.cover_name = cover_name;
 		this.pfile_name = pfile_name;
 		this.mid = mid;
+		this.lastpage = lastpage;
+	}
+	
+	public BookCommand(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, 
+			String book_intro, int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid,
+			int lastpage) {
+		super();
+		this.bid = bid;
+		this.book_title1 = book_title1;
+		this.book_date = book_date;
+		this.book_writer1 = book_writer1;
+		this.book_cate = book_cate;
+		this.price = price;
+		this.contents_table = contents_table;
+		this.book_intro = book_intro;
+		this.book_vol = book_vol;
+		this.cover_name = cover_name;
+		this.cover_path = cover_path;
+		this.pfile_name = pfile_name;
+		this.pfile_path = pfile_path;
+		this.mid = mid;
+		this.lastpage = lastpage;
 	}
 
 	public int getPur_id() {
@@ -46,11 +71,11 @@ public class BookCommand {
 		this.buy_date = buy_date;
 	}
 
-	public String getBid() {
+	public int getBid() {
 		return bid;
 	}
 
-	public void setBid(String bid) {
+	public void setBid(int bid) {
 		this.bid = bid;
 	}
 
@@ -142,5 +167,44 @@ public class BookCommand {
 		this.mid = mid;
 	}
 
+	public int getLastpage() {
+		return lastpage;
+	}
 
+	public void setLastpage(int lastpage) {
+		this.lastpage = lastpage;
+	}
+
+	public String getContents_table() {
+		return contents_table;
+	}
+
+	public void setContents_table(String contents_table) {
+		this.contents_table = contents_table;
+	}
+
+	public String getBook_intro() {
+		return book_intro;
+	}
+
+	public void setBook_intro(String book_intro) {
+		this.book_intro = book_intro;
+	}
+
+	public String getCover_path() {
+		return cover_path;
+	}
+
+	public void setCover_path(String cover_path) {
+		this.cover_path = cover_path;
+	}
+
+	public String getPfile_path() {
+		return pfile_path;
+	}
+
+	public void setPfile_path(String pfile_path) {
+		this.pfile_path = pfile_path;
+	}
+	
 }
