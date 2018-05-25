@@ -46,7 +46,7 @@ public class MypageDao {
 	public int myUpBookCnt(String mid) {
 		int cnt = 0;
 		cnt = jdbcTemplate.queryForObject(
-				"select count(*) from book where bexist = 'yes' and mid = ? order by book_date desc"
+				"select count(0) from book where bexist = 'yes' and mid = ? order by book_date desc"
 				, Integer.class, mid);
 		return cnt;
 	}
@@ -74,11 +74,11 @@ public class MypageDao {
 		List<BookCommand> purbook = jdbcTemplate.query(
 				"select b.* from" + 
 				"(select row_number() over(order by buy_date desc, pur_id desc) rnum, a.*, m.lastpage from " + 
-				"(select pur_id, buy_date, p.bid pbid" + 
+				"(select pur_id, buy_date, p.bid" + 
 				", book_title1, book_date, book_writer1, book_cate, book_vol, price, cover_name" + 
-				", pfile_name, p.mid pmid " + 
-				"from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes') a, bookmark m " + 
-				"where pbid=m.bid and pmid=m.mid and pmid=?) b where rnum >= ? and rnum <= ?"
+				", pfile_name, p.mid " + 
+				"from purchase p, book b where p.bid = b.bid and pexist='yes') a, bookmark m " + 
+				"where a.bid=m.bid and a.mid=m.mid and a.mid=?) b where rnum >= ? and rnum <= ?"
 				, new RowMapper<BookCommand>() {
 					@Override
 					public BookCommand mapRow(ResultSet rs, int rownum) throws SQLException {
@@ -96,7 +96,7 @@ public class MypageDao {
 	public int myPurBookCnt(String mid) {
 		int cnt = 0;
 		cnt = jdbcTemplate.queryForObject(
-				"select count(*) " + 
+				"select count(0) " + 
 				"from purchase p, book b where p.bid = b.bid and p.mid=? and pexist='yes' order by buy_date desc"
 				, Integer.class, mid);
 		return cnt;
@@ -130,7 +130,7 @@ public class MypageDao {
 			, String pfile, int pCnt, String ppath, String mid, int bid) {
 		jdbcTemplate.update("update book set book_title1=?, book_title2=?, book_cate=?, price=?, contents_table=?, book_intro=?,"
 				+ "cover_name=?, cover_path=?, pfile_name=?, pfile_page=?, pfile_path=?, bmod_date=sysdate where bid=?"
-				, title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
+				, title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, bid);
 		jdbcTemplate.update("update bookmark set lastpage=1, lastdate=sysdate where mid=? and bid=?", mid, bid);
 	}
 	

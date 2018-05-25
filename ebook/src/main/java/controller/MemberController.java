@@ -46,12 +46,13 @@ public class MemberController {
 		List<Book> bestBook = bookDao.cateBook1();
 		List<Book> newBook = bookDao.cateBook2();
 		
+		String uploadOk = request.getParameter("uploadOk");
 		request.setAttribute("maxpage", maxpage);
 		request.setAttribute("page", nowpage);
 		request.setAttribute("startpage", startpage);
 		request.setAttribute("endpage", endpage);
 		request.setAttribute("listcount", listcount);
-		
+		request.setAttribute("uploadOk", uploadOk);
 		model.addAttribute("cate", cate);
 		model.addAttribute("bestBook", bestBook);
 		model.addAttribute("newBook", newBook);

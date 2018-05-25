@@ -12,8 +12,6 @@ public class Member {
 	private String answer;
 	private int point;
 	private Date mmod_date;
-	private Date mdel_date;
-	private String bexist;
 	
 	public Member(String mid, String pw, String name, String gender, String phone, String hint, String answer,
 			int point) {
@@ -29,7 +27,7 @@ public class Member {
 	}
 
 	public Member(String mid, String pw, String name, String gender, String phone, String hint, String answer,
-			int point, Date mmod_date, Date mdel_date, String bexist) {
+			int point, Date mmod_date) {
 		super();
 		this.mid = mid;
 		this.pw = pw;
@@ -40,8 +38,6 @@ public class Member {
 		this.answer = answer;
 		this.point = point;
 		this.mmod_date = mmod_date;
-		this.mdel_date = mdel_date;
-		this.bexist = bexist;
 	}
 
 	public Member(String mid) {
@@ -118,23 +114,5 @@ public class Member {
 
 	public void setMmod_date(Date mmod_date) {
 		this.mmod_date = mmod_date;
-	}
-
-	public Date getMdel_date() {
-		return mdel_date;
-	}
-
-	public void setMdel_date(Date mdel_date) {
-		this.mdel_date = mdel_date;
-	}
-
-	public String getBexist() {
-		return bexist;
-	}
-
-	public void setBexist(String bexist) {
-		this.bexist = bexist;
-	}
-	
-	
+	}	
 }

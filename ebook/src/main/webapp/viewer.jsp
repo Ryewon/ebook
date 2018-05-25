@@ -119,15 +119,27 @@
 		});
 		
 		document.querySelector('#page_num').addEventListener('keypress', function (e) {
-		    var key = e.which || e.keyCode;
-		    var inputPage = Number($('#page_num').val()); 
+		    var key = e.which || e.keyCode;		  
+	    	var inputPage = Number($('#page_num').val()); 
 		    if(inputPage <= pdfDoc.numPages) {
 			    if (key == 13) { // 13 is enter
-			    	queueRenderPage(inputPage);
+			    	if(inputPage==0) {
+			    		alert("첫 페이지로 이동합니다.");
+				    	$('#page_num').val(1);
+				    	pageNum=1;
+				    	queueRenderPage(pageNum);
+				    } else{			
+				    	pageNum=inputPage;
+				    	queueRenderPage(pageNum);
+					}
 			    }
-		    } else {
+		    } else if(inputPage > pdfDoc.numPages) {
 		    	alert("마지막 페이지 보다 큰 페이지 입니다.");
-		    }
+		    	$('#page_num').val($('#lastReadPage').val());
+		    } else {
+		    	alert("원래페이지로 이동합니다.");
+		    	$('#page_num').val($('#lastReadPage').val());
+		    }		   
 		});
 		
 		document.onkeydown = UpDownKey;
@@ -151,12 +163,19 @@
 		$.ajax({
 			type: "POST",
 			url: "/ebook/bookmark",
-			data: "mid=" + mid + "&bid="+ bid + "&lastpage=" + markPage,
+			data: "mid=" + mid + "&bid="+ bid + "&lastpage=" + markPage
 		}); 
-		console.log("asdf");
-		window.opener.location.reload();
-		window.close();
 	});
+	
+	function onlyNumber(obj) {
+		$(obj).keyup(function() {
+			$(this).val($(this).val().replace(/[^0-9]/g,""));
+		})
+	}
+	
+	function opener_reload() {
+		opener.location.reload();
+	}
 	
 	
 </script>
@@ -168,22 +187,22 @@
 </style>
 
 </head>
-<body>
+<body onunload="opener_reload()">
 	<input type="hidden" id="lastReadPage" name="lastReadPage" />
 	<input type="hidden" id="file_name" name="file_name" value="<%= request.getParameter("pfile") %>">
 	<div style="padding-left: 400px;">
 		<h1>${param.title } - ${param.writer }</h1>
 	</div>
 	<div style="text-align: center">
-		<button type="button" class="btn btn-default" aria-label="Left Align" id="prev">
+		<button class="btn btn-default" aria-label="Left Align" id="prev">
 			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 		</button>
-	  <span>
-	  	<input type="text" id="page_num" style="width: 30px; text-align: right;">&nbsp;/&nbsp;
-	  	<span id="page_count"></span>
-	  </span>
-	  <button type="button" class="btn btn-default" aria-label="Left Align" id="next">
-			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span>
+	  		<input type="text" onkeydown="onlyNumber(this);" id="page_num" style="width: 30px; text-align: right;">&nbsp;/&nbsp;
+	  		<span id="page_count"></span>
+		</span>
+		<button class="btn btn-default" aria-label="Left Align" id="next">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		</button>
 	</div>
 	

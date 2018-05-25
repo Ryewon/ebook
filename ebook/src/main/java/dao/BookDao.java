@@ -33,16 +33,16 @@ public class BookDao {
 
 	public void upBook(int bid, String title1, String title2, String writer1, String writer2, String cate, int price, String con_table, 
 			String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String mid) {
-			jdbcTemplate.update("insert into book(bid, book_title1, book_title2, book_date, book_writer1, book_writer2"
-					+ ", book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path"
-					+ ", mid, bexist) "
-					+ "values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, 'yes')", 
-					bid, title1, title1, writer1, writer2, cate,
-							price, con_table, intro,
-							cfile, cpath, pfile, pCnt,
-							ppath, mid);
-			jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
-		}
+		jdbcTemplate.update("insert into book(bid, book_title1, book_title2, book_date, book_writer1, book_writer2"
+				+ ", book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path"
+				+ ", mid, bexist) "
+				+ "values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, 'yes')", 
+				bid, title1, title1, writer1, writer2, cate,
+						price, con_table, intro,
+						cfile, cpath, pfile, pCnt,
+						ppath, mid);
+		jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
+	}
 	
 	public int suchBid() {
 		int bid = jdbcTemplate.queryForObject("select nvl(max(bid), 0)+1 from book", Integer.class);
@@ -221,11 +221,11 @@ public class BookDao {
 		String strLike = "%" + searchCon + "%";
 		if(selSrch.equals("제목")) {
 			cnt = jdbcTemplate.queryForObject(
-					"select count(*) from BOOK where bexist = 'yes' and book_title2 like ?"
+					"select count(0) from BOOK where bexist = 'yes' and book_title2 like ?"
 					, Integer.class, strLike);
 		} else {
 			cnt = jdbcTemplate.queryForObject(
-					"select count(*) from BOOK where bexist = 'yes' and book_writer2 like ?"
+					"select count(0) from BOOK where bexist = 'yes' and book_writer2 like ?"
 					, Integer.class, strLike);
 		}
 		return cnt;
@@ -294,7 +294,7 @@ public class BookDao {
 	public int sortedBookCnt(String cate, String price, String sortType) {
 		int cnt = 0;
 		String totalQuery = null;
-		String mainQuery = "select count(*) from book";
+		String mainQuery = "select count(0) from book";
 		String whereQuery = " where bexist = 'yes' and book_cate=?";
 		String orderQuery = " order by bid desc";
 		if(price.equals("전체")) {

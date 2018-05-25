@@ -17,6 +17,12 @@
 		$('#mid').focus();
 	})
 </script>
+<style type="text/css">
+	.alertSmall {
+		color : red;
+		
+	}
+</style>
 </head>
 <body>
 <div style="width: 100%; height: 100%; position: fixed; background-color: #EBF7FF">
@@ -31,12 +37,12 @@
 								<div class="form-group">
 									<input class="form-control" placeholder="ID"
 										id="mid" name="mid" type="text"/>
-									<span id="ckMid"></span>
+									<span class="alertSmall" id="ckMid"></span>
 								</div>
 								<div class="form-group">
 									<input class="form-control" placeholder="Password"
 										id="pw" name="pw" type="password" value=""/>
-									<span id="ckPw"></span>
+									<span class="alertSmall" id="ckPw"></span>
 								</div>
 								<!-- <div class="checkbox">
 									<label> <input name="remember" type="checkbox"
@@ -45,7 +51,7 @@
 								</div> -->
 								<!-- <span id="ckText"></span> -->
 								<c:if test="${mck == 'no'}">
-										<span id="m">아이디 또는 패스워드를 확인하세요.</span>
+										<span class="alertSmall" id="m">아이디 또는 패스워드를 확인하세요.</span>
 									</c:if>
 								<input class="btn btn-lg btn-success btn-block" type="submit"
 									value="LOGIN">

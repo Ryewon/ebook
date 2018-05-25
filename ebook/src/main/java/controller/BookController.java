@@ -2,12 +2,15 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +39,7 @@ public class BookController {
 	}
 
 	@RequestMapping(value = "/uploadBook", method = RequestMethod.POST)
-	public String upladBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model) {
+	public String upladBook(HttpServletRequest request, @RequestParam("file") List<MultipartFile> file, Model model, HttpServletResponse response) throws Exception {
 		AuthInfo authInfo = (AuthInfo) request.getSession().getAttribute("authInfo");
 		String mid = authInfo.getMid();
 		int bid = bookDao.suchBid();
@@ -106,9 +109,11 @@ public class BookController {
 		}
 		// bookDao.upBook(bid, title, writer, cate, price, con_table, intro, cfile,
 		// cpath, pfile, pCnt, ppath, ipath, mid);
-		bookDao.upBook(bid, title1, title2, writer1, writer2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt,
+		 bookDao.upBook(bid, title1, title2, writer1, writer2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt,
 				ppath, mid);
-		return "redirect:/home";
+		
+		
+		return "redirect:/home?uploadOk=1";
 	}
 
 	@RequestMapping(value = "/searchBook")

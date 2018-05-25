@@ -145,8 +145,9 @@
 					<input type="radio" name="free" value="무료" onclick="priceCk('free');" />무료
 				</div>
 				<div style="display: inline-table; width: 300px">
-					<label>가격</label> &nbsp;
-					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" readonly />원
+					<label>가격</label> &nbsp; 
+					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" maxlength="5" readonly style="text-align: right"/>원<br>
+					<small>5자리 이하로 입력가능</small>
 				</div>
 			</div>
 			<br />

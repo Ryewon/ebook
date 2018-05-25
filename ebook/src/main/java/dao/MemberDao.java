@@ -29,14 +29,14 @@ public class MemberDao {
 	}
 
 	public void memberJoin(String mid, String pw, String name, String gender, String phone, String hint, String answer) {
-		jdbcTemplate.update("insert into member(mid, pw, name, gender, phone, hint, answer, point, mexist) values(?, ?, ?, ?, ?, ?, ?, 0, 'yes')", mid, pw, name, gender, phone, hint, answer);
+		jdbcTemplate.update("insert into member(mid, pw, name, gender, phone, hint, answer, point) values(?, ?, ?, ?, ?, ?, ?, 0)", mid, pw, name, gender, phone, hint, answer);
 	}
 	
 	//아이디와 패스워드가 일치하는 정보가 있는지 확인
 	public String checkLogin(String mid, String pw) {
 			String result = null;
 			try {
-				result = jdbcTemplate.queryForObject("select mid from member where mid=? and pw=? and mexist = 'yes'", String.class, mid, pw);
+				result = jdbcTemplate.queryForObject("select mid from member where mid=? and pw=?", String.class, mid, pw);
 				return result;
 			} catch (Exception e) {
 				return "no";
@@ -44,12 +44,12 @@ public class MemberDao {
 	}
 	
 	public Member memberInfo(String mid) {
-		List<Member> results = jdbcTemplate.query("select * from member where mexist = 'yes' and mid = ?", new RowMapper<Member>() {
+		List<Member> results = jdbcTemplate.query("select * from member where mid = ?", new RowMapper<Member>() {
 			@Override
 			public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Member member = new Member(rs.getString("mid"), rs.getString("pw"), rs.getString("name"),
 						rs.getString("gender"), rs.getString("phone"), rs.getString("hint"), rs.getString("answer"),
-						rs.getInt("point"), rs.getDate("mmod_date"), rs.getDate("mdel_date"), rs.getString("mexist"));
+						rs.getInt("point"), rs.getDate("mmod_date"));
 				return member;
 			}
 		}, mid);
@@ -57,7 +57,7 @@ public class MemberDao {
 	}
 	
 	public void chargePoint(String mid, int cur_point, int point, int aft_point) {
-		jdbcTemplate.update("update member set point=?", aft_point);
+		jdbcTemplate.update("update member set point=? where mid=?", aft_point, mid);
 		jdbcTemplate.update("insert into point values(?, ?, '충전', sysdate, ?)", point, cur_point, mid);
 	}
 }

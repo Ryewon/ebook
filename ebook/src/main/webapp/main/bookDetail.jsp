@@ -165,7 +165,7 @@
 						</td>
 						<td>
 							<c:if test="${authInfo.mid != bookInfo.mid }">
-								<button onclick="buyCheck('${bookInfo.bid}','${bookInfo.price}');">구매</button>
+								<button class="buyBtn" onclick="buyCheck('${bookInfo.bid}','${bookInfo.price}');">구매</button>
 							</c:if>
 						</td>
 					</tr>
@@ -174,7 +174,7 @@
 		</div>
 		<div style="width:600px; margin: 20px auto;">
 			<h4>책 소개</h4>
-			<div style="border: 1.5px solid; border-color: black; width: 600px; height: auto; padding: 15px;">
+			<div style="border: 1.5px solid; border-color: black; width: 600px; height: 200px; overflow:auto; padding: 15px;">
 				<c:choose>
 					<c:when test="${!empty bookInfo.book_intro }">						
 						${bookInfo.book_intro }
@@ -187,7 +187,7 @@
 		</div>
 		<div style="width:600px; margin: 20px auto;">
 			<h4>목차</h4>
-			<div style="border: 1.5px solid; border-color: black; width: 600px; height: auto; padding: 15px;">
+			<div style="border: 1.5px solid; border-color: black; width: 600px; height: 200px; overflow:auto; padding: 15px;">
 				<c:choose>
 					<c:when test="${!empty bookInfo.contents_table }">						
 						${bookInfo.contents_table }

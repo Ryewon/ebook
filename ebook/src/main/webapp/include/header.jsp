@@ -22,13 +22,17 @@
 	});
 	
 	function logoutAjax() {
-		$.ajax({
-			type: "POST",
-			url: "/ebook/logout",
-			success: function() {
-				location.replace("home");
-			}
-		});
+		if(!confirm("정말로 로그아웃하시겠습니까?")) {
+			return; 
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/ebook/logout",
+				success: function() {
+					location.replace("home");
+				}
+			});
+		} 
 	}
 	
 	function charge_show() {
@@ -167,7 +171,7 @@
 				<li><a href="/ebook/mypage?spot=infoPw" class="btn btn-custom" style="width:119px">MyPage</a></li>
 				<li><a href="#" class="btn btn-custom" style="width:119px" onclick="charge_show();">포인트 충전</a></li>
 				<li><a href="/ebook/upbook" class="btn btn-custom" style="width:119px">책 올리기</a></li>
-				<li><a href="/ebook/logout" class="btn btn-custom" style="width:119px" onclick="logoutAjax();">로그아웃</a></li>
+				<li><a href="#" class="btn btn-custom" style="width:119px" onclick="logoutAjax();">로그아웃</a></li>
 			</c:if>
 		</ul>		
 	</div>

@@ -177,6 +177,14 @@
 			$("#ckAnswer").show();
 			return false;
 		} else if ($('#pw').val()=="") {
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckText").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
 			$('#con').html('패스워드를 입력해주세요.');
 			$('#refreshBtn').hide();
 			$('#closeBtn').show();
@@ -310,7 +318,7 @@
 						<form accept-charset="UTF-8" role="form" name="infoForm" action="infoModify" method="post" onsubmit="return inputCheck();"  style="padding-top: 20px;">
 							<div>
 								<label style="width: 100px;">아이디</label> ${authInfo.mid } <br>
-								<label style="width: 100px;">이름</label><input type="text" id="name" name="name" value="${authInfo.name }"/>
+								<label style="width: 100px;">이름</label> <input type="text" id="name" name="name" value="${authInfo.name }"/>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckName"></small>
 							</div>
 							<div>
@@ -327,13 +335,13 @@
 								<small style="margin-left: 100px;" class="alertSmall" id="ckGender"></small>
 							</div>
 							<div>
-								<label style="width: 100px;">휴대전화</label><input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
+								<label style="width: 100px;">휴대전화</label> <input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
 								<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckPhone"></small>
 							</div>
 							<div>
 								<label style="width: 100px;">힌트</label> 
-								<select id="hint" name="hint" onchange="hintEdit();">
+								<select id="hint" name="hint" onchange="hintEdit();" style="height: 25px;">
 									<option value="가장 좋아하는 색깔은?" <c:if test="${authInfo.hint eq '가장 좋아하는 색깔은?'}"> selected </c:if>>가장 좋아하는 색깔은?</option> 
 									<option value="가장 소중한 보물은?" <c:if test="${authInfo.hint eq '가장 소중한 보물은?'}"> selected </c:if>>가장 소중한 보물은?</option>
 									<option value="어렸을 적 짝꿍의 이름은?" <c:if test="${authInfo.hint eq '어렸을 적 짝꿍의 이름은?'}"> selected </c:if>>어렸을 적 짝꿍의 이름은?</option>
@@ -344,7 +352,17 @@
 																	 && authInfo.hint ne '기억에 남는 장소는?'}"> selected 
 														</c:if>>기타</option>
 								</select> 
-								<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly /> 
+								<c:choose>
+									<c:when test="${authInfo.hint ne '가장 좋아하는 색깔은?'
+													&& authInfo.hint ne '가장 소중한 보물은?'
+													&& authInfo.hint ne '어렸을 적 짝꿍의 이름은?'
+													&& authInfo.hint ne '기억에 남는 장소는?'}">
+										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" /> 
+									</c:when>
+									<c:otherwise>
+										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly />
+									</c:otherwise>
+								</c:choose>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckHint"></small>
 							</div>
 							<div>
@@ -354,7 +372,7 @@
 							<div>
 								<label style="width: 100px;">보유포인트</label> ${authInfo.point } point
 							</div>
-							<label style="width: 100px;">패스워드</label><input type="password" id="pw" name="pw" /> <br>
+							<label style="width: 100px;">패스워드</label> <input type="password" id="pw" name="pw" /> <br>
 							<div style="text-align: center; margin-top: 20px;"><input class="submitBtn" type="submit" value="수정"/></div>
 						</form>
 					</div>
@@ -445,7 +463,7 @@
 													</td>
 													<td>
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${ulist.bid }'">상세보기</button><br>
-														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${ulist.lastpage }&bid=${ulist.bid }')">읽기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${ulist.book_title1}&writer=${ulist.book_writer1 }&pfile=${ulist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${ulist.lastpage }&bid=${ulist.bid }', '내가 올린 책 ${ulist.bid }')">읽기</button><br>
 														<button class="modifyBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/modifyBook?bid=${ulist.bid}'">수정</button><br>
 														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${ulist.bid}', 'upBookList');">삭제</button>
 													</td>
@@ -522,7 +540,7 @@
 													</td>
 													<td style="width: 100px;">
 														<button class="normalBtn" style="margin-bottom: 3px;" onclick="location.href='/ebook/bookDetail?bid=${plist.bid }'">상세보기</button><br>
-														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${plist.lastpage }&bid=${plist.bid }')">읽기</button><br>
+														<button class="normalBtn" style="margin-bottom: 3px;" onclick="window.open('./viewer.jsp?title=${plist.book_title1}&writer=${plist.book_writer1 }&pfile=${plist.bid }_pdfFile&mid=${authInfo.mid }&lastpage=${plist.lastpage }&bid=${plist.bid }', '내가 올린 책 ${plist.bid }')">읽기</button><br>
 														<button class="deleteBtn" style="margin-bottom: 3px;" onclick="delCheck('${plist.pur_id}', 'buyList')">삭제</button><br>
 													</td>
 												</tr>
