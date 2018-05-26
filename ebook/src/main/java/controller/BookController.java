@@ -60,8 +60,19 @@ public class BookController {
 		}
 		String title1 = request.getParameter("title");
 		String title2 = title1.replaceAll(" ", "");
-		String intro = request.getParameter("intro").replace("\r\n", "<br>");
-		String con_table = request.getParameter("con_table").replace("\r\n", "<br>");
+		String intro = request.getParameter("intro").replace(" ", "");
+		String con_table = request.getParameter("con_table").replace(" ", "");
+		if(intro.length()==0) {
+			intro=null;
+		} else {
+			intro = request.getParameter("intro").replace("\r\n", "<br>");
+		}
+		if(con_table.length()==0) {
+			con_table=null;
+		} else {
+			con_table = request.getParameter("con_table").replace("\r\n", "<br>");
+		}
+		
 		System.out.println("cfile에 넣기");
 		String cfile = file.get(0).getOriginalFilename();
 		String pfile = file.get(1).getOriginalFilename();

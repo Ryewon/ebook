@@ -82,6 +82,7 @@
 						url: "/ebook/charge",
 						data: "mid=" + mid + "&ch_point=" + ch_point,
 						success: function() {
+							alert("포인트 충전이 완료되었습니다.");
 							window.location.reload();
 						}
 					});
@@ -94,6 +95,7 @@
 					url: "/ebook/charge",
 					data: "mid=" + mid + "&ch_point=" + ch_point,
 					success: function() {
+						alert("포인트 충전이 완료되었습니다.");
 						window.location.reload();
 					}
 				});
@@ -113,6 +115,7 @@
 		if(conSrch!="") {
 			
 		} else {
+			/* window.location.href="/ebook/home"; */
 			return false;
 		}
 	}
@@ -130,7 +133,7 @@
 	    </p>
 	    <p style="text-align: center; line-height: 1.5;">
 	    	<div class="form-inline" style="padding-left: 15%;" onchange="charge_select();">
-	    		<label>보유 포인트 : </label>&nbsp; ${authInfo.point }&nbsp;point <br/>
+	    		<label>보유 포인트 : </label>&nbsp; ${authInfo.point }&nbsp;point &nbsp;&nbsp;<small style="color: blue;">한번에 10만원 미만 충전가능합니다.</small><br/>
 		      	<input id="coneth" type="radio" name="chmoney" value="1000" /> 
 				<label for="coneth">1000원</label> &nbsp; &nbsp; &nbsp; &nbsp;
 				<input id="cthrth" type="radio" name="chmoney" value="3000" /> 
@@ -141,7 +144,7 @@
 				<label for="ctenth">10000원</label> &nbsp; &nbsp; &nbsp;
 				<input id="cin" type="radio" name="chmoney" value="cin" /> 
 				<label for="cin">직접입력
-				<input class="form-control" onkeydown="cin_charge(this)" id="cin_money" type="text" name="cin_money" style="width: 100px" disabled/>원</label><br>
+				<input class="form-control" onkeydown="cin_charge(this)" id="cin_money" type="text" name="cin_money" style="width: 100px; text-align: right;" maxlength="5" disabled/>원</label><br>
 				<span id="charge_alert" style="color: red;"></span>	
 	    	</div>
 	    </p>

@@ -8,6 +8,40 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-latest.js"></script> 
 	<script>
+	$(function() { 
+		$("input:text").keydown(function(evt) { 
+			if (evt.keyCode == 13) return false; }); 
+		});
+	
+		var textCountLimit = 500;
+		$(document).ready(function() {
+		    $('textarea[name=intro]').keyup(function() {
+		        // 텍스트영역의 길이를 체크
+		        var textLength = $(this).val().length;
+		 
+		        // 입력된 텍스트 길이를 #textCount 에 업데이트 해줌
+		        $('#textCount1').text(textLength);
+		         
+		        // 제한된 길이보다 입력된 길이가 큰 경우 제한 길이만큼만 자르고 텍스트영역에 넣음
+		        if (textLength > textCountLimit) {
+		            $(this).val($(this).val().substr(0, textCountLimit));
+		        }
+		    });
+		    $('textarea[name=con_table]').keyup(function() {
+		        // 텍스트영역의 길이를 체크
+		        var textLength = $(this).val().length;
+		 
+		        // 입력된 텍스트 길이를 #textCount 에 업데이트 해줌
+		        $('#textCount2').text(textLength);
+		         
+		        // 제한된 길이보다 입력된 길이가 큰 경우 제한 길이만큼만 자르고 텍스트영역에 넣음
+		        if (textLength > textCountLimit) {
+		            $(this).val($(this).val().substr(0, textCountLimit));
+		        }
+		    });
+		});
+	 
+	
 		function priceCk(input) {
 			if(input == 'free') {
 				$('#price').attr('readonly', true);
@@ -57,8 +91,10 @@
 			var radio = $("input:radio[name='free']").is(':checked');
 			var price = $("input:radio[name='free']").val();
 			var title = $('#title').val();
+			var title2 = $('#title').val().trim().length;
 			var pfile = $('#pfile').val();
 			var freeCk = $('input:radio[name=free]:checked').val();
+			console.log(title2);
 			if (radio == false) {
 				console.log("라디오");
 				$('#con').html('유료/무료를 선택하세요.');
@@ -70,7 +106,7 @@
 				$('#mcloseBtn').val("닫기");
 				$('mSubmitBtn').hide();
 				$('#myModal').show();
-			} else if (title == "") {			
+			} else if (title == ""||title2==0) {			
 				$('#con').html('제목을 입력하세요.');
 				$('#mcloseBtn').val("닫기");
 				$('#mSubmitBtn').hide();
@@ -92,10 +128,10 @@
             $('#myModal').hide();
        	}
 		
-		function onlyNum(price) {
-			 $(price).keyup(function(){
-		         $(this).val($(this).val().replace(/[^0-9]/g,""));
-		    }); 
+		function onlyNum(price) {			
+			$(price).keyup(function(){
+		         $(this).val($(this).val().replace(/[^0-9]/g,""));     
+			});		 
 		}
 	</script>
 </head>
@@ -147,7 +183,7 @@
 				<div style="display: inline-table; width: 300px">
 					<label>가격</label> &nbsp; 
 					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" maxlength="5" readonly style="text-align: right"/>원<br>
-					<small>5자리 이하로 입력가능</small>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>5자리 이하로 입력가능</small>
 				</div>
 			</div>
 			<br />
@@ -162,8 +198,8 @@
 					<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);" /></label>
 					<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
 					<br>
-					<label>제목</label> &nbsp;
-					<input type="text" id="title" name="title"/>
+					<label>제목</label> <small>(20자이내로 입력)</small>&nbsp;
+					<input type="text" id="title" name="title" maxlength="20" onkeyPress="if (event.keyCode==13){return false;}"/>
 					<br>
 					<label>PDF 첨부</label> &nbsp;
 					<label style="display: inline-table;">
@@ -174,12 +210,12 @@
 			<br>
 	
 			<div>
-				<label>책 소개 내용</label><br>
+				<label>책 소개 내용</label> <em id="textCount1">0</em>/500자<br>
 				<textarea rows="" cols="" id="intro" name="intro" style="width:700px; resize: none; overflow-y: scroll"></textarea>
 			</div>
 			<br>
 			<div>
-				<label>목차</label><br>
+				<label>목차</label> <em id="textCount2">0</em>/500자<br>
 				<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll"></textarea>
 			</div>
 			<br>

@@ -152,7 +152,7 @@
 			$("#ckHint").hide();
 			$("#ckAnswer").hide();
 			return false;
-		} else if($('#hint2').val()=="") {
+		} else if($('#hint2').val()=="" || $('#hint2').val().trim().length==0) {
 			document.getElementById("ckHint").innerHTML = "힌트를 입력하세요.";
 			document.getElementById("hint").focus();
 			$("#ckName").hide();
@@ -164,7 +164,7 @@
 			$("#ckHint").show();
 			$("#ckAnswer").hide();
 			return false;
-		} else if($('#answer').val()=="") {
+		} else if($('#answer').val()=="" || $('#answer').val().trim().length==0) {
 			document.getElementById("ckAnswer").innerHTML = "답변을 입력하세요.";
 			document.getElementById("answer").focus();
 			$("#ckName").hide();
@@ -194,7 +194,7 @@
 	}
 	
 	function changePass() {
-		var pwExp=/^(?=.*[a-zA-Z])(?=.*\d)|(?=.*\W).{8,20}$/;
+		var pwExp=/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/;
 		
 		if($('#cur_pw').val() == "") {
 			document.getElementById("alert1").innerHTML = "현재 패스워드를 입력해 주세요.";
@@ -210,16 +210,14 @@
 			$('#alert3').hide();
 			$('#alert4').hide();
 			return false;
-		} 
-		/* else if(! $('#new_pw1').val().match(pwExp)) {
+		}  else if(! $('#new_pw1').val().match(pwExp)) {
 			$('#alert1').hide();
-			document.getElementById("alert2").innerHTML = "패스워드를 8~20글자 사이로 입력하세요";
+			document.getElementById("alert2").innerHTML = "패스워드를 알맞은 형식으로 입력해주세요.";
 			$('#alert2').show();
 			$('#alert3').hide();
 			$('#alert4').hide();
 			return false;
-		}  */
-		else if($('#new_pw2').val() == "") {
+		}  else if($('#new_pw2').val() == "") {
 			$('#alert1').hide();
 			$('#alert2').hide();
 			document.getElementById("alert3").innerHTML = "새 패스워드 확인을 입력해 주세요.";
@@ -340,7 +338,7 @@
 								<small style="margin-left: 100px;" class="alertSmall" id="ckPhone"></small>
 							</div>
 							<div>
-								<label style="width: 100px;">힌트</label> 
+								<label style="width: 100px;">힌트<small>(20자이내)</small></label> 
 								<select id="hint" name="hint" onchange="hintEdit();" style="height: 25px;">
 									<option value="가장 좋아하는 색깔은?" <c:if test="${authInfo.hint eq '가장 좋아하는 색깔은?'}"> selected </c:if>>가장 좋아하는 색깔은?</option> 
 									<option value="가장 소중한 보물은?" <c:if test="${authInfo.hint eq '가장 소중한 보물은?'}"> selected </c:if>>가장 소중한 보물은?</option>
@@ -357,16 +355,16 @@
 													&& authInfo.hint ne '가장 소중한 보물은?'
 													&& authInfo.hint ne '어렸을 적 짝꿍의 이름은?'
 													&& authInfo.hint ne '기억에 남는 장소는?'}">
-										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" /> 
+										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" maxlength="20" /> 
 									</c:when>
 									<c:otherwise>
-										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" readonly />
+										<input id="hint2" name="hint2" type="text" value="${authInfo.hint }" class="input-text-control" maxlength="20" readonly />
 									</c:otherwise>
 								</c:choose>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckHint"></small>
 							</div>
 							<div>
-								<label style="width: 100px">답변</label> <input id="answer" name="answer" type="text" value="${authInfo.answer }" />
+								<label style="width: 100px">답변<small>(20자이내)</small></label> <input id="answer" name="answer" type="text" value="${authInfo.answer }" maxlength="20"/>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckAnswer"></small>
 							</div>
 							<div>
@@ -386,8 +384,9 @@
 								<label style="width: 140px;">현재 패스워드 &nbsp;</label><input type="password" id="cur_pw" name="cur_pw" /> 
 								<small class="alertSmall" id="alert1" ></small>
 								<br>
-								<label style="width: 140px;">새 패스워드 &nbsp;<small>(8~20 글자)</small></label><input type="password" id="new_pw1" name="new_pw1" /> 
-								<small class="alertSmall" id="alert2" ></small>
+								<label style="width: 140px;">새 패스워드 &nbsp;</label><input type="password" id="new_pw1" name="new_pw1" /> 
+								<small class="alertSmall" id="alert2" ></small><br>
+								<small>(영어, 숫자 또는 특수문자 조합 8~20 글자)</small>
 								<br>
 								<label style="width: 140px;">새 패스워드 확인 &nbsp;</label><input type="password" id="new_pw2" name="new_pw2" />
 								<small class="alertSmall" id="alert3" ></small><br>
@@ -451,7 +450,7 @@
 															</c:otherwise>
 														</c:choose>
 													</td>
-													<td style="width: 200px;">
+													<td style="width: 300px;">
 														<label>카테고리: </label> ${ulist.book_cate } <br>
 														<label>제목: </label> ${ulist.book_title1 } <br>
 														<label>작가: </label> ${ulist.book_writer1 } <br>
@@ -528,7 +527,7 @@
 															</td>
 														</c:otherwise>
 													</c:choose>				
-													<td style="width: 200px;">
+													<td style="width: 300px;">
 														<label style="width: 70px; text-align: right;">카테고리: &nbsp;</label> ${plist.book_cate } <br>
 														<label style="width: 70px; text-align: right;">제목: &nbsp;</label> ${plist.book_title1 } <br> 
 														<label style="width: 70px; text-align: right;">작가: &nbsp;</label> ${plist.book_writer1 } <br>

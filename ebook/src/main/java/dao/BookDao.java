@@ -53,7 +53,7 @@ public class BookDao {
 		List<Book> bestBook = jdbcTemplate.query(
 				"select * "
 				+ "from (" 
-				+ "select row_number() over(order by book_vol desc) as rnum,bid, book_title1, book_date, book_writer1, book_cate, price, "
+				+ "select row_number() over(order by book_vol desc, bid desc) as rnum,bid, book_title1, book_date, book_writer1, book_cate, price, "
 				+ "contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
 				+ "from book where bexist = 'yes')  where rnum<=3"
 				, new RowMapper<Book>() {
@@ -73,7 +73,7 @@ public class BookDao {
 	public List<Book> cateBook2() {
 		List<Book> newBook = jdbcTemplate.query(
 				"select * "
-				+ "from (select row_number() over(order by book_date desc) as rnum, bid, book_title1, book_date, book_writer1, book_cate"
+				+ "from (select row_number() over(order by book_date desc, bid desc) as rnum, bid, book_title1, book_date, book_writer1, book_cate"
 				+ ", price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
 				+ "from book where bexist = 'yes') "
 				+ "where rnum<=3"
@@ -111,7 +111,7 @@ public class BookDao {
 	public String buyCheck(String mid, int bid) {
 		String pur_id = null;
 		try {
-			pur_id=jdbcTemplate.queryForObject("select pur_id from purchase where mid=? and bid=? and pexist='yes'", String.class, mid, bid);		
+			pur_id=jdbcTemplate.queryForObject("select pur_id from purchase where mid=? and bid=? and pexist='yes' order by pur_id desc", String.class, mid, bid);		
 			System.out.println(pur_id);
 			return "already";
 		} catch (Exception e) {
@@ -157,27 +157,10 @@ public class BookDao {
 		List<Book> rsbook = null;
 		String strLike = "%" + searchCon + "%";
 		System.out.println("                       "+strLike);
-		if(selSrch.equals("제목+작가")) {		
-			rsbook = jdbcTemplate.query(
-					"select a.* from "
-					+ "(select rownum rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
-					+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid, book_writer2 || book_title2 as A, book_title2 || book_writer2 as B " 
-					+  "from BOOK where bexist = 'yes') a where (A like ? or B like ?) and (rnum>=? and rnum<=?)"
-					, new RowMapper<Book>() {
-						@Override
-						public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
-									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-									, rs.getString("mid"));
-							return mbook;
-						}
-					}, strLike, strLike, startrow, endrow);
-		} else if(selSrch.equals("제목")) {
+		if(selSrch.equals("제목")) {
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
-							"(select rownum rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
+							"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
 							+ "cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
 							+ "from BOOK where bexist = 'yes' and book_title2 like ?) a " 
 							+ "where rnum>=? and rnum<=?"
@@ -195,7 +178,7 @@ public class BookDao {
 		} else {
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
-					"(select rownum rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
+					"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
 					+ "cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
 					+ "from BOOK where bexist = 'yes' and book_writer2 like ?) a " 
 					+ "where rnum>=? and rnum<=?"

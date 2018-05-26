@@ -7,7 +7,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/login.js?ver=441"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
@@ -16,6 +15,23 @@
 	$(document).ready(function () {
 		$('#mid').focus();
 	})
+	
+	function ckLogin() {
+		var mid = $('#mid').val();
+		var pw = $('#pw').val();
+		
+		document.getElementById("ckMid").innerHTML = "";
+		document.getElementById("ckPw").innerHTML = "";
+		if (mid == "") {
+			document.getElementById("ckMid").innerHTML = "아이디를 입력해 주세요.";
+			$('#loginRS').hide();
+			return false;
+		} else if (pw == "") {
+			document.getElementById("ckPw").innerHTML = "패스워드를 입력해 주세요.";
+			$('#loginRS').hide();
+			return false;
+		} 
+	}
 </script>
 <style type="text/css">
 	.alertSmall {
@@ -44,15 +60,9 @@
 										id="pw" name="pw" type="password" value=""/>
 									<span class="alertSmall" id="ckPw"></span>
 								</div>
-								<!-- <div class="checkbox">
-									<label> <input name="remember" type="checkbox"
-										value="Remember Me"> Remember Me
-									</label>
-								</div> -->
-								<!-- <span id="ckText"></span> -->
-								<c:if test="${mck == 'no'}">
-										<span class="alertSmall" id="m">아이디 또는 패스워드를 확인하세요.</span>
-									</c:if>
+								<c:if test="${mck eq 'no'}">
+										<span id="loginRS" class="alertSmall">아이디 또는 패스워드를 확인하세요.</span>
+								</c:if>
 								<input class="btn btn-lg btn-success btn-block" type="submit"
 									value="LOGIN">
 							</fieldset>

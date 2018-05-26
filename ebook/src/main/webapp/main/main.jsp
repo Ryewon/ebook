@@ -142,7 +142,7 @@
 	<br>
 	<c:choose>
 		<c:when test="${cate eq '검색'}">
-			<div style="margin: 0 auto; width: 600px;">
+			<div style="margin: 0 auto; width: 700px;">
 			<c:choose>
 				<c:when test="${empty srchBook}">
 					<p>일치하는 검색 결과가 없습니다.</p>
@@ -163,7 +163,7 @@
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<td style="width: 200px;">
+									<td style="width: 300px;">
 										<input type="hidden" value="${srblist.bid }" />
 										<label>카테고리: </label> ${srblist.book_cate } <br>
 										<label>제목: </label> ${srblist.book_title1 } <br>
@@ -215,7 +215,7 @@
 			</div>
 		</c:when>
 		<c:when test="${cate eq '전체'}">
-			<div style="margin: 0 auto; width: 600px;">
+			<div style="margin: 0 auto; width: 700px;">
 			<h3><b>Best 도서</b></h3>
 			<table>
 				<tbody>
@@ -231,7 +231,7 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td style="width: 200px;">
+							<td style="width: 300px;">
 								<input type="hidden" value="${bestlist.bid }" />
 								<label>카테고리: </label> ${bestlist.book_cate } <br>
 								<label>제목: </label> ${bestlist.book_title1 } <br>
@@ -253,7 +253,7 @@
 				</tbody>
 			</table>
 			</div>
-			<div style="margin: 0 auto; width: 600px;">
+			<div style="margin: 0 auto; width: 700px;">
 			<h3><b>신간 도서</b></h3>
 			<table>
 				<tbody>
@@ -269,7 +269,7 @@
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td style="width: 200px;">
+							<td style="width: 300px;">
 								<input type="hidden" value="${newlist.bid }" />
 								<label>카테고리: </label> ${newlist.book_cate } <br>
 								<label>제목: </label> ${newlist.book_title1 } <br>
@@ -293,7 +293,7 @@
 			</div>
 		</c:when>
 		<c:otherwise>
-			<div style="margin: 0 auto; width: 600px;">
+			<div style="margin: 0 auto; width: 700px;">
 			<c:choose>
 				<c:when test="${empty book && empty sorting}">
 					<p>해당 카테고리의 책 목록을 준비 중에 있습니다.</p>
@@ -325,7 +325,7 @@
 													</c:otherwise>
 												</c:choose>
 											</td>
-											<td style="width: 200px;">
+											<td style="width: 300px;">
 												<input type="hidden" value="${blist.bid }" />
 												<label>카테고리: </label> ${blist.book_cate } <br>
 												<label>제목: </label> ${blist.book_title1 } <br>

@@ -111,8 +111,8 @@ public class MypageController {
 		String name2 = request.getParameter("name").replaceAll(" ", "");
 		String gender = request.getParameter("gender");
 		String phone = request.getParameter("phone");
-		String hint = request.getParameter("hint2");
-		String answer = request.getParameter("answer");
+		String hint = request.getParameter("hint2").trim();
+		String answer = request.getParameter("answer").trim();
 		System.out.println("or:" + orginPw);
 		System.out.println("in:" + inputPw);
 		model.addAttribute("spot","infoPw");

@@ -30,6 +30,17 @@
 			ctx = canvas.getContext('2d'),
 			zoomed = false;
 		
+		
+		$('#scalePlus').click(function () {
+			scale += 0.5;
+			renderPage(pageNum);
+		});
+		
+		$('#scaleMinus').click(function () {
+			scale -= 0.5;
+			renderPage(pageNum);
+		});
+		
 		/**
 		* Get page info from document, resize canvas accordingly, and render page.
 		* @param num Page number.
@@ -204,6 +215,8 @@
 		<button class="btn btn-default" aria-label="Left Align" id="next">
 				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		</button>
+		<button id="scalePlus">확대</button>
+		<button id="scaleMinus">축소</button>
 	</div>
 	
 	<br>

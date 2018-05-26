@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <head>
 <title>RWeBook</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
@@ -11,6 +12,39 @@
 	$(document).ready(function(){
 		console.log("coverName="+$('#coverName').val());
 		console.log("pfileName="+$('#pfileName').val());
+	});
+	
+	$(function() { 
+		$("input:text").keydown(function(evt) { 
+			if (evt.keyCode == 13) return false; }); 
+		});
+	
+	var textCountLimit = 500;
+	$(document).ready(function() {
+	    $('textarea[name=intro]').keyup(function() {
+	        // 텍스트영역의 길이를 체크
+	        var textLength = $(this).val().length;
+	 
+	        // 입력된 텍스트 길이를 #textCount 에 업데이트 해줌
+	        $('#textCount1').text(textLength);
+	         
+	        // 제한된 길이보다 입력된 길이가 큰 경우 제한 길이만큼만 자르고 텍스트영역에 넣음
+	        if (textLength > textCountLimit) {
+	            $(this).val($(this).val().substr(0, textCountLimit));
+	        }
+	    });
+	    $('textarea[name=con_table]').keyup(function() {
+	        // 텍스트영역의 길이를 체크
+	        var textLength = $(this).val().length;
+	 
+	        // 입력된 텍스트 길이를 #textCount 에 업데이트 해줌
+	        $('#textCount2').text(textLength);
+	         
+	        // 제한된 길이보다 입력된 길이가 큰 경우 제한 길이만큼만 자르고 텍스트영역에 넣음
+	        if (textLength > textCountLimit) {
+	            $(this).val($(this).val().substr(0, textCountLimit));
+	        }
+	    });
 	});
 	
 	function priceCk(input) {
@@ -73,6 +107,7 @@
 		var radio = $("input:radio[name='free']").is(':checked');
 		var price = $("input:radio[name='free']").val();
 		var title = $('#title').val();
+		var title2 = $('#title').val().trim().length;
 		var pfile = $('#pfileName').val();
 		var freeCk = $('input:radio[name=free]:checked').val();
 		if (radio == false) {
@@ -86,7 +121,7 @@
 			$('#mcloseBtn').val("닫기");
 			$('#mSubmitBtn').hide();
 			$('#myModal').show();
-		} else if (title == "") {			
+		} else if (title == "" || title2 == 0) {			
 			$('#con').html('제목을 입력하세요.');
 			$('#mcloseBtn').val("닫기");
 			$('#mSubmitBtn').hide();
@@ -108,10 +143,10 @@
     	$('#myModal').hide();
     }
 	
-	function onlyNum(price) {
-		 $(price).keyup(function(){
-	         $(this).val($(this).val().replace(/[^0-9]/g,""));
-	    }); 
+	function onlyNum(price) {			
+		$(price).keyup(function(){
+	         $(this).val($(this).val().replace(/[^0-9]/g,""));     
+		});	
 	}
 	
 </script>
@@ -165,11 +200,12 @@
 			<div style="display: inline-table; width: 300px">
 				<label>가격</label> &nbsp;
 				<c:if test="${book.price ne '0' }">
-					<input type="text" id="price" name="price" value="${book.price }" />원
+					<input type="text" id="price" name="price" value="${book.price }" maxlength="5" style="text-align: right" />원
 				</c:if>
 				<c:if test="${book.price eq '0' }">
-					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" readonly />원
+					<input type="text" id="price" name="price" onkeypress="onlyNum(this);" maxlength="5" style="text-align: right" readonly />원
 				</c:if>
+				<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>5자리 이하로 입력가능</small>
 			</div>
 		</div>
 		<br />
@@ -191,8 +227,8 @@
 				<input name="file" type="file" accept=".gif, .jpeg, .jpg, .png" onchange="readURL(this);"/></label>
 				<input type="hidden" id="cupdir" name="cupdir" value="<%=request.getRealPath("/cuploads/")%>" />
 				<br>
-				<label>제목</label> &nbsp;
-				<input type="text" id="title" name="title" value="${book.book_title1 }"/>
+				<label>제목</label> <small>(20자이내로 입력)</small>
+				<input type="text" id="title" name="title" value="${book.book_title1 }" maxlength="20" onkeyPress="if (event.keyCode==13){return false;}"/>
 				<br>
 				<label>PDF 첨부</label> &nbsp;
 				<label style="display: inline-table;">
@@ -205,12 +241,12 @@
 		<br>
 
 		<div>
-			<label>책 소개 내용</label><br>
+			<label>책 소개 내용</label>  <em id="textCount1">${fn:length(book.book_intro) }</em>/500자<br>
 			<textarea rows="" cols="" id="intro" name="intro" style="width:700px; resize: none; overflow-y: scroll">${book.book_intro }</textarea>
 		</div>
 		<br>
 		<div>
-			<label>목차</label><br>
+			<label>목차</label>  <em id="textCount2">${fn:length(book.contents_table) }</em>/500자<br>
 			<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll">${book.contents_table }</textarea>
 		</div>
 		<br>

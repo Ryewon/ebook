@@ -23,9 +23,25 @@
 		
 		if (mid=="") {
 			document.getElementById("ckText").innerHTML = "ID를 입력해 주세요.";
+			$("#ckText").show();
+			$("#ckName").hide();
+			$("#ckGender").hide();
+			$("#ckPhone").hide();
+			$("#ckPw").hide();
+			$("#ckRepw").hide();
+			$("#ckHint").hide();
+			$("#ckAnswer").hide();
 		} else {
 			if(!document.joinForm.mid.value.match(idRegexp)) {
-				document.getElementById("ckText").innerHTML = "아이디를 8~20 글자의 영소문자나 숫자를 입력하세요";
+				document.getElementById("ckText").innerHTML = "아이디를 5~20 글자의 영소문자나 숫자를 입력하세요";
+				$("#ckText").show();
+				$("#ckName").hide();
+				$("#ckGender").hide();
+				$("#ckPhone").hide();
+				$("#ckPw").hide();
+				$("#ckRepw").hide();
+				$("#ckHint").hide();
+				$("#ckAnswer").hide();
 			} else {
 				$.ajax({
 					type : "POST",
@@ -37,9 +53,25 @@
 						console.log("ck:" + ck);
 						if(ck == 1) {				
 							document.getElementById("ckText").innerHTML = "사용 가능한 아이디 입니다.";
+							$("#ckText").show();
+							$("#ckName").hide();
+							$("#ckGender").hide();
+							$("#ckPhone").hide();
+							$("#ckPw").hide();
+							$("#ckRepw").hide();
+							$("#ckHint").hide();
+							$("#ckAnswer").hide();
 							$('#ck').val(ck);
 						} else {				
 							document.getElementById("ckText").innerHTML = "이미 존재하는 아이디 입니다.";
+							$("#ckText").show();
+							$("#ckName").hide();
+							$("#ckGender").hide();
+							$("#ckPhone").hide();
+							$("#ckPw").hide();
+							$("#ckRepw").hide();
+							$("#ckHint").hide();
+							$("#ckAnswer").hide();
 							$('#ck').val(ck);
 						}
 					}
@@ -67,7 +99,7 @@
 		var nameExp=/^[가-힣]{2,5}$/;
 		var phoneExp=/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;
 		var regExp=/^[a-zA-Z0-9]{5,20}$/;
-		var pwExp=/^(?=.*[a-zA-Z])(?=.*\d)|(?=.*\W).{8,20}$/;
+		var pwExp=/^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{8,20}$/;
 
 		if($('#name').val()=="") {
 			document.getElementById("ckName").innerHTML = "이름을 입력하세요.";
@@ -140,7 +172,7 @@
 			$("#ckAnswer").hide();
 			return false;
 		} else if (! document.joinForm.mid.value.match(regExp)) {
-			document.getElementById("ckText").innerHTML = "아이디를 8~20 글자의 영소문자나 숫자를 입력하세요";
+			document.getElementById("ckText").innerHTML = "아이디를 5~20 글자의 영소문자나 숫자를 입력하세요";
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
@@ -163,7 +195,7 @@
 			$("#ckAnswer").hide();
 			return false;
 		} else if (! document.joinForm.pw.value.match(pwExp)) {
-			document.getElementById("ckPw").innerHTML = "패스워드를 8~20글자 사이로 입력하세요";	
+			document.getElementById("ckPw").innerHTML = "패스워드(영어와 숫자 또는 특수문자를 조합)를 8~20글자 사이로 입력하세요.";	
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
@@ -197,7 +229,7 @@
 			$("#ckHint").hide();
 			$("#ckAnswer").hide();
 			return false;
-		} else if($('#hint2').val()=="") {
+		} else if($('#hint2').val()=="" || $('#hint2').val().trim().length==0) {
 			document.getElementById("ckHint").innerHTML = "힌트를 입력하세요.";
 			document.getElementById("hint").focus();
 			$("#ckName").hide();
@@ -209,7 +241,7 @@
 			$("#ckHint").show();
 			$("#ckAnswer").hide();
 			return false;
-		} else if($('#answer').val()=="") {
+		} else if($('#answer').val()=="" || $('#answer').val().trim().length==0) {
 			document.getElementById("ckAnswer").innerHTML = "답변을 입력하세요.";
 			document.getElementById("answer").focus();
 			$("#ckName").hide();
@@ -274,14 +306,14 @@
 									<label style="width: 60px">ID</label>
 									<input id="mid" name="mid" type="text" class="input-text-control" onkeypress="delDuChk();"/>
 									<input id="dubtn" name="dubtn" value="중복검사" type="button" onclick="ckID();"/><br>
-									<small>(5~20글자의 영문자, 숫자의 조합으로 입력)</small><br>
+									<small>(5~20글자의 영문자 또는 숫자 입력)</small><br>
 									<small class="alertSmall" id="ckText"></small>
 									<input type="hidden" id="ck" name="ck"/>
 								</div>
 								<div>
 									<label style="width: 60px">P/W</label>
-									<input id="pw" name="pw" type="password" class="input-text-control"/>
-									<small>(8~20 글자)</small><br>
+									<input id="pw" name="pw" type="password" class="input-text-control"/><br>
+									<small>영어와 숫자 또는 특수문자를 조합(8~20 글자)</small><br>
 									<small class="alertSmall" id="ckPw"></small>
 								</div>
 								<div>
@@ -297,13 +329,15 @@
 										<option value="어렸을 적 짝꿍의 이름은?">어렸을 적 짝꿍의 이름은?</option>
 										<option value="기억에 남는 장소는?">기억에 남는 장소는?</option>
 										<option value="기타">기타</option>
-									</select>
-									<div style="padding-left: 64px;"><input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" readonly /></div><br>
+									</select><br> 
+									<small>(20자이내)&nbsp;</small>
+									<input id="hint2" name="hint2" type="text" value="가장 좋아하는 색깔은?" class="input-text-control" maxlength="20" readonly /><br>
 									<small class="alertSmall" id="ckHint"></small>
 								</div>
 								<div>
 									<label style="width: 60px">답변</label>
-									<input id="answer" name="answer" type="text" class="input-text-control"/><br>
+									<input id="answer" name="answer" type="text" class="input-text-control" maxlength="20"/>
+									<small>(20자이내)</small><br>
 									<small class="alertSmall" id="ckAnswer"></small>
 								</div>
 								<br />

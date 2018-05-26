@@ -86,8 +86,8 @@ public class MemberController {
 		String name = request.getParameter("name");
 		String gender = request.getParameter("gender");
 		String phone = request.getParameter("phone");
-		String hint = request.getParameter("hint2");
-		String answer = request.getParameter("answer");
+		String hint = request.getParameter("hint2").trim();
+		String answer = request.getParameter("answer").trim();
 
 		memberDao.memberJoin(mid, pw, name, gender, phone, hint, answer);
 
@@ -97,7 +97,7 @@ public class MemberController {
 	@RequestMapping(value = "/ckLogin") 
 	public String ckLogin(String mid, String pw, Model model, HttpSession session) {
 		String rs = memberDao.checkLogin(mid, pw); //mid, pw 일치 하는 데이터 있으면 mid 반환, 없으면 no 반환
-
+		System.out.println("로그인리턴:"+rs);
 		if (rs == "no") {
 			model.addAttribute("mck", rs);
 			return "member/login";
