@@ -8,6 +8,20 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/mypage.css?ver=22" />
 
+<%
+ String strReferer = request.getHeader("referer");
+ 
+ if(strReferer == null){
+%>
+ <script language="javascript">
+  alert("비정상적인 방법으로 접근하셨습니다.");
+  document.location.href="/ebook/home";
+ </script>
+<%
+  return;
+ }
+%>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MyPage</title>	

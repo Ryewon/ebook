@@ -35,7 +35,7 @@ public class BookCommand {
 	}
 	
 	public BookCommand(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, 
-			String book_intro, int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid,
+			String book_intro, int book_vol, String cover_name, String cover_path, String pfile_name, String pfile_path, String mid,
 			int lastpage) {
 		super();
 		this.bid = bid;

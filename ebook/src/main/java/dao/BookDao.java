@@ -32,14 +32,14 @@ public class BookDao {
 */
 
 	public void upBook(int bid, String title1, String title2, String writer1, String writer2, String cate, int price, String con_table, 
-			String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String mid) {
+			String intro, String cfile, String cpath, String pfile, String ppath, String mid) {
 		jdbcTemplate.update("insert into book(bid, book_title1, book_title2, book_date, book_writer1, book_writer2"
-				+ ", book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path"
+				+ ", book_cate, price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_path"
 				+ ", mid, bexist) "
-				+ "values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, 'yes')", 
+				+ "values(?, ?, ?, sysdate, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, 'yes')", 
 				bid, title1, title1, writer1, writer2, cate,
 						price, con_table, intro,
-						cfile, cpath, pfile, pCnt,
+						cfile, cpath, pfile, 
 						ppath, mid);
 		jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
 	}
@@ -54,16 +54,15 @@ public class BookDao {
 				"select * "
 				+ "from (" 
 				+ "select row_number() over(order by book_vol desc, bid desc) as rnum,bid, book_title1, book_date, book_writer1, book_cate, price, "
-				+ "contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ "contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_path, mid "
 				+ "from book where bexist = 'yes')  where rnum<=3"
 				, new RowMapper<Book>() {
 			@Override
 			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
 				Book bbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-						, rs.getString("mid"));
+						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path"), rs.getString("pfile_name")
+						, rs.getString("pfile_path"), rs.getString("mid"));
 				return bbook;
 			}
 		});
@@ -74,7 +73,7 @@ public class BookDao {
 		List<Book> newBook = jdbcTemplate.query(
 				"select * "
 				+ "from (select row_number() over(order by book_date desc, bid desc) as rnum, bid, book_title1, book_date, book_writer1, book_cate"
-				+ ", price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ ", price, contents_table, book_intro, book_vol, cover_name, cover_path, pfile_name, pfile_path, mid "
 				+ "from book where bexist = 'yes') "
 				+ "where rnum<=3"
 				, new RowMapper<Book>() {
@@ -82,9 +81,8 @@ public class BookDao {
 			public Book mapRow(ResultSet rs, int rownum) throws SQLException {
 				Book nbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-						, rs.getString("mid"));
+						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path"), rs.getString("pfile_name")
+						, rs.getString("pfile_path"), rs.getString("mid"));
 				return nbook;
 			}
 		});
@@ -133,7 +131,7 @@ public class BookDao {
 	public Book bookInfo(int bid) {
 		Book book = jdbcTemplate.queryForObject(
 				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
-				+ ", cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid "
+				+ ", cover_name, cover_path, pfile_name, pfile_path, mid "
 				+ "from book where bid=? and bexist = 'yes'"
 				, new RowMapper<Book>() {
 					@Override
@@ -141,8 +139,7 @@ public class BookDao {
 						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date")
 								, rs.getString("book_writer1"), rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table")
 								, rs.getString("book_intro"), rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-								, rs.getString("mid"));
+								, rs.getString("pfile_name"), rs.getString("pfile_path"), rs.getString("mid"));
 						return mbook;
 					}
 				}, bid);
@@ -161,7 +158,7 @@ public class BookDao {
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
 							"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
-							+ "cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
+							+ "cover_name, cover_path, pfile_name, pfile_path, mid " 
 							+ "from BOOK where bexist = 'yes' and book_title2 like ?) a " 
 							+ "where rnum>=? and rnum<=?"
 					, new RowMapper<Book>() {
@@ -170,8 +167,7 @@ public class BookDao {
 							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-									, rs.getString("mid"));
+									, rs.getString("pfile_name"), rs.getString("pfile_path"), rs.getString("mid"));
 							return mbook;
 						}
 					}, strLike, startrow, endrow);
@@ -179,7 +175,7 @@ public class BookDao {
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
 					"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
-					+ "cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid " 
+					+ "cover_name, cover_path, pfile_name, pfile_path, mid " 
 					+ "from BOOK where bexist = 'yes' and book_writer2 like ?) a " 
 					+ "where rnum>=? and rnum<=?"
 					, new RowMapper<Book>() {
@@ -188,8 +184,7 @@ public class BookDao {
 							Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 									,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 									, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-									, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-									, rs.getString("mid"));
+									, rs.getString("pfile_name"), rs.getString("pfile_path"), rs.getString("mid"));
 							return mbook;
 						}
 					}, strLike, startrow, endrow);
@@ -227,7 +222,7 @@ public class BookDao {
 		
 		String stmt1 = "select a.* from (select row_number() over(";
 		String stmt2 = ") rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
-				+ "cover_name, cover_path, pfile_name, pfile_page, pfile_path, mid from book where bexist='yes' and book_cate=?";
+				+ "cover_name, cover_path, pfile_name, pfile_path, mid from book where bexist='yes' and book_cate=?";
 		String stmt3 = ") a where rnum>=? and rnum<=?";
 		if(price.equals("전체")) {
 			if(sortType.equals("최신순")) {
@@ -266,8 +261,7 @@ public class BookDao {
 				Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
 						,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
 						, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-						, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-						, rs.getString("mid"));
+						, rs.getString("pfile_name"), rs.getString("pfile_path"), rs.getString("mid"));
 				return mbook;
 			}
 		}, cate, startrow, endrow);

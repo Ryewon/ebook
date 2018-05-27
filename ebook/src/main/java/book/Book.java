@@ -3,19 +3,18 @@ package book;
 import java.util.Date;
 
 public class Book {
-	private int bid, price, book_vol, pfile_page;
+	private int bid, price, book_vol;
 	private String book_title1, book_title2, book_writer1, book_writer2, book_cate, contents_table, book_intro, cover_name, cover_path,
 		pfile_name, pfile_path, mid;
 	private Date book_date, bmod_date, bdel_date;
 	private String bexist;
 	
 	public Book(int bid, String book_title1, Date book_date, String book_writer1, String book_cate, int price, String contents_table, String book_intro,
-			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
+			int book_vol, String cover_name, String cover_path, String pfile_name, String pfile_path, String mid) {
 		super();
 		this.bid = bid;
 		this.price = price;
 		this.book_vol = book_vol;
-		this.pfile_page = pfile_page;
 		this.mid = mid;
 		this.book_title1 = book_title1;
 		this.book_writer1 = book_writer1;
@@ -30,12 +29,11 @@ public class Book {
 	}
 	
 	public Book(int bid, String book_title1, String book_title2, Date book_date, String book_writer1, String book_writer2, String book_cate, int price, String contents_table, String book_intro,
-			int book_vol, String cover_name, String cover_path, String pfile_name, int pfile_page, String pfile_path, String mid) {
+			int book_vol, String cover_name, String cover_path, String pfile_name, String pfile_path, String mid) {
 		super();
 		this.bid = bid;
 		this.price = price;
 		this.book_vol = book_vol;
-		this.pfile_page = pfile_page;
 		this.mid = mid;
 		this.book_title1 = book_title1;
 		this.book_title2 = book_title2;
@@ -52,11 +50,9 @@ public class Book {
 	}
 
 	public Book(int price, int pfile_page, String mid, String book_title1, String book_title2, Date book_date, String book_writer1, String book_writer2, String book_cate,
-			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name,
-			String pfile_path) {
+			String contents_table, String book_intro, String cover_name, String cover_path, String pfile_name, String pfile_path) {
 		super();
 		this.price = price;
-		this.pfile_page = pfile_page;
 		this.mid = mid;
 		this.book_title1 = book_title1;
 		this.book_title2 = book_title2;
@@ -120,14 +116,6 @@ public class Book {
 
 	public void setBook_vol(int book_vol) {
 		this.book_vol = book_vol;
-	}
-
-	public int getPfile_page() {
-		return pfile_page;
-	}
-
-	public void setPfile_page(int pfile_page) {
-		this.pfile_page = pfile_page;
 	}
 
 	public String getMid() {

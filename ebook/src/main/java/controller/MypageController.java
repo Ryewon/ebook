@@ -212,8 +212,18 @@ public class MypageController {
 		}
 		String title1 = request.getParameter("title");
 		String title2 = title1.replaceAll(" ", "");
-		String intro = request.getParameter("intro").replace("\r\n", "<br>");
-		String con_table = request.getParameter("con_table").replace("\r\n", "<br>");
+		String intro = request.getParameter("intro").replace(" ", "");
+		String con_table = request.getParameter("con_table").replace(" ", "");
+		if(intro.length()==0) {
+			intro=null;
+		} else {
+			intro = request.getParameter("intro").replace("\r\n", "<br>");
+		}
+		if(con_table.length()==0) {
+			con_table=null;
+		} else {
+			con_table = request.getParameter("con_table").replace("\r\n", "<br>");
+		}
 		System.out.println("cfile에 넣기");
 		
 		String orgCoverName = request.getParameter("OrgCoverName");
@@ -225,8 +235,6 @@ public class MypageController {
 		String cpath = null;
 		String pfile = null;
 		String ppath = null;
-		int pCnt = 0;
-		PDDocument doc = null;
 		
 		if(coverName.equals("")) {
 			if(orgPfileName.equals(pfileName)) {
@@ -237,14 +245,10 @@ public class MypageController {
 				try {
 					File pdf_file = new File(ppath);
 					file.get(1).transferTo(pdf_file);
-					doc = PDDocument.load(pdf_file);
-					pCnt = doc.getPageCount();
-
-					doc.close();
 				} catch (IOException e) {
 					System.out.println("File 변환 예외발생");
 				}
-				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
+				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, ppath, mid, bid);
 			}
 		} else {
 			if(orgCoverName.equals(coverName)) {
@@ -256,14 +260,10 @@ public class MypageController {
 					try {
 						File pdf_file = new File(ppath);
 						file.get(1).transferTo(pdf_file);
-						doc = PDDocument.load(pdf_file);
-						pCnt = doc.getPageCount();
-
-						doc.close();
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
-					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, pCnt, ppath, mid, bid);
+					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, ppath, mid, bid);
 				}
 			} else {
 				if(orgPfileName.equals(pfileName)) {
@@ -287,14 +287,10 @@ public class MypageController {
 						
 						File pdf_file = new File(ppath);
 						file.get(1).transferTo(pdf_file);
-						doc = PDDocument.load(pdf_file);
-						pCnt = doc.getPageCount();
-			
-						doc.close();
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
-					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, pCnt, ppath, mid, bid);
+					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, ppath, mid, bid);
 				}
 			}
 		}
