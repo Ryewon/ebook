@@ -1,18 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
- String strReferer = request.getHeader("referer");
- 
- if(strReferer == null){
-%>
- <script language="javascript">
-  alert("비정상적인 방법으로 접근하셨습니다.");
-  document.location.href="/ebook/home";
- </script>
-<%
-  return;
- }
-%>
+
 <script>
 	$(document).ready(function () {
 		var cate = "<c:out value='${cate }'/>";
