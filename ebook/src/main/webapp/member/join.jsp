@@ -246,7 +246,7 @@
 			return false;
 		} else if($('#hint2').val()=="" || $('#hint2').val().trim().length==0) {
 			document.getElementById("ckHint").innerHTML = "힌트를 입력하세요.";
-			document.getElementById("hint").focus();
+			document.getElementById("hint").focus(); 
 			$("#ckName").hide();
 			$("#ckGender").hide();
 			$("#ckPhone").hide();
