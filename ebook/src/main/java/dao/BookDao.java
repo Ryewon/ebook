@@ -20,17 +20,8 @@ public class BookDao {
 	public BookDao(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
-/*	public void upBook(int bid, String title, String writer, String cate, int price, String con_table, 
-		String intro, String cfile, String cpath, String pfile, int pCnt, String ppath, String ipath, String mid) {
-		jdbcTemplate.update("insert into book values(?, ?, sysdate, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?, ?)", 
-				bid, title, writer, cate,
-						price, con_table, intro,
-						cfile, cpath, pfile, pCnt,
-						ppath, ipath, mid);
-	}
-*/
 
+	//책 올리기
 	public void upBook(int bid, String title1, String title2, String writer1, String writer2, String cate, int price, String con_table, 
 			String intro, String cfile, String cpath, String pfile, String ppath, String mid) {
 		jdbcTemplate.update("insert into book(bid, book_title1, book_title2, book_date, book_writer1, book_writer2"
@@ -44,11 +35,13 @@ public class BookDao {
 		jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
 	}
 	
+	//책테이블에 넣기 전 bid 구하기
 	public int suchBid() {
 		int bid = jdbcTemplate.queryForObject("select nvl(max(bid), 0)+1 from book", Integer.class);
 		return bid;
 	}
 	
+	// 베스트 도서 
 	public List<Book> cateBook1() {
 		List<Book> bestBook = jdbcTemplate.query(
 				"select * "
@@ -69,6 +62,7 @@ public class BookDao {
 		return bestBook.isEmpty()?null:bestBook;
 	}
 	
+	//신간 도서
 	public List<Book> cateBook2() {
 		List<Book> newBook = jdbcTemplate.query(
 				"select * "
@@ -89,23 +83,7 @@ public class BookDao {
 		return newBook.isEmpty()?null:newBook;
 	}
 	
-//	public List<Book> cateBook3(String cate) {
-//		System.out.println(cate);
-//		List<Book> book = jdbcTemplate.query("select * from book where book_cate = ? order by bid desc"
-//				, new RowMapper<Book>() {
-//					@Override
-//					public Book mapRow(ResultSet rs, int rownum) throws SQLException {
-//						Book mbook = new Book(rs.getInt("bid"), rs.getString("book_title1"), rs.getDate("book_date"), rs.getString("book_writer1")
-//								,  rs.getString("book_cate"), rs.getInt("price"), rs.getString("contents_table"), rs.getString("book_intro") 
-//								, rs.getInt("book_vol"), rs.getString("cover_name"), rs.getString("cover_path")
-//								, rs.getString("pfile_name"), rs.getInt("pfile_page"), rs.getString("pfile_path")
-//								, rs.getString("mid"));
-//						return mbook;
-//					}
-//				}, cate);
-//		return book.isEmpty()?null:book;
-//	}
-	
+	//책 구매 전 구매여부 확인
 	public String buyCheck(String mid, int bid) {
 		String pur_id = null;
 		try {
@@ -117,6 +95,7 @@ public class BookDao {
 		}		
 	}
 	
+	//책 구매
 	public void buyBook(String mid, int bid, int cpoint, int ppoint, int apoint) {
 		System.out.println("구매insert");
 		System.out.println(bid);
@@ -128,6 +107,7 @@ public class BookDao {
 		jdbcTemplate.update("insert into bookmark(mid, bid) values (?, ?)", mid, bid);
 	}
 	
+	//책 정보
 	public Book bookInfo(int bid) {
 		Book book = jdbcTemplate.queryForObject(
 				"select bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol"
@@ -147,6 +127,8 @@ public class BookDao {
 	}
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	//책 검색
 	public List<Book> searchBook(int page, int limit, String selSrch, String searchCon) {
 		int startrow = (page -1 ) * 5 + 1;
 		int endrow = startrow + limit - 1;
@@ -154,7 +136,7 @@ public class BookDao {
 		List<Book> rsbook = null;
 		String strLike = "%" + searchCon + "%";
 		System.out.println("                       "+strLike);
-		if(selSrch.equals("제목")) {
+		if(selSrch.equals("제목")) { //제목에 따른 검색
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
 							"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
@@ -171,7 +153,7 @@ public class BookDao {
 							return mbook;
 						}
 					}, strLike, startrow, endrow);
-		} else {
+		} else { // 작가에 따른 검색
 			rsbook = jdbcTemplate.query(
 					"select a.* from " + 
 					"(select row_number() over(order by bid desc) rnum, bid, book_title1, book_date, book_writer1, book_cate, price, contents_table, book_intro, book_vol, "
@@ -211,6 +193,8 @@ public class BookDao {
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//책 정렬
 	public List<Book> sortedBook(int page, int limit, String cate, String price, String sortType) {
 		int startrow = (page -1 ) * 5 + 1;
 		int endrow = startrow + limit - 1;

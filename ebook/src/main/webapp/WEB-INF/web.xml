@@ -3,22 +3,24 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- 모든 서블릿과 filter들에 의해 공유되는 Root Spring Container를 정의 -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring/root-context.xml</param-value>
 	</context-param>
 	
-	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<!-- 모든 서블릿과 filter들에 의해 공유되는 Spring Container를 생성 -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
 	<!-- Processes application requests -->
+	<!-- 기본 서블릿 설정 -->	
+	
+	<!-- DispathcerServlet => request,response 처리 -->
 	<servlet>
 		<servlet-name>appServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
+		<init-param> <!-- DispatcherServlet 역할을 할 xml파일 경로 설정 -->
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
 				classpath:spring-mvc.xml
@@ -29,30 +31,27 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
+	<!-- 클라이언트가 요청한 url에 따라 그 요청을 처리할 서블릿 객체를 연결해줌 -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class><!-- 스프링의 인코딩 클래스 -->
 		<init-param>
-			<param-name>encoding</param-name>
+			<param-name>encoding</param-name> <!-- 파라미터 설정 encoding을 utf-8로 설정 -->
 			<param-value>UTF-8</param-value>
 		</init-param>
 		<init-param>
-			<param-name>forceEncoding</param-name>
+			<param-name>forceEncoding</param-name> <!-- CharacterEncodingFilter로 해결이 안될경우 사용 -->
 			<param-value>true</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-name>CharacterEncodingFilter</filter-name> <!-- /이하의 모든 URL에 이 인코딩 방식을 적용 -->
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-<!-- 
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list> -->
 	
 	<error-page>
 		<error-code>404</error-code>

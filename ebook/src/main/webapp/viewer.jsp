@@ -28,34 +28,32 @@
 	window.onload = function() {
 		var pfile = document.getElementById('file_name').value;
 		var url = '/ebook/puploads/'+pfile;
-		//Loaded via <script> tag, create shortcut to access PDF.js exports.
-		var pdfjsLib = window['pdfjs-dist/build/pdf'];
-		
-		//The workerSrc property shall be specified.
-		pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 		
 		var pdfDoc = null,
 			pageNum = Number('${param.lastpage}'),
 			pageRendering = false,
 			pageNumPending = null,
-			scale = 2.0,
+			scale = 1.5,
 			canvas = document.getElementById('the-canvas'),
-			ctx = canvas.getContext('2d'),
-			zoomed = false;
+			ctx = canvas.getContext('2d');
 		
 		
 		$('#scalePlus').click(function () {
+			if(scale < 4.0) {				
 			scale += 0.5;
+			}
 			renderPage(pageNum);
 		});
 		
 		$('#scaleMinus').click(function () {
+			if(scale > 0.5) {				
 			scale -= 0.5;
+			}
 			renderPage(pageNum);
 		});
 		
 		/**
-		* Get page info from document, resize canvas accordingly, and render page.
+		* 문서에서 페이지 정보를 가져오고 그에 따라 캔버스 크기를 조정하고 페이지를 렌더링
 		* @param num Page number.
 		*/
 		function renderPage(num) {
@@ -63,10 +61,6 @@
 			// Using promise to fetch the page
 			pdfDoc.getPage(num).then(function(page) {
 				var viewport = page.getViewport(scale);
-				if (zoomed) {
-					scale=pageElement.clientWidth / viewport.width;
-					viewport = page.getViewport(scale);
-				}
 			
 				canvas.height = viewport.height;
 				canvas.width = viewport.width;
@@ -142,7 +136,8 @@
 			renderPage(pageNum);
 		});
 		
-		document.querySelector('#page_num').addEventListener('keypress', function (e) {
+		//페이지를 직접입력한 후 엔터 키 눌렀을 때
+		document.getElementById('page_num').addEventListener('keypress', function (e) {
 		    var key = e.which || e.keyCode;		  
 	    	var inputPage = Number($('#page_num').val()); 
 		    if(inputPage <= pdfDoc.numPages) {
@@ -166,19 +161,21 @@
 		    }		   
 		});
 		
+		//방향키 좌우 눌렀을 때 처리
 		document.onkeydown = UpDownKey;
-		function UpDownKey (e) {
-			 e = e || window.event;
-		    if (e.keyCode == '37') { // 13 is enter
+		function UpDownKey (e) {	// e는 발생된 이벤트에 대한 정보를 가짐
+			 e = e || window.event; // Internet Explorer에서는 e가 존재하지 않아서 window.event 필요
+		    if (e.keyCode == '37') { // 왼쪽
 		    	console.log("이전");
 		    	onPrevPage();
-		    } else if (e.keyCode == '39') { 
+		    } else if (e.keyCode == '39') { //오른쪽
 		    	console.log("다음");
 		    	onNextPage();
 		    } 
 		}
 	}
 	
+	//창을 닫기 전에 마지막으로 읽은 페이지를 컨트롤러에서 처리하도록 하기 위함
 	$(window).bind("beforeunload", function (e) {
 		var mid = '${param.mid }';
 		var bid = Number('${param.bid }');
@@ -197,6 +194,7 @@
 		})
 	}
 	
+	//창을 닫을 때 부모 창을 새로고침 함 
 	function opener_reload() {
 		opener.location.reload();
 	}

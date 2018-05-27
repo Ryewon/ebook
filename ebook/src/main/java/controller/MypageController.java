@@ -7,7 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -185,7 +184,6 @@ public class MypageController {
 		}
 		if(contable!=null) {
 			contable = book.getContents_table().replaceAll("<br>", "\r\n");	
-			System.out.println("바꾼 목차:" + contable);
 			book.setContents_table(contable);
 		}
 		model.addAttribute("book", book);
@@ -214,11 +212,15 @@ public class MypageController {
 		String title2 = title1.replaceAll(" ", "");
 		String intro = request.getParameter("intro").replace(" ", "");
 		String con_table = request.getParameter("con_table").replace(" ", "");
+		
+		//책소개 공백 처리
 		if(intro.length()==0) {
 			intro=null;
 		} else {
 			intro = request.getParameter("intro").replace("\r\n", "<br>");
 		}
+		
+		//목차 공백 처리
 		if(con_table.length()==0) {
 			con_table=null;
 		} else {
@@ -236,10 +238,10 @@ public class MypageController {
 		String pfile = null;
 		String ppath = null;
 		
-		if(coverName.equals("")) {
-			if(orgPfileName.equals(pfileName)) {
+		if(coverName.equals("")) { //표지 없앴을 때
+			if(orgPfileName.equals(pfileName)) { //pdf파일 그대로일 때
 				mypageDao.modifyCoverBook(title1, title2, cate, price, con_table, intro, cfile, cpath, bid);
-			} else {
+			} else { //pdf파일 바꼈을 때
 				pfile = file.get(1).getOriginalFilename();
 				ppath = request.getParameter("pupdir") + bid + "_pdfFile";
 				try {
@@ -248,13 +250,14 @@ public class MypageController {
 				} catch (IOException e) {
 					System.out.println("File 변환 예외발생");
 				}
+				//표지, pdf 모두 바꾸는 쿼리
 				mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, ppath, mid, bid);
 			}
-		} else {
-			if(orgCoverName.equals(coverName)) {
-				if(orgPfileName.equals(pfileName)) {
+		} else { // 표지 있을 때
+			if(orgCoverName.equals(coverName)) { //표지 그대로일 때
+				if(orgPfileName.equals(pfileName)) { //pdf파일 그대로일 때
 					mypageDao.modifyBook(title1, title2, cate, price, con_table, intro, bid);
-				} else {
+				} else { //pdf파일 바꼈을 때
 					pfile = file.get(1).getOriginalFilename();
 					ppath = request.getParameter("pupdir") + bid + "_pdfFile";
 					try {
@@ -263,10 +266,12 @@ public class MypageController {
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
+					
+					//pdf 파일 바꾸는 쿼리
 					mypageDao.modifyPdfBook(title1, title2, cate, price, con_table, intro, pfile, ppath, mid, bid);
 				}
-			} else {
-				if(orgPfileName.equals(pfileName)) {
+			} else { //표지 바꼈을 때
+				if(orgPfileName.equals(pfileName)) { //pdf파일 그대로일 때
 					cfile = file.get(0).getOriginalFilename();
 					cpath = request.getParameter("cupdir") + bid + "_coverFile";
 					try {
@@ -275,8 +280,9 @@ public class MypageController {
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
+					//표지 바꾸는 쿼리
 					mypageDao.modifyCoverBook(title1, title2, cate, price, con_table, intro, cfile, cpath, bid);
-				} else {
+				} else { //pdf파일 바꿨을 때
 					cfile = file.get(0).getOriginalFilename();
 					cpath = request.getParameter("cupdir") + bid + "_coverFile";
 					pfile = file.get(1).getOriginalFilename();
@@ -290,6 +296,7 @@ public class MypageController {
 					} catch (IOException e) {
 						System.out.println("File 변환 예외발생");
 					}
+					//표지, pdf 바꾸는 쿼리
 					mypageDao.modifyCoverPdfBook(title1, title2, cate, price, con_table, intro, cfile, cpath, pfile, ppath, mid, bid);
 				}
 			}

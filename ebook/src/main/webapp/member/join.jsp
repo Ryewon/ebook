@@ -20,7 +20,6 @@
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/alterboot.css?ver=33" /> --%>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>RWeBook - Join</title>
@@ -110,6 +109,19 @@
 
 	function checkValue() {
 		$('.alertSmall').css("margin-left","60px");
+		
+		/* 
+		 ^  : 문자열의 시작
+		 $  : 문자열의 끝
+		 \d : 숫자 [0-9]와 같음
+		 \W : 알파벳 로마자가 아닌 것
+		 .  : 임의의 한 문자
+		 |  : 선택 패턴
+		 () : 그룹
+		 ?  : 앞에 온 표현이 없을 수 있다는 의미
+		 *  : 앞의 표현이 0개 이상
+		 ?= : 전방 탐색
+		*/
 		
 		var nameExp=/^[가-힣]{2,5}$/;
 		var phoneExp=/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/;

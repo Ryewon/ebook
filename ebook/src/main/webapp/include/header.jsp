@@ -11,17 +11,7 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/header.css?ver=212" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/modal.css?ver=323" />
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
-<script>
-	$(document).ready(function(e){
-	    $('.search-panel .dropdown-menu').find('a').click(function(e) {
-			e.preventDefault();
-			var param = $(this).attr("href").replace("#","");
-			var concept = $(this).text();
-			$('.search-panel span#search_concept').text(concept);
-			$('.input-group #search_param').val(param);
-		});
-	});
-	
+<script>	
 	function logoutAjax() {
 		if(!confirm("정말로 로그아웃하시겠습니까?")) {
 			return; 

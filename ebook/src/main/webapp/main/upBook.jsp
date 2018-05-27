@@ -79,7 +79,7 @@
 					reader.onload = function (e) {
 						$('#imgView').attr('src', e.target.result);
 					}
-					reader.readAsDataURL(input.files[0]);
+					reader.readAsDataURL(input.files[0]); //이미지, 동영상 파일 읽는 형태
 				} else {
 					$('#imgView').attr('src', '/ebook/no_image.png');
 				}
@@ -93,9 +93,9 @@
 		}
 		
 		function changePfile(input) {
-			var pathpoint = input.value.lastIndexOf('.');
-			var filepoint = input.value.substring(pathpoint + 1, input.length);
-			var filetype = filepoint.toLowerCase();
+			var pathpoint = input.value.lastIndexOf('.'); // 받은 문자열 중 가장 마지막으로 오는 .의 시작 위치
+			var filepoint = input.value.substring(pathpoint + 1, input.length); //시작인덱스, 종료인덱스로 구성   => 확장자를 가져옴
+			var filetype = filepoint.toLowerCase(); //확장자를 소문자로 나타냄
 			if(filetype!='pdf' && filetype!='') {
 				alert('지원하지 않는 파일형식입니다.');
 				input.value="";
