@@ -9,6 +9,6 @@
 <body>
 <h1>500 에러</h1>
 <p>서버 내부 오류 입니다.</p>
-<p>홈으로 이동합니다. <a href="../home">home</a></p>
+<p>홈으로 이동합니다. <a href="/ebook/home">home</a></p>
 </body>
 </html>

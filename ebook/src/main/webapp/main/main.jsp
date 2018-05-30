@@ -300,10 +300,10 @@
 				</c:when>
 				<c:otherwise>
 					<div style="float: left;">
-						|<a href="/ebook/searchBook?price=전체&cate=${cate }&sorting=y">전체</a>|<a href="/ebook/searchBook?price=유료&cate=${cate }&sorting=y">유료</a>|<a href="/ebook/searchBook?price=무료&cate=${cate }&sorting=y">무료</a>|
+						|<a href="/ebook/searchBook?price=전체&cate=${cate }&sorting=y">전체</a>|<a href="/ebook/searchBook?price=유료&cate=${cate }&sorting=y">유료</a>|<a href="/searchBook?price=무료&cate=${cate }&sorting=y">무료</a>|
 					</div>
 					<div style="float: right;">
-						/<a href="/ebook/searchBook?sortType=최신순&cate=${cate }&sorting=y">최신순</a>/<a href="/ebook/searchBook?sortType=인기순&cate=${cate }&sorting=y">인기순</a>/<a href="/ebook/searchBook?sortType=가나다순&cate=${cate }&sorting=y">가나다순</a>/
+						/<a href="/ebook/searchBook?sortType=최신순&cate=${cate }&sorting=y">최신순</a>/<a href="/ebook/searchBook?sortType=인기순&cate=${cate }&sorting=y">인기순</a>/<a href="/searchBook?sortType=가나다순&cate=${cate }&sorting=y">가나다순</a>/
 					</div> <br>
 					<div style="margin-top: 30px;">
 					<table>

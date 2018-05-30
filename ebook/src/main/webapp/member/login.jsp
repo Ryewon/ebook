@@ -86,7 +86,7 @@
 						<!-- <center>
 							<h4>OR</h4>
 						</center> -->
-						<a href="/ebook/join" class="btn btn-lg btn-facebook btn-block">JOIN</a>
+						<a href="/join" class="btn btn-lg btn-facebook btn-block">JOIN</a>
 					</div>
 				</div>
 			</div>

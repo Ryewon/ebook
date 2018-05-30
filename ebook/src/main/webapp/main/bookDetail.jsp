@@ -7,7 +7,7 @@
 %>
  <script language="javascript">
   alert("비정상적인 방법으로 접근하셨습니다.");
-  document.location.href="/ebook/home";
+  document.location.href="/home";
  </script>
 <%
   return;
@@ -66,7 +66,7 @@
 							} else {
 								$.ajax({
 									type : "POST",
-									url : "/ebook/buyBook",
+									url : "/buyBook",
 									data : "mid=" + mid + "&bid=" + bid + "&cpoint=" + cpoint + "&ppoint=" + ppoint + "&apoint=" + apoint,
 									success : function() {
 										$("#buyTitle").html("알림");

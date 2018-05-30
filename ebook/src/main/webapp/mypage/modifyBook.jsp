@@ -8,7 +8,7 @@
 %>
  <script language="javascript">
   alert("비정상적인 방법으로 접근하셨습니다.");
-  document.location.href="/ebook/home";
+  document.location.href="/home";
  </script>
 <%
   return;
@@ -225,10 +225,10 @@
 		<div>
 			<div style="display: inline-table; width: 300px;">
 				<c:if test="${empty book.cover_name}">
-					<img src="/ebook/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
+					<img src="/no_image.png" id="imgView" name="imgView" style="width: 200px; height: 200px; border: 1px;">
 				</c:if>
 				<c:if test="${! empty book.cover_name }">
-					<img style="width: 200px; height: 200px; border: 1px;" id="imgView" src="/ebook/cuploads/${book.bid }_coverFile"  />
+					<img style="width: 200px; height: 200px; border: 1px;" id="imgView" src="/cuploads/${book.bid }_coverFile"  />
 				</c:if>
 			</div>
 			<!-- <div style="position: absolute; left: 250px; top: 190px; display: inline-table; width: 400px;"> -->
@@ -263,7 +263,7 @@
 			<textarea rows="" cols="" id="con_table" name="con_table" style="width:700px; resize: none; overflow-y: scroll">${book.contents_table }</textarea>
 		</div>
 		<br>
-		<div style="text-align: center;"><input class="submitBtn" type="button" value="올리기" onclick="checkUpload();"></div>
+		<div style="text-align: center;"><input class="submitBtn" type="button" value="수정" onclick="checkUpload();"></div>
 	</div>
 	</form>
 </div>

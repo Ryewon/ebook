@@ -12,7 +12,7 @@
 %>
  <script language="javascript">
   alert("URL 주소창에 주소를 직접 입력해서 접근하셨습니다.\n\n정상적인 경로를 통해 다시 접근해 주십시오.");
-  document.location.href="/ebook/logout";
+  document.location.href="/logout";
  </script>
 <%
   return;
@@ -28,6 +28,11 @@
 	window.onload = function() {
 		var pfile = document.getElementById('file_name').value;
 		var url = '/ebook/puploads/'+pfile;
+		var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+		// The workerSrc property shall be specified.
+		pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
 		
 		var pdfDoc = null,
 			pageNum = Number('${param.lastpage}'),

@@ -70,7 +70,7 @@
 					$('#charge_alert').hide();
 					$.ajax({
 						type: "POST",
-						url: "/ebook/charge",
+						url: "/charge",
 						data: "mid=" + mid + "&ch_point=" + ch_point,
 						success: function() {
 							alert("포인트 충전이 완료되었습니다.");
@@ -106,7 +106,7 @@
 		if(conSrch!="") {
 			
 		} else {
-			/* window.location.href="/ebook/home"; */
+			/* window.location.href="/home"; */
 			return false;
 		}
 	}

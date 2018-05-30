@@ -59,7 +59,7 @@
 			} else {
 				$.ajax({
 					type : "POST",
-					url : "/ebook/ckID",
+					url : "/ckID",
 					async:false,
 					data : "mid=" + mid,
 					success : function(ck) {
@@ -326,7 +326,7 @@
 								<div>
 									<label style="width: 60px">H/P</label>
 									<input id="phone" name="phone" type="text" class="input-text-control"/><br>
-									<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
+									<small>(01x-xxxx-xxxx 형식으로 입력)</small><br>
 									<small class="alertSmall" id="ckPhone"></small>
 								</div>
 								<div>

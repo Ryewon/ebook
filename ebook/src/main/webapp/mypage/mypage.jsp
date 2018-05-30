@@ -348,7 +348,7 @@
 							</div>
 							<div>
 								<label style="width: 100px;">휴대전화</label> <input type="text" id="phone" name="phone" value="${authInfo.phone }"/>
-								<small>(010-xxxx-xxxx 형식으로 입력)</small><br>
+								<small>(01x-xxxx-xxxx 형식으로 입력)</small><br>
 								<small style="margin-left: 100px;" class="alertSmall" id="ckPhone"></small>
 							</div>
 							<div>
